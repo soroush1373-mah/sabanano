@@ -103,21 +103,137 @@
     <!-- End Hero Section -->
 
     <main id="main">
-        
-     
-    <!-- ======= Call To Action Section ======= -->
-        <!-- <section id="call-to-action" class="call-to-action">
-      <div class="container text-center" data-aos="zoom-out">
-        <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="glightbox play-btn"></a>
-        <h3>Call To Action</h3>
-        <p> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <a class="cta-btn" href="#">Call To Action</a>
-      </div>
-    </section>End Call To Action Section -->
-        <!-- ======= Our Services Section ======= -->
-        <!-- ======= Contact Section ======= -->
-        
 
+        <!-- ======= Lab Services Section ======= -->
+        <section class="nms-services">
+            <div class="container-xl">
+                <div class="nms-services__grid">
+                    <div class="nms-services__text">
+                        <h2 class="nms-section-title">خدمات تست آزمایشگاهی</h2>
+                        <p class="nms-services__body">
+                            آزمایشگاه تحقیقاتی شناسایی نانو مواد صبا با کادری مجرب از کارشناسان و مهندسین
+                            حوزه آنالیز و نانوتکنولوژی، آماده ی ارائه خدمات آنالیزی اعم از سنجش سطح مواد
+                            متخلخل (آنالیز BET) و آنالیز شناسایی ترکیبات آلی به کمک آنالیز FTIR و آنالیز GC-MS
+                            و همچنین آنالیز های مواد معدنی چون آنالیز ICP-MS، آنالیز ICP-OES، آنالیز XRF،
+                            آنالیز XRD و تعیین غلظت فلزات گرانبها به کمک Fire Assay به جامعه علمی کشور،
+                            دانشگاه ها، کارخانجات، شرکت های دانش بنیان و شرکت های اکتشاف و استخراج معادن
+                            می باشد. همچنین این آزمایشگاه یکی از آزمایشگاه های فعال در حوزه شناسایی مواد مجهول،
+                            مشکوک، افزودنی ها، رنگ، پلیمرها، پوشش وعمده ی مواد تجاری شیمیایی وترکیبات مخلوط مورد
+                            استفاده در کارگاه ها و کارخانجات تولیدی و مهندسی معکوس به وسیله آنالیز FTIR و جستجوی
+                            کتابخانه ای مواد تحت آنالیز به کمک Bio Rad و KnowItAll است.
+                        </p>
+                        <a class="btn nms-btn nms-btn--gradient nms-btn--lg" asp-controller="Analysis" asp-action="Index">
+                            خدمات تست آزمایشگاهی
+                            <i class="bi bi-arrow-left"></i>
+                        </a>
+                    </div>
+                    <div class="nms-services__media">
+                        <span class="nms-dot nms-dot--1"></span>
+                        <span class="nms-dot nms-dot--2"></span>
+                        <span class="nms-dot nms-dot--3"></span>
+                        <span class="nms-dot nms-dot--4"></span>
+                        <span class="nms-dot nms-dot--5"></span>
+                        <picture>
+                            <source srcset="../img/MainImage/lab-scientist.webp" type="image/webp">
+                            <img class="nms-services__img" src="../img/MainImage/lab-scientist.jpg" alt="کارشناس آزمایشگاه در حال کار با میکروسکوپ" loading="lazy" width="820" height="412">
+                        </picture>
+                        <div class="nms-services__badges">
+                            <div class="nms-badge">
+                                <i class="bi bi-bullseye"></i>
+                                <span>آزمایشگاهی مورد اعتماد برای انجام آزمایش‌های دقیق و باکیفیت</span>
+                            </div>
+                            <div class="nms-badge">
+                                <i class="bi bi-gear-wide-connected"></i>
+                                <span>ارائه خدمات تست قابل‌اطمینان با کیفیت و رعایت الزامات</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Lab Services Section -->
+
+        <!-- ======= Featured Products Section ======= -->
+        <section class="nms-products">
+            <div class="container-xl">
+                <div class="nms-products__head">
+                    <h2 class="nms-section-title">محصولات منتخب</h2>
+                    <span class="nms-products__line"></span>
+                    <a class="nms-products__all" asp-controller="Analysis" asp-action="Index">
+                        مشاهده همه
+                        <i class="bi bi-arrow-left"></i>
+                    </a>
+                </div>
+                <ul class="nms-products__list">
+                <li class="nms-product">
+                    <div class="nms-product__img">
+                        <img src="../img/TEM.png" alt="دستگاه TEM" loading="lazy" width="585" height="470">
+                    </div>
+                    <div class="nms-product__body">
+                        <h3>آنالیز TEM</h3>
+                        <p>میکروسکوپ الکترونی عبوری</p>
+                        <a class="nms-product__link stretched-link" href="@Url.Action("DeviceById", "Device", new { myParams = "TEM" })">
+                            مشاهده جزئیات
+                            <i class="bi bi-arrow-left"></i>
+                        </a>
+                    </div>
+                </li>
+                <li class="nms-product">
+                    <div class="nms-product__img">
+                        <img src="../img/XRD.png" alt="دستگاه XRD" loading="lazy" width="585" height="470">
+                    </div>
+                    <div class="nms-product__body">
+                        <h3>آنالیز XRD</h3>
+                        <p>آنالیز طیف سنجی پراش پرتو ایکس</p>
+                        <a class="nms-product__link stretched-link" href="@Url.Action("DeviceById", "Device", new { myParams = "XRD" })">
+                            مشاهده جزئیات
+                            <i class="bi bi-arrow-left"></i>
+                        </a>
+                    </div>
+                </li>
+                <li class="nms-product">
+                    <div class="nms-product__img">
+                        <img src="../img/ICP-OES.png" alt="دستگاه ICP-OES" loading="lazy" width="585" height="470">
+                    </div>
+                    <div class="nms-product__body">
+                        <h3>آنالیز ICP-OES</h3>
+                        <p>آنالیز طیف سنجی نشری پلاسما جفت شده القایی</p>
+                        <a class="nms-product__link stretched-link" href="@Url.Action("DeviceById", "Device", new { myParams = "ICP-OES" })">
+                            مشاهده جزئیات
+                            <i class="bi bi-arrow-left"></i>
+                        </a>
+                    </div>
+                </li>
+                <li class="nms-product">
+                    <div class="nms-product__img">
+                        <img src="../img/ICP-MS.png" alt="دستگاه ICP-MS" loading="lazy" width="585" height="470">
+                    </div>
+                    <div class="nms-product__body">
+                        <h3>آنالیز ICP-MS</h3>
+                        <p>آنالیز طیف سنجی جرمی پلاسما جفت شده القایی</p>
+                        <a class="nms-product__link stretched-link" href="@Url.Action("DeviceById", "Device", new { myParams = "ICP-MS" })">
+                            مشاهده جزئیات
+                            <i class="bi bi-arrow-left"></i>
+                        </a>
+                    </div>
+                </li>
+                <li class="nms-product">
+                    <div class="nms-product__img">
+                        <img src="../img/XRF.png" alt="دستگاه XRF" loading="lazy" width="585" height="470">
+                    </div>
+                    <div class="nms-product__body">
+                        <h3>آنالیز XRF</h3>
+                        <p>آنالیز فلورسانس اشعه ایکس</p>
+                        <a class="nms-product__link stretched-link" href="@Url.Action("DeviceById", "Device", new { myParams = "XRF" })">
+                            مشاهده جزئیات
+                            <i class="bi bi-arrow-left"></i>
+                        </a>
+                    </div>
+                </li>
+                </ul>
+            </div>
+        </section>
+        <!-- End Featured Products Section -->
 
     </main><!-- End #main -->
 

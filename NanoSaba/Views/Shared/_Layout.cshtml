@@ -133,134 +133,85 @@
 
 </div>
 
-<footer id="footer" class="footer">
+<footer id="footer" class="nms-footer">
+    <div class="container-xl">
+        <div class="nms-footer__grid">
 
-    <div class="container">
-        <div class="row gy-4">
-
-            <!-- Company -->
-            <div class="col-lg-5 col-md-12 footer-info">
-
-                <a href="@Url.Action("Index", "Home")"
-                   class="logo d-flex align-items-center">
-                    <span>آزمایشگاه آنالیزی نانو مواد صبا</span>
+            <!-- Brand -->
+            <div class="nms-footer__brand">
+                <a class="nms-footer__logo" asp-controller="Home" asp-action="Index">
+                    <img src="../img/nms-logo.svg" alt="" width="56" height="64" />
+                    <span class="nms-footer__name">NMS</span>
+                    <span class="nms-footer__sub" dir="ltr">SABA<br>NANOMAVAD</span>
                 </a>
-
-                <p>
-                    تلفن: ۰۲۱-۶۶۵۱۹۶۶۶ - ۰۹۱۲۲۱۹۹۲۳۲<br>
-                    از شنبه تا چهارشنبه، از ساعت ۰۸:۳۰ تا ۱۷:۰۰ پاسخگوی شما هستیم.
-                </p>
-
-                <div class="social-links d-flex mt-4">
-
-                    <a href="#" class="twitter">
-                        <i class="bi bi-twitter"></i>
-                    </a>
-
-                    <a href="#" class="facebook">
-                        <i class="bi bi-facebook"></i>
-                    </a>
-
-                    <a href="#" class="instagram">
-                        <i class="bi bi-instagram"></i>
-                    </a>
-
-                    <a href="#" class="linkedin">
-                        <i class="bi bi-linkedin"></i>
-                    </a>
-
+                <p class="nms-footer__tagline" dir="ltr">ADVANCED MATERIALS ANALYSIS LABORATORY</p>
+                <div class="nms-footer__social">
+                    <a href="#" aria-label="تلگرام"><i class="bi bi-telegram"></i></a>
+                    <a href="#" aria-label="اینستاگرام"><i class="bi bi-instagram"></i></a>
+                    <a href="#" aria-label="فیسبوک"><i class="bi bi-facebook"></i></a>
+                    <a href="#" aria-label="لینکدین"><i class="bi bi-linkedin"></i></a>
                 </div>
-
             </div>
 
-            <!-- Navigation -->
-            <div class="col-lg-2 col-6 footer-links">
-              <h4>نانو مواد صبا</h4>
-
-              <ul>
-                   <li>
-                      <a href="../Home/#hero">نانو مواد صبا</a>
-                   </li>
-
-                    <li>
-                        <a asp-controller="Analysis" asp-action="Index">
-                خدمات آنالیز
-                        </a>
-                    </li>
-
-                    <li>
-                        <a asp-controller="OrderGuide" asp-action="Index">
-                نحوه ی ثبت سفارش
-                        </a>
-                    </li>
-
-                    <li>
-                        <a asp-controller="Articles" asp-action="Index">
-                مقالات آنالیز
-                        </a>
-                    </li>
-
-                    <li>
-                        <a asp-controller="Home" asp-action="About">
-                درباره ی ما
-                        </a>
-                    </li>
-
-                    <li>
-                        <a asp-controller="Home" asp-action="Contact">
-                تماس با ما
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Useful Links -->
-            <div class="col-lg-2 col-6 footer-links">
-
-                <h4>لینک های مفید</h4>
-
+            <!-- Quick links -->
+            <div class="nms-footer__col">
+                <h4>دسترسی سریع</h4>
                 <ul>
-                    <li>
-                        <a href="https://nano.ir" target="_blank" rel="noopener noreferrer">
-                            ستاد ویژه توسعه فناوری نانو
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://labsnet.ir" target="_blank" rel="noopener noreferrer">
-                            شبکه آزمایشگاهی فناوری های راهبردی
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.fda.gov.ir" target="_blank" rel="noopener noreferrer">
-                            سازمان غذا و دارو
-                        </a>
-                    </li>
+                    <li><a asp-controller="Home" asp-action="Index">صفحه اصلی</a></li>
+                    <li><a asp-controller="OrderGuide" asp-action="Index">نحوه ی ثبت سفارش</a></li>
+                    <li><a asp-controller="Articles" asp-action="Index">مقالات آنالیز</a></li>
+                    <li><a asp-controller="Home" asp-action="About">درباره ی ما</a></li>
+                    <li><a asp-controller="Home" asp-action="Contact">تماس با ما</a></li>
+                    <li><a asp-controller="Analysis" asp-action="Index">خدمات آنالیز</a></li>
                 </ul>
+            </div>
 
+            <!-- Analysis services -->
+            <div class="nms-footer__col">
+                <h4>خدمات آنالیز</h4>
+                <ul>
+                    <li><a asp-controller="Analysis" asp-action="Index">آنالیز عنصری</a></li>
+                    <li><a asp-controller="Analysis" asp-action="Index">آنالیز تصویر برداری</a></li>
+                    <li><a asp-controller="Analysis" asp-action="Index">آنالیز حرارتی</a></li>
+                    <li><a asp-controller="Analysis" asp-action="Index">کروماتوگرافی</a></li>
+                    <li><a asp-controller="Analysis" asp-action="Index">آنالیز اسپکتروسکوپی</a></li>
+                    <li><a asp-controller="Analysis" asp-action="Index">آنالیز سطح ویژه</a></li>
+                    <li><a asp-controller="Analysis" asp-action="Index">آنالیز سطح سنج</a></li>
+                </ul>
             </div>
 
             <!-- Contact -->
-            <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
-
+            <div class="nms-footer__col nms-footer__contact">
                 <h4>تماس با ما</h4>
-
-                <p>
-                    طرشت، میدان شهید تیموری، <br>
-                    خیابان لطفعلی خانی، <br>
-                    انتهای خیابان پارس، <br>
-                    خیابان ذوقی، پلاک ۲۲، واحد ۲ <br><br>
-
-                    <strong>شماره تلفن:</strong> ۰۲۱-۶۶۵۱۹۶۶۶<br>
-                    <strong>شماره موبایل:</strong> ۰۹۱۲۲۱۹۹۲۳۲<br>
-                    <strong>کد پستی:</strong> ۱۴۵۹۸۷۳۱۶۷<br>
-                    <strong>ایمیل:</strong> info.saba.analyze@gmail.com
-                </p>
-
+                <ul>
+                    <li>
+                        <i class="bi bi-geo-alt"></i>
+                        <span>
+                            طرشت، میدان شهید تیموری، خیابان لطفعلی خانی،
+                            انتهای خیابان پارس، خیابان ذوقی، پلاک ۲۲، واحد ۲<br>
+                            کد پستی: ۱۴۵۹۸۷۳۱۶۷
+                        </span>
+                    </li>
+                    <li>
+                        <i class="bi bi-telephone"></i>
+                        <span dir="ltr">
+                            <a href="tel:02166519666">021-66519666</a><br>
+                            <a href="tel:09122199232">09122199232</a>
+                        </span>
+                    </li>
+                    <li>
+                        <i class="bi bi-envelope"></i>
+                        <a href="mailto:info.saba.analyze@gmail.com">info.saba.analyze@gmail.com</a>
+                    </li>
+                    <li>
+                        <i class="bi bi-clock"></i>
+                        <span>شنبه تا چهارشنبه: ساعت ۰۸:۳۰ تا ۱۷:۰۰</span>
+                    </li>
+                </ul>
             </div>
 
         </div>
     </div>
-
 </footer>
 <!-- End Footer -->
 <!-- </div> -->
