@@ -1,69 +1,99 @@
-<section id="contact" class="contact">
-    <div class="container" data-aos="fade-up">
-    <div class="section-header">
-        <h2>تماس با ما</h2>
-    </div>
-    <div class="row gx-lg-0 gy-4">
-        <div>
-            <div class="info-container d-flex flex-column align-items-center justify-content-center">
-                <div class="info-item d-flex">
-                    <i class="bi bi-geo-alt flex-shrink-0"></i>
-                    <div>
-                        <span>آدرس:</span>
-                        <p>
-                            طرشت، میدان شهید تیموری،
-                            خیابان لطفعلی خانی
-                            انتهای خیابان پارس، خیابان ذوقی، پلاک 22، واحد 2
-                        </p>
-                    </div>
-                </div>
-                <div class="info-item d-flex">
-                    <i class="bi bi-envelope flex-shrink-0"></i>
-                    <div>
-                        <span>ایمیل:</span>
-                        <p>info.saba.analyze@gmail.com</p>
-                    </div>
-                </div>
-                <div class="info-item d-flex">
-                    <i class="bi bi-phone flex-shrink-0"></i>
-                    <div>
-                        <span>شماره تماس:</span>
-                        <p>با مدیریت دکتر محمدتقی فرقدانی</p>
-                        <p>۰۲۱-۶۶۵۱۹۶۶۶ - ۰۹۱۲۲۱۹۹۲۳۲</p>
-                    </div>
-                </div>
-                <div class="info-item d-flex">
-                    <i class="bi bi-clock flex-shrink-0"></i>
-                    <div>
-                        <span>ساعات کاری:</span>
-                        <p>از شنبه تا چهار شنبه : ۰۸:۳۰ - ۱۷:۰۰</p>
-                    </div>
-                </div>
-                <div class="info-item col-md-12 d-flex offset-md-12 mb-3">
-                    <form action="/Home/AddEmail" method="post">
-                        <div class="row">
-                            <span>با ما همراه باشید</span>
+@{
+    ViewData["Title"] = "تماس با ما";
+    // Header sits on top of the photo (white text, see .nms-header--overlay)
+    ViewData["HeaderOverlay"] = true;
+    ViewData["ActiveNav"] = "Contact";
+}
+
+<link href="~/css/nms-contact.css" rel="stylesheet" asp-append-version="true">
+
+<!-- Photo band behind the header and the top of the cards -->
+<section class="nms-contact-hero" aria-hidden="true"></section>
+
+<section class="nms-contact">
+    <div class="nms-contact__container">
+
+        <div class="nms-contact__row">
+
+            <!-- Contact info (right) -->
+            <div class="nms-contact-card nms-contact-info">
+                <h1 class="nms-contact-card__title">اطلاعات تماس</h1>
+                <p class="nms-contact-info__lead">
+                    برای ارتباط با ما از طریق راه های زیر اقدام کنید.<br>
+                    ما در سریع ترین زمان ممکن پاسخگوی شما خواهیم بود.
+                </p>
+                <ul class="nms-contact-info__list">
+                    <li>
+                        <span class="nms-contact-info__icon"><i class="bi bi-telephone"></i></span>
+                        <span dir="ltr">
+                            <a href="tel:02166519666">021-66519666</a><br>
+                            <a href="tel:09122199232">09122199232</a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="nms-contact-info__icon"><i class="bi bi-envelope"></i></span>
+                        <a href="mailto:info.saba.analyze@gmail.com">info.saba.analyze@gmail.com</a>
+                    </li>
+                    <li>
+                        <span class="nms-contact-info__icon"><i class="bi bi-geo-alt"></i></span>
+                        <span>
+                            طرشت، میدان شهید تیموری، خیابان لطفعلی خانی<br>
+                            انتهای خیابان پارس، خیابان ذوقی، پلاک ۲۲، واحد ۲
+                        </span>
+                    </li>
+                    <li>
+                        <span class="nms-contact-info__icon"><i class="bi bi-clock"></i></span>
+                        <span>شنبه تا چهار شنبه: ساعت ۰۸:۳۰ تا ۱۷:۰۰</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Contact form (left). For now it opens the visitor's email app,
+                 because the site has no "contact message" table in the database yet. -->
+            <div class="nms-contact-card nms-contact-form">
+                <h2 class="nms-contact-card__title">فرم تماس با نانو مواد صبا</h2>
+                <form action="mailto:info.saba.analyze@gmail.com" method="post" enctype="text/plain">
+                    <div class="nms-contact-form__row">
+                        <div class="nms-field">
+                            <label for="contactName">نام و نام خانوادگی</label>
+                            <input id="contactName" name="Name" type="text" placeholder="نام و نام خانوادگی خود را وارد کنید." required>
                         </div>
-                        <div class="row">
-                            <span>از جدید ترین تخفیفات با خبر شو</span>
+                        <div class="nms-field">
+                            <label for="contactMobile">شماره موبایل</label>
+                            <input id="contactMobile" name="Mobile" type="tel" inputmode="numeric" placeholder="شماره موبایل خود را وارد کنید." required>
                         </div>
-                        <div class="input-group has-validation mt-2">
-                            <input type="text"
-                                   class="form-control"
-                                   name="Email"
-                                   id="Email"
-                                   onkeypress="return isNumber(event)"
-                                   aria-describedby="inputGroupPrepend"
-                                   required>
-                        </div>
-                        <button type="submit" class="btn btn-primary col-md-12 mt-2">
-                            ثبت
-                        </button>
-                    </form>
+                    </div>
+                    <div class="nms-field">
+                        <label for="contactMessage">پیام خود را بنویسید</label>
+                        <textarea id="contactMessage" name="Message" rows="5" placeholder="پیام خود را بنویسید" required></textarea>
+                    </div>
+                    <button type="submit" class="nms-contact-form__submit">ارسال پیام</button>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="nms-contact__row nms-contact__row--bottom">
+
+            <!-- Map (right) -->
+            <div class="nms-contact-card nms-contact-map">
+                <iframe title="موقعیت آزمایشگاه نانو مواد صبا روی نقشه"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2657.437743216848!2d51.34839037495728!3d35.712858272576995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8e0798ef4fbe73%3A0xd5e6af4cf2c9bc14!2snano%20mavad%20saba!5e1!3m2!1sen!2s!4v1792229072025!5m2!1sen!2s"
+                        loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+
+            <!-- Social links (left) -->
+            <div class="nms-contact-card nms-contact-social">
+                <p>با ما در ارتباط باشید.</p>
+                <div class="nms-contact-social__icons">
+                    <a href="#" aria-label="تلگرام"><i class="bi bi-telegram"></i></a>
+                    <a href="#" aria-label="اینستاگرام"><i class="bi bi-instagram"></i></a>
+                    <a href="#" aria-label="فیسبوک"><i class="bi bi-facebook"></i></a>
+                    <a href="#" aria-label="لینکدین"><i class="bi bi-linkedin"></i></a>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-</section>
 
+        </div>
+
+    </div>
+</section>

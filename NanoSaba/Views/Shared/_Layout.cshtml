@@ -29,7 +29,7 @@
 <body>
 
 <!-- ======= Header ======= -->
-<header id="header" class="nms-header@(ViewData["HomeHero"] is true ? " nms-header--home" : "")">
+<header id="header" class="nms-header@(ViewData["HomeHero"] is true ? " nms-header--home" : "")@(ViewData["HeaderOverlay"] is true ? " nms-header--overlay" : "")">
     <div class="container-xl nms-header__inner">
         <div class="nms-header__actions">
             <a class="btn nms-btn nms-btn--primary" asp-controller="Analysis" asp-action="Index">ثبت سفارش</a>
@@ -103,7 +103,7 @@
                 <li><a asp-controller="Analysis" asp-action="Index">خدمات آنالیز</a></li>
                 <li><a asp-controller="Articles" asp-action="Index">مقالات</a></li>
                 <li><a asp-controller="Home" asp-action="About">درباره ما</a></li>
-                <li><a asp-controller="Home" asp-action="Contact">تماس با ما</a></li>
+                <li><a asp-controller="Home" asp-action="Contact" class="@(ViewData["ActiveNav"] as string == "Contact" ? "active" : null)">تماس با ما</a></li>
             </ul>
         </nav><!-- .navbar -->
 
@@ -135,9 +135,15 @@
 
 <footer id="footer" class="nms-footer">
     <div class="container-xl">
-        <div class="nms-footer__grid">
 
-            <!-- Brand -->
+        <!-- Top row: social links (right) and brand (left) -->
+        <div class="nms-footer__top">
+            <div class="nms-footer__social">
+                <a href="#" aria-label="تلگرام"><i class="bi bi-telegram"></i></a>
+                <a href="#" aria-label="اینستاگرام"><i class="bi bi-instagram"></i></a>
+                <a href="#" aria-label="فیسبوک"><i class="bi bi-facebook"></i></a>
+                <a href="#" aria-label="لینکدین"><i class="bi bi-linkedin"></i></a>
+            </div>
             <div class="nms-footer__brand">
                 <a class="nms-footer__logo" asp-controller="Home" asp-action="Index">
                     <img src="../img/nms-logo.svg" alt="" width="56" height="64" />
@@ -145,29 +151,26 @@
                     <span class="nms-footer__sub" dir="ltr">SABA<br>NANOMAVAD</span>
                 </a>
                 <p class="nms-footer__tagline" dir="ltr">ADVANCED MATERIALS ANALYSIS LABORATORY</p>
-                <div class="nms-footer__social">
-                    <a href="#" aria-label="تلگرام"><i class="bi bi-telegram"></i></a>
-                    <a href="#" aria-label="اینستاگرام"><i class="bi bi-instagram"></i></a>
-                    <a href="#" aria-label="فیسبوک"><i class="bi bi-facebook"></i></a>
-                    <a href="#" aria-label="لینکدین"><i class="bi bi-linkedin"></i></a>
-                </div>
             </div>
+        </div>
+
+        <div class="nms-footer__grid">
 
             <!-- Quick links -->
-            <div class="nms-footer__col">
+            <div class="nms-footer__col nms-footer__links">
                 <h4>دسترسی سریع</h4>
                 <ul>
                     <li><a asp-controller="Home" asp-action="Index">صفحه اصلی</a></li>
                     <li><a asp-controller="OrderGuide" asp-action="Index">نحوه ی ثبت سفارش</a></li>
                     <li><a asp-controller="Articles" asp-action="Index">مقالات آنالیز</a></li>
                     <li><a asp-controller="Home" asp-action="About">درباره ی ما</a></li>
-                    <li><a asp-controller="Home" asp-action="Contact">تماس با ما</a></li>
+                    <li><a asp-controller="Home" asp-action="Contact" class="@(ViewData["ActiveNav"] as string == "Contact" ? "active" : null)">تماس با ما</a></li>
                     <li><a asp-controller="Analysis" asp-action="Index">خدمات آنالیز</a></li>
                 </ul>
             </div>
 
             <!-- Analysis services -->
-            <div class="nms-footer__col">
+            <div class="nms-footer__col nms-footer__links">
                 <h4>خدمات آنالیز</h4>
                 <ul>
                     <li><a asp-controller="Analysis" asp-action="Index">آنالیز عنصری</a></li>
