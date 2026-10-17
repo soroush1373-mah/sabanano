@@ -132,6 +132,39 @@ html body {
     background: radial-gradient(circle at 0 0, transparent 31.5px, var(--nms-navy) 32px);
 }
 
+/* Overlay header (contact page): see-through over a photo, white text.
+   Once the page scrolls (.sticked) it gets a dark background so it stays readable. */
+.nms-header--overlay {
+    background: transparent;
+    transition: background-color .3s, box-shadow .3s;
+}
+
+.nms-header--overlay.sticked {
+    background: var(--nms-navy);
+}
+
+.nms-header--overlay .nms-header__actions {
+    background: transparent;
+}
+
+.nms-header--overlay .btn.nms-btn--primary,
+.nms-header--overlay .btn.nms-btn--primary:focus {
+    background: transparent;
+    border-color: rgba(255, 255, 255, .85);
+}
+
+.nms-header--overlay .btn.nms-btn--primary:hover {
+    background: #fff;
+    border-color: #fff;
+    color: var(--nms-navy);
+}
+
+.nms-header--overlay .nms-brand,
+.nms-header--overlay .nms-brand:hover,
+.nms-header--overlay .mobile-nav-show {
+    color: #fff;
+}
+
 .nms-header__search {
     display: inline-flex;
     align-items: center;
@@ -218,6 +251,20 @@ html body {
 
     .nms-header .nms-nav > ul > li > a:before {
         background-color: var(--nms-cyan);
+    }
+}
+
+@media (min-width: 1280px) {
+    .nms-header--overlay .nms-nav a,
+    .nms-header--overlay .nms-nav a:focus,
+    .nms-header--overlay .nms-nav a:hover,
+    .nms-header--overlay .nms-nav .active,
+    .nms-header--overlay .nms-nav li:hover > a {
+        color: #fff;
+    }
+
+    .nms-header--overlay .nms-nav > ul > li > a:before {
+        background-color: #fff;
     }
 }
 

@@ -1,0 +1,263 @@
+/* ======= Contact page (تماس با ما) ======= */
+
+/* Photo band. It slides up under the transparent header (32px top padding + header height) */
+.nms-contact-hero {
+    height: 394px;
+    padding: 0;
+    margin-top: calc(-1 * (32px + var(--nms-header-h)));
+    background:
+        linear-gradient(180deg, rgba(0, 19, 45, .78) 0%, rgba(0, 19, 45, .55) 55%, rgba(0, 19, 45, .7) 100%),
+        url("../img/MainImage/hero-lab.jpg") center / cover no-repeat;
+}
+
+.nms-contact {
+    /* main.css gives every section overflow: hidden, which would cut off the cards that overlap the photo */
+    overflow: visible;
+    padding: 0 0 160px;
+}
+
+.nms-contact__container {
+    max-width: 940px;
+    margin: 0 auto;
+    padding: 0 16px;
+    box-sizing: content-box;
+}
+
+/* Top row: info card (right) + form card (left) */
+.nms-contact__row {
+    display: grid;
+    grid-template-columns: 422fr 494fr;
+    gap: 24px;
+    margin-top: -112px;
+    position: relative;
+}
+
+/* Bottom row: map (right) + social card (left) */
+.nms-contact__row--bottom {
+    grid-template-columns: 688fr 232fr;
+    margin-top: 24px;
+}
+
+.nms-contact-card {
+    background: #f4f4f4;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, .12);
+    padding: 40px 32px;
+}
+
+.nms-contact-card__title {
+    margin: 0 0 16px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--nms-navy-2);
+}
+
+/* Info card */
+.nms-contact-info__lead {
+    margin: 0 0 40px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333;
+}
+
+.nms-contact-info__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 16px;
+}
+
+.nms-contact-info__list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #222;
+}
+
+.nms-contact-info__list a {
+    color: inherit;
+}
+
+.nms-contact-info__list a:hover {
+    color: var(--nms-cyan);
+}
+
+.nms-contact-info__icon {
+    flex: 0 0 45px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--nms-cyan);
+    color: #fff;
+    font-size: 20px;
+}
+
+/* Form card */
+.nms-contact-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.nms-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.nms-field label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #222;
+}
+
+.nms-field input,
+.nms-field textarea {
+    width: 100%;
+    border: 1px solid #cfcfcf;
+    border-radius: 4px;
+    background: transparent;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: #222;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.nms-field input {
+    height: 38px;
+}
+
+.nms-field textarea {
+    min-height: 113px;
+    resize: vertical;
+}
+
+.nms-field input::placeholder,
+.nms-field textarea::placeholder {
+    color: #8a8a8a;
+}
+
+.nms-field input:focus,
+.nms-field textarea:focus {
+    outline: none;
+    border-color: var(--nms-cyan);
+    box-shadow: 0 0 0 3px rgba(18, 85, 213, .15);
+}
+
+.nms-contact-form__submit {
+    display: block;
+    width: 100%;
+    height: 40px;
+    margin-top: 8px;
+    border: 0;
+    border-radius: 4px;
+    background: var(--nms-cyan);
+    color: #fff;
+    font-size: 14px;
+    transition: background .2s;
+}
+
+.nms-contact-form__submit:hover {
+    background: var(--nms-cyan-dark);
+}
+
+/* Map card */
+.nms-contact-map {
+    padding: 0;
+    overflow: hidden;
+    min-height: 165px;
+}
+
+.nms-contact-map iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 165px;
+    border: 0;
+}
+
+/* Social card */
+.nms-contact-social {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 24px;
+}
+
+.nms-contact-social p {
+    margin: 0;
+    font-size: 14px;
+    color: #222;
+}
+
+.nms-contact-social__icons {
+    display: flex;
+    gap: 14px;
+}
+
+.nms-contact-social__icons a {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--nms-cyan);
+    color: #fff;
+    font-size: 15px;
+    transition: background .2s, transform .2s;
+}
+
+.nms-contact-social__icons a:hover {
+    background: var(--nms-cyan-dark);
+    transform: translateY(-2px);
+}
+
+/* Tablet & phone: cards stack one under another */
+@media (max-width: 991px) {
+    .nms-contact-hero {
+        height: 300px;
+    }
+
+    .nms-contact__row,
+    .nms-contact__row--bottom {
+        grid-template-columns: 1fr;
+    }
+
+    .nms-contact__row {
+        margin-top: -80px;
+    }
+
+    .nms-contact__row--bottom {
+        margin-top: 24px;
+    }
+
+    .nms-contact-map,
+    .nms-contact-map iframe {
+        min-height: 260px;
+    }
+
+    .nms-contact {
+        padding-bottom: 80px;
+    }
+}
+
+@media (max-width: 575px) {
+    .nms-contact-card {
+        padding: 28px 20px;
+    }
+
+    .nms-contact-form__row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}

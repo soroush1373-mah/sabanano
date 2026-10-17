@@ -29,7 +29,7 @@
 <body>
 
 <!-- ======= Header ======= -->
-<header id="header" class="nms-header@(ViewData["HomeHero"] is true ? " nms-header--home" : "")">
+<header id="header" class="nms-header@(ViewData["HomeHero"] is true ? " nms-header--home" : "")@(ViewData["HeaderOverlay"] is true ? " nms-header--overlay" : "")">
     <div class="container-xl nms-header__inner">
         <div class="nms-header__actions">
             <a class="btn nms-btn nms-btn--primary" asp-controller="Analysis" asp-action="Index">ثبت سفارش</a>
@@ -103,7 +103,7 @@
                 <li><a asp-controller="Analysis" asp-action="Index">خدمات آنالیز</a></li>
                 <li><a asp-controller="Articles" asp-action="Index">مقالات</a></li>
                 <li><a asp-controller="Home" asp-action="About">درباره ما</a></li>
-                <li><a asp-controller="Home" asp-action="Contact">تماس با ما</a></li>
+                <li><a asp-controller="Home" asp-action="Contact" class="@(ViewData["ActiveNav"] as string == "Contact" ? "active" : null)">تماس با ما</a></li>
             </ul>
         </nav><!-- .navbar -->
 
@@ -164,7 +164,7 @@
                     <li><a asp-controller="OrderGuide" asp-action="Index">نحوه ی ثبت سفارش</a></li>
                     <li><a asp-controller="Articles" asp-action="Index">مقالات آنالیز</a></li>
                     <li><a asp-controller="Home" asp-action="About">درباره ی ما</a></li>
-                    <li><a asp-controller="Home" asp-action="Contact">تماس با ما</a></li>
+                    <li><a asp-controller="Home" asp-action="Contact" class="@(ViewData["ActiveNav"] as string == "Contact" ? "active" : null)">تماس با ما</a></li>
                     <li><a asp-controller="Analysis" asp-action="Index">خدمات آنالیز</a></li>
                 </ul>
             </div>
