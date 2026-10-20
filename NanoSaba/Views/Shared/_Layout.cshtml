@@ -24,6 +24,7 @@
     <link href="../vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
     <link href="../css/main.css" rel="stylesheet">
     <link href="~/css/nms-home.css" rel="stylesheet" asp-append-version="true">
+    <link href="~/css/nms-auth.css" rel="stylesheet" asp-append-version="true">
 </head>
 
 <body>
@@ -35,7 +36,13 @@
             <a class="btn nms-btn nms-btn--primary" asp-controller="Analysis" asp-action="Index">ثبت سفارش</a>
             @if (!SignInManager.IsSignedIn(User))
             {
-                <a class="btn nms-btn nms-btn--outline" href="@Url.Action("SignIn", "Home")">ورود</a>
+                @* Opens the login box over the current page; the link still works without JavaScript *@
+                <a class="btn nms-btn nms-btn--outline" href="@Url.Action("SignIn", "Home")"
+                   data-bs-toggle="@(ViewData["AuthPage"] is true ? null : "modal")"
+                   data-bs-target="@(ViewData["AuthPage"] is true ? null : "#authModal")">
+                    <i class="bi bi-box-arrow-in-left"></i>
+                    ورود / ثبت نام
+                </a>
             }
             else
             {
@@ -219,6 +226,18 @@
 <!-- End Footer -->
 <!-- </div> -->
 
+@if (!SignInManager.IsSignedIn(User) && ViewData["AuthPage"] is not true)
+{
+    <div class="modal fade nms-auth-modal" id="authModal" tabindex="-1" aria-label="ورود / ثبت نام" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <button type="button" class="nms-auth-modal__close" data-bs-dismiss="modal" aria-label="بستن">&times;</button>
+                <partial name="_AuthForms" />
+            </div>
+        </div>
+    </div>
+}
+
 <a href="#" class="scroll-top d-flex align-items-center justify-content-center">
     <i class="bi bi-arrow-up-short"></i>
 </a>
@@ -233,6 +252,7 @@
 <script src="../vendor/isotope-layout/isotope.pkgd.min.js"></script>
 <script src="../vendor/php-email-form/validate.js"></script>
 <script src="~/js/main.js" asp-append-version="true"></script>
+<script src="~/js/nms-auth.js" asp-append-version="true"></script>
 <script type="text/javascript">
 
     function CloseAlert() {

@@ -1,0 +1,279 @@
+/*--------------------------------------------------------------
+# Login and sign-up box (header modal and /Home/SignIn)
+--------------------------------------------------------------*/
+.nms-auth {
+    --nms-auth-line: rgba(255, 255, 255, .85);
+    --nms-auth-border: rgba(170, 196, 255, .7);
+    --nms-auth-muted: rgba(255, 255, 255, .55);
+    --nms-auth-btn: #071c4a;
+    --nms-auth-link: #1aa3ff;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    color: #fff;
+}
+
+.nms-auth [hidden] {
+    display: none !important;
+}
+
+.nms-auth__card {
+    width: 100%;
+    max-width: 464px;
+    padding: 56px 48px 40px;
+    border: 1px solid var(--nms-auth-border);
+    border-radius: 16px;
+    background:
+        radial-gradient(120% 80% at 50% 30%, rgba(96, 132, 196, .35), transparent 70%),
+        rgba(14, 20, 32, .72);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .35);
+}
+
+.nms-auth__card--wide {
+    max-width: 520px;
+    padding: 48px 26px 36px;
+}
+
+.nms-auth__title {
+    margin: 0 0 40px;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* "ورود با شماره موبایل / ورود با نام کاربری" */
+.nms-auth__switch {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 44px;
+    font-size: 17px;
+}
+
+.nms-auth__tab {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: rgba(255, 255, 255, .85);
+    font: inherit;
+    font-weight: 400;
+}
+
+.nms-auth__tab.is-active {
+    color: #fff;
+    font-weight: 700;
+}
+
+.nms-auth__tab:hover {
+    color: #fff;
+}
+
+.nms-auth__sep {
+    color: #fff;
+}
+
+.nms-auth__form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.nms-auth__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px 52px;
+}
+
+.nms-auth__full {
+    grid-column: 1 / -1;
+}
+
+.nms-auth__field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.nms-auth__field input {
+    width: 100%;
+    height: 38px;
+    padding: 0 8px;
+    border: 1px solid var(--nms-auth-line);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, .03);
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+/* Numbers and emails are typed left to right, but the Persian placeholder stays right aligned */
+.nms-auth__field input[dir=ltr]:placeholder-shown {
+    direction: rtl;
+}
+
+.nms-auth__field input::placeholder {
+    color: var(--nms-auth-muted);
+}
+
+.nms-auth__field input:focus {
+    border-color: #fff;
+    box-shadow: 0 0 0 3px rgba(26, 163, 255, .25);
+}
+
+.nms-auth__submit {
+    height: 38px;
+    margin-top: 12px;
+    border: 0;
+    border-radius: 20px;
+    background: var(--nms-auth-btn);
+    color: #fff;
+    font-size: 15px;
+    transition: background-color .2s, opacity .2s;
+}
+
+.nms-auth__submit:hover {
+    background: #0b2a6b;
+}
+
+.nms-auth__submit.is-loading {
+    opacity: .6;
+    cursor: progress;
+}
+
+.nms-auth__grid .nms-auth__submit {
+    margin-top: 18px;
+}
+
+.nms-auth__error {
+    min-height: 0;
+    margin: -8px 0 0;
+    color: #ff8a8a;
+    font-size: 13px;
+}
+
+.nms-auth__error:empty {
+    display: none;
+}
+
+.nms-auth__ok {
+    margin: -24px 0 20px;
+    color: #7ee2a8;
+    font-size: 14px;
+    text-align: center;
+}
+
+.nms-auth__hint {
+    margin: 0;
+    color: rgba(255, 255, 255, .8);
+    font-size: 14px;
+}
+
+.nms-auth__foot {
+    margin: 20px 0 0;
+    color: rgba(255, 255, 255, .85);
+    font-size: 15px;
+    text-align: center;
+}
+
+.nms-auth__link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--nms-auth-link);
+    font: inherit;
+}
+
+.nms-auth__link:hover {
+    text-decoration: underline;
+}
+
+.nms-auth__back {
+    align-self: center;
+    margin-top: -8px;
+    font-size: 14px;
+}
+
+/* Header modal: opens over the current page */
+.nms-auth-modal .modal-dialog {
+    max-width: 464px;
+}
+
+.nms-auth-modal .modal-dialog:has([data-auth-panel="register"]:not([hidden])) {
+    max-width: 520px;
+}
+
+.nms-auth-modal .modal-content {
+    position: relative;
+    border: 0;
+    background: none;
+}
+
+.nms-auth-modal__close {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 2;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .1);
+    color: #fff;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.nms-auth-modal__close:hover {
+    background: rgba(255, 255, 255, .2);
+}
+
+.nms-auth-modal.show {
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+}
+
+.modal-backdrop.show {
+    opacity: .6;
+}
+
+/* /Home/SignIn page */
+.nms-auth-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 650px;
+    padding: 80px 16px;
+    background:
+        linear-gradient(rgba(3, 13, 31, .55), rgba(3, 13, 31, .55)),
+        url("../img/MainImage/hero-lab.jpg") center / cover no-repeat,
+        #030d1f;
+}
+
+@media (max-width: 575px) {
+    .nms-auth__card,
+    .nms-auth__card--wide {
+        padding: 48px 20px 28px;
+    }
+
+    .nms-auth__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nms-auth__switch {
+        font-size: 15px;
+    }
+
+    .nms-auth-page {
+        min-height: 0;
+        padding: 40px 16px;
+    }
+}
