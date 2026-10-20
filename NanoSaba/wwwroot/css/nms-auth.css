@@ -210,8 +210,8 @@
     min-height: 650px;
     padding: 80px 16px;
     background:
-        linear-gradient(rgba(3, 13, 31, .55), rgba(3, 13, 31, .55)),
-        url("../img/MainImage/hero-lab.jpg") center / cover no-repeat,
+        linear-gradient(rgba(3, 13, 31, .15), rgba(3, 13, 31, .15)),
+        url("../img/MainImage/auth-molecule.jpg") center / cover no-repeat,
         #030d1f;
 }
 
