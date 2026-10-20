@@ -88,14 +88,16 @@ public class HomeController : Controller
     return View();
     }
 
+    [HttpPost]
     [AllowAnonymous]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register()
     {
-        bool isSuccess = true;
-        string message = "";
-        long result = 0;
-        var firstName = Request.Form["FirstName"].ToString();
-        var lastName = Request.Form["LastName"].ToString();
+        // The form has one "نام و نام خانوادگی" field: the first word is the first name, the rest is the last name
+        var nameParts = Request.Form["FullName"].ToString()
+            .Split(' ', 2, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var firstName = nameParts.Length > 0 ? nameParts[0] : "";
+        var lastName = nameParts.Length > 1 ? nameParts[1] : "";
         var companyName = Request.Form["CompanyName"].ToString();
         var mobilenumber = Request.Form["Mobile"].ToString();
         var email = Request.Form["Email"].ToString();
@@ -109,58 +111,55 @@ public class HomeController : Controller
             string.IsNullOrEmpty(address) ||
             string.IsNullOrEmpty(password))
         {
-            isSuccess = false;
+            return AuthError("لطفا همه فیلدها را کامل وارد کنید");
         }
-        else
+
+        long result;
+        try
         {
-            try
+            result = await _mediator.Send(new CreatePersonProfileCommand()
             {
-                result = await _mediator.Send(new CreatePersonProfileCommand()
+                FirstName = firstName,
+                LastName = lastName,
+                MobileNumbers = new List<CreatePersonMobileNumberCommand>()
                 {
-                    FirstName = firstName,
-                    LastName = lastName,
-                    MobileNumbers = new List<CreatePersonMobileNumberCommand>()
+                    new CreatePersonMobileNumberCommand()
                     {
-                        new CreatePersonMobileNumberCommand()
-                        {
-                            IsDefault = true,
-                            MobileNumber = mobilenumber
-                        }
-                    },
-                    Addresses = new List<CreatePeopleAddressCommand>()
+                        IsDefault = true,
+                        MobileNumber = mobilenumber
+                    }
+                },
+                Addresses = new List<CreatePeopleAddressCommand>()
+                {
+                    new CreatePeopleAddressCommand()
                     {
-                        new CreatePeopleAddressCommand()
+                        Address =new CreateAddressCommand()
                         {
-                            Address =new CreateAddressCommand()
-                            {
-                                FullAddress = address,
-                                PhoneNumber = mobilenumber
-                            },
-                            Title = firstName
-                        }
-                    },
-                    Email = email,
-                    CompanyName = companyName,
-                    Password = password
-                }, CancellationToken.None);
-                if (result <= 0)
-                    isSuccess = false;
-
-                //var resultGenerateCode = await _userCodeService.GenerateCode(mobilenumber, CancellationToken.None);
-            }
-            catch (AppException exp)
-            {
-                isSuccess = false;
-                message = exp.Message;
-            }
+                            FullAddress = address,
+                            PhoneNumber = mobilenumber
+                        },
+                        Title = firstName
+                    }
+                },
+                Email = email,
+                CompanyName = companyName,
+                Password = password
+            }, CancellationToken.None);
+        }
+        catch (AppException exp)
+        {
+            return AuthError(exp.Message);
         }
 
-        return View("SignIn", new MobileNumberRegister()
+        if (result <= 0)
+            return AuthError("ثبت نام انجام نشد. لطفا دوباره تلاش کنید");
+
+        return Json(new
         {
-            IsRegistered = false,
-            IsSuccess = isSuccess,
-            Message = message,
-            MobileNumber = mobilenumber
+            success = true,
+            step = "registered",
+            mobileNumber = mobilenumber,
+            message = "ثبت نام انجام شد. برای ورود، کد تایید را دریافت کنید"
         });
     }
 
@@ -175,26 +174,25 @@ public class HomeController : Controller
 
     [HttpPost]
     [AllowAnonymous]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> SignInWithCode()
     {
         var number1 = Request.Form["number1"].ToString();
-        var mobile = TempData["MobileNumber"];
-        ApiResult apiResult = new ApiResult(true, ApiResultStatusCode.Success, null);
+        // Peek keeps the number, so a wrong code can be typed again
+        var mobile = TempData.Peek("MobileNumber")?.ToString();
+        if (string.IsNullOrEmpty(mobile))
+            return AuthError("لطفا دوباره شماره موبایل را وارد کنید");
+
         try
         {
             var result = await _userCodeService.Token(new CodeWithMobileNumber()
             {
                 Code = number1,
-                MobileNumber = mobile.ToString()
+                MobileNumber = mobile
             }, CancellationToken.None);
             if (!result.IsSuccess)
-            {
-                return View("Signin", new MobileNumberRegister()
-                {
-                    IsSuccess = result.IsSuccess,
-                    Message = result.Message
-                });
-            }
+                return AuthError(result.Message ?? "کد تایید درست نیست");
+
             HttpContext.User = result.Data.Identity;
             HttpContext.User.AddIdentity(result.Data.Identity.Identities.FirstOrDefault());
             await userOperation(User.Identity.GetUserId());
@@ -202,16 +200,11 @@ public class HomeController : Controller
         }
         catch (BadRequestException ex)
         {
-            apiResult.Message = ex.Message;
-            apiResult.IsSuccess = false;
-            return View("Signin", new MobileNumberRegister()
-            {
-                IsSuccess = apiResult.IsSuccess,
-                Message = apiResult.Message
-            });
+            return AuthError(ex.Message);
         }
 
-        return await Index();
+        TempData.Remove("MobileNumber");
+        return Json(new { success = true, step = "signedIn" });
     }
 
     public void SetCookie(string key, string value, int? expireTime)
@@ -228,11 +221,11 @@ public class HomeController : Controller
 
     [HttpPost]
     [AllowAnonymous]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> SignInWithUserPass()
     {
         var UserName = Request.Form["Username"].ToString();
         var Password = Request.Form["Password"].ToString();
-        ApiResult apiResult = new ApiResult(true, ApiResultStatusCode.Success, null);
         try
         {
             var result = await _userService.Login(UserName, Password, CancellationToken.None);
@@ -243,16 +236,10 @@ public class HomeController : Controller
         }
         catch (BadRequestException ex)
         {
-            apiResult.Message = ex.Message;
-            apiResult.IsSuccess = false;
-            return View("Signin", new MobileNumberRegister()
-            {
-                IsSuccess = apiResult.IsSuccess,
-                Message = apiResult.Message
-            });
+            return AuthError(ex.Message);
         }
 
-        return await Index();
+        return Json(new { success = true, step = "signedIn" });
     }
 
     private async Task userOperation(long userId)
@@ -273,22 +260,27 @@ public class HomeController : Controller
         }
     }
 
+    [HttpPost]
     [AllowAnonymous]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> MobileNumber()
     {
         var mobilenumber = Request.Form["Mobilenumber"].ToString();
 
         var result = await _userCodeService.GenerateCode(mobilenumber, CancellationToken.None);
+        if (result.Data is null)
+            return AuthError(result.Message);
+        if (!result.Data.IsRegistered)
+            return AuthError("این شماره ثبت نشده است. لطفا ابتدا ثبت نام کنید");
 
-        ViewBag.MobileNumber = mobilenumber;
         TempData["MobileNumber"] = mobilenumber;
-        return View("Signin", new MobileNumberRegister()
-        {
-            IsRegistered = result.Data.IsRegistered,
-            IsSuccess = result.Data.IsRegistered,
-            Message = "این شماره ثبت نشده است",
-            MobileNumber = mobilenumber
-        });
+        return Json(new { success = true, step = "code", mobileNumber = mobilenumber });
+    }
+
+    // Answer for the login and sign-up forms (sent with fetch from wwwroot/js/nms-auth.js)
+    private JsonResult AuthError(string message)
+    {
+        return Json(new { success = false, message });
     }
 
     [AllowAnonymous]
