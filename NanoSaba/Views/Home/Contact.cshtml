@@ -48,11 +48,20 @@
                 </ul>
             </div>
 
-            <!-- Contact form (left). For now it opens the visitor's email app,
-                 because the site has no "contact message" table in the database yet. -->
+                        <!-- Contact form (left): sends to HomeController.SendContactMessage -->
             <div class="nms-contact-card nms-contact-form">
                 <h2 class="nms-contact-card__title">فرم تماس با نانو مواد صبا</h2>
-                <form action="mailto:info.saba.analyze@gmail.com" method="post" enctype="text/plain">
+
+                @if (TempData["ContactResult"] != null)
+                {
+                    <div class="alert alert-success">@TempData["ContactResult"]</div>
+                }
+                @if (TempData["ContactError"] != null)
+                {
+                    <div class="alert alert-danger">@TempData["ContactError"]</div>
+                }
+
+                <form asp-controller="Home" asp-action="SendContactMessage" method="post">
                     <div class="nms-contact-form__row">
                         <div class="nms-field">
                             <label for="contactName">نام و نام خانوادگی</label>
@@ -60,15 +69,20 @@
                         </div>
                         <div class="nms-field">
                             <label for="contactMobile">شماره موبایل</label>
-                            <input id="contactMobile" name="Mobile" type="tel" inputmode="numeric" placeholder="شماره موبایل خود را وارد کنید." required>
+                            <input id="contactMobile" name="Mobile" type="tel" inputmode="numeric"
+                                   pattern="09[0-9]{9}" maxlength="11"
+                                   oninput="this.value = this.value.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[^0-9]/g, '')"
+                                   title="شماره موبایل باید ۱۱ رقم و فقط عدد باشد، مثل 09121234567"
+                                   placeholder="شماره موبایل خود را وارد کنید." required>
                         </div>
                     </div>
                     <div class="nms-field">
                         <label for="contactMessage">پیام خود را بنویسید</label>
-                        <textarea id="contactMessage" name="Message" rows="5" placeholder="پیام خود را بنویسید" required></textarea>
+                        <textarea id="contactMessage" name="Note" rows="5" placeholder="پیام خود را بنویسید"></textarea>
                     </div>
                     <button type="submit" class="nms-contact-form__submit">ارسال پیام</button>
                 </form>
+
             </div>
 
         </div>
