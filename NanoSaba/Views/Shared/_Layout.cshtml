@@ -30,15 +30,15 @@
 <body>
 
 <!-- ======= Header ======= -->
-<header id="header" class="nms-header@(ViewData["HomeHero"] is true ? " nms-header--home" : "")@(ViewData["HeaderOverlay"] is true ? " nms-header--overlay" : "")">
+<header id="header" class="nms-header@(ViewData["HomeHero"] is true ? " nms-header--home" : "")@(ViewData["HeaderOverlay"] is true ? " nms-header--overlay" : "")@(ViewData["HeaderLight"] is true ? " nms-header--light" : "")">
     <div class="container-xl nms-header__inner">
         <div class="nms-header__actions">
             <a class="btn nms-btn nms-btn--primary" asp-controller="Analysis" asp-action="Index">ثبت سفارش</a>
             @if (!SignInManager.IsSignedIn(User))
             {
                 <a class="btn nms-btn nms-btn--outline" href="@Url.Action("SignIn", "Home")">
-                    <i class="bi bi-box-arrow-in-left"></i>
                     ورود / ثبت نام
+                    <i class="bi bi-box-arrow-in-left"></i>
                 </a>
             }
             else

@@ -1,6 +1,8 @@
 ﻿@using CleanArchitecture.Infrastructure.Services
 @model MobileNumberRegister
 @{
+    // White header with dark text, as in the sign-in design (see .nms-header--light)
+    ViewData["HeaderLight"] = true;
     ViewData["AuthStart"] = Context.Request.Query["mode"] == "register" ? "register" : "login";
 }
 

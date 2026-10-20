@@ -202,6 +202,45 @@
     font-size: 14px;
 }
 
+/* White header on /Home/SignIn: no dark tab, outlined dark button */
+.nms-header--light {
+    --nms-stick-offset: 0px;
+    padding: 16px 0;
+    background: #fff;
+}
+
+.nms-header--light .nms-header__actions {
+    padding: 0;
+    background: transparent;
+}
+
+.nms-header--light .btn.nms-btn--primary {
+    display: none;
+}
+
+.nms-header--light .btn.nms-btn--outline,
+.nms-header--light .btn.nms-btn--outline:focus {
+    height: 38px;
+    padding: 0 20px;
+    border-color: var(--nms-ink);
+    border-radius: 20px;
+    color: var(--nms-ink);
+}
+
+.nms-header--light .btn.nms-btn--outline:hover {
+    background: var(--nms-navy);
+    border-color: var(--nms-navy);
+    color: #fff;
+}
+
+.nms-header--light .btn.nms-btn--outline .bi {
+    font-size: 20px;
+}
+
+.nms-header--light .nms-header__search {
+    color: var(--nms-ink);
+}
+
 /* /Home/SignIn page */
 .nms-auth-page {
     display: flex;
