@@ -820,10 +820,10 @@ html body {
     position: absolute;
     inset: 0 0 auto;
     height: 460px;
+    /* light fade at the top keeps the dark title text readable on the DNA photo */
     background:
-        radial-gradient(ellipse 40% 60% at 55% 30%, rgba(132, 196, 255, .55), transparent 70%),
-        radial-gradient(ellipse 30% 50% at 15% 70%, rgba(80, 160, 255, .45), transparent 70%),
-        linear-gradient(180deg, #eef3fa 0%, #8fbaf0 22%, #2f74d6 55%, #0a2f86 100%);
+        linear-gradient(180deg, rgba(246, 249, 252, .95) 0%, rgba(246, 249, 252, .6) 22%, rgba(246, 249, 252, 0) 45%),
+        url("../img/MainImage/home-dna.jpg") center / cover no-repeat #0a2f86;
 }
 
 .nms-articles__banner + .container-xl {
