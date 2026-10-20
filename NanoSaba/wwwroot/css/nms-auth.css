@@ -242,6 +242,11 @@
 }
 
 /* /Home/SignIn page */
+/* The layout's <main class="pb-3"> leaves a white strip above the footer; the photo runs down to it */
+main:has(> .nms-auth-page) {
+    padding-bottom: 0 !important;
+}
+
 .nms-auth-page {
     display: flex;
     align-items: center;
