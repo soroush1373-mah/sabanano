@@ -105,6 +105,7 @@
                     // Account is ready: open the mobile login with the number filled in
                     form("register").reset();
                     showPanel("login");
+                    history.replaceState(null, "", location.pathname);
                     form("mobile").querySelector("input[name=MobileNumber]").value = data.mobileNumber || "";
                     showLoginForm("mobile");
                     setError(form("mobile"), "");
@@ -134,27 +135,18 @@
             var show = e.target.closest("[data-auth-show]");
             if (show) {
                 showPanel(show.dataset.authShow);
+                history.pushState(null, "", show.dataset.authShow === "register" ? "?mode=register" : location.pathname);
                 var first = root.querySelector('[data-auth-panel="' + show.dataset.authShow + '"] form:not([hidden]) input:not([type=hidden])');
                 if (first) first.focus();
             }
         });
 
-        // Lets the header button choose the box to open
-        root.nmsShowPanel = showPanel;
+        // The address shows which box is open (/Home/SignIn or /Home/SignIn?mode=register),
+        // so the browser back button and a shared link open the same box
+        window.addEventListener("popstate", function () {
+            showPanel(new URLSearchParams(location.search).get("mode") === "register" ? "register" : "login");
+        });
     }
 
     document.querySelectorAll("[data-auth]").forEach(initAuth);
-
-    var modal = document.getElementById("authModal");
-    if (modal) {
-        modal.addEventListener("show.bs.modal", function (e) {
-            var root = modal.querySelector("[data-auth]");
-            var start = e.relatedTarget && e.relatedTarget.dataset.authOpen;
-            root.nmsShowPanel(start || "login");
-        });
-        modal.addEventListener("shown.bs.modal", function () {
-            var first = modal.querySelector("[data-auth-panel]:not([hidden]) form:not([hidden]) input:not([type=hidden])");
-            if (first) first.focus();
-        });
-    }
 })();

@@ -1,8 +1,6 @@
 ﻿@using CleanArchitecture.Infrastructure.Services
 @model MobileNumberRegister
 @{
-    // The header button links here instead of opening the modal, so the form is not on the page twice
-    ViewData["AuthPage"] = true;
     ViewData["AuthStart"] = Context.Request.Query["mode"] == "register" ? "register" : "login";
 }
 
@@ -11,3 +9,5 @@
         <partial name="_AuthForms" />
     </div>
 </section>
+
+<script src="~/js/nms-auth.js" asp-append-version="true"></script>

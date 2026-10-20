@@ -202,49 +202,6 @@
     font-size: 14px;
 }
 
-/* Header modal: opens over the current page */
-.nms-auth-modal .modal-dialog {
-    max-width: 464px;
-}
-
-.nms-auth-modal .modal-dialog:has([data-auth-panel="register"]:not([hidden])) {
-    max-width: 520px;
-}
-
-.nms-auth-modal .modal-content {
-    position: relative;
-    border: 0;
-    background: none;
-}
-
-.nms-auth-modal__close {
-    position: absolute;
-    top: 14px;
-    left: 14px;
-    z-index: 2;
-    width: 32px;
-    height: 32px;
-    border: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, .1);
-    color: #fff;
-    font-size: 20px;
-    line-height: 1;
-}
-
-.nms-auth-modal__close:hover {
-    background: rgba(255, 255, 255, .2);
-}
-
-.nms-auth-modal.show {
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
-}
-
-.modal-backdrop.show {
-    opacity: .6;
-}
-
 /* /Home/SignIn page */
 .nms-auth-page {
     display: flex;
