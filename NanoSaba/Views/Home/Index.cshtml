@@ -57,7 +57,6 @@
                             ثبت سفارش
                             <i class="bi bi-arrow-left"></i>
                         </a>
-                        <a class="btn nms-btn nms-btn--outline nms-btn--lg" asp-controller="Analysis" asp-action="Index">مشاهده خدمات</a>
                     </div>
                 </div>
             </div>
@@ -122,31 +121,9 @@
                             استفاده در کارگاه ها و کارخانجات تولیدی و مهندسی معکوس به وسیله آنالیز FTIR و جستجوی
                             کتابخانه ای مواد تحت آنالیز به کمک Bio Rad و KnowItAll است.
                         </p>
-                        <a class="btn nms-btn nms-btn--gradient nms-btn--lg" asp-controller="Analysis" asp-action="Index">
-                            خدمات تست آزمایشگاهی
-                            <i class="bi bi-arrow-left"></i>
-                        </a>
                     </div>
                     <div class="nms-services__media">
-                        <span class="nms-dot nms-dot--1"></span>
-                        <span class="nms-dot nms-dot--2"></span>
-                        <span class="nms-dot nms-dot--3"></span>
-                        <span class="nms-dot nms-dot--4"></span>
-                        <span class="nms-dot nms-dot--5"></span>
-                        <picture>
-                            <source srcset="../img/MainImage/lab-scientist.webp" type="image/webp">
-                            <img class="nms-services__img" src="../img/MainImage/lab-scientist.jpg" alt="کارشناس آزمایشگاه در حال کار با میکروسکوپ" loading="lazy" width="820" height="412">
-                        </picture>
-                        <div class="nms-services__badges">
-                            <div class="nms-badge">
-                                <i class="bi bi-bullseye"></i>
-                                <span>آزمایشگاهی مورد اعتماد برای انجام آزمایش‌های دقیق و باکیفیت</span>
-                            </div>
-                            <div class="nms-badge">
-                                <i class="bi bi-gear-wide-connected"></i>
-                                <span>ارائه خدمات تست قابل‌اطمینان با کیفیت و رعایت الزامات</span>
-                            </div>
-                        </div>
+                        <img class="nms-services__img" src="../img/MainImage/home-microscope.jpg" alt="عدسی میکروسکوپ آزمایشگاه" loading="lazy" width="457" height="388">
                     </div>
                 </div>
             </div>
@@ -157,7 +134,7 @@
         <section class="nms-products">
             <div class="container-xl">
                 <div class="nms-products__head">
-                    <h2 class="nms-section-title">محصولات منتخب</h2>
+                    <h2 class="nms-section-title">پیشنهاد ویژه</h2>
                     <span class="nms-products__line"></span>
                     <a class="nms-products__all" asp-controller="Analysis" asp-action="Index">
                         مشاهده همه
@@ -165,75 +142,160 @@
                     </a>
                 </div>
                 <ul class="nms-products__list">
-                <li class="nms-product">
-                    <div class="nms-product__img">
-                        <img src="../img/TEM.jpg" alt="دستگاه TEM" loading="lazy" width="502" height="276">
-                    </div>
-                    <div class="nms-product__body">
-                        <h3>آنالیز TEM</h3>
-                        <p>میکروسکوپ الکترونی عبوری</p>
-                        <a class="nms-product__link stretched-link" href="@Url.Action("DeviceById", "Device", new { myParams = "TEM" })">
-                            مشاهده جزئیات
-                            <i class="bi bi-arrow-left"></i>
-                        </a>
-                    </div>
-                </li>
-                <li class="nms-product">
-                    <div class="nms-product__img nms-product__img--contain">
-                        <img src="../img/XRD.jpg" alt="دستگاه XRD" loading="lazy" width="900" height="600">
-                    </div>
-                    <div class="nms-product__body">
-                        <h3>آنالیز XRD</h3>
-                        <p>آنالیز طیف سنجی پراش پرتو ایکس</p>
-                        <a class="nms-product__link stretched-link" href="@Url.Action("DeviceById", "Device", new { myParams = "XRD" })">
-                            مشاهده جزئیات
-                            <i class="bi bi-arrow-left"></i>
-                        </a>
-                    </div>
-                </li>
-                <li class="nms-product">
-                    <div class="nms-product__img">
-                        <img src="../img/ICP-OES.jpg" alt="دستگاه ICP-OES" loading="lazy" width="900" height="600">
-                    </div>
-                    <div class="nms-product__body">
-                        <h3>آنالیز ICP-OES</h3>
-                        <p>آنالیز طیف سنجی نشری پلاسما جفت شده القایی</p>
-                        <a class="nms-product__link stretched-link" href="@Url.Action("DeviceById", "Device", new { myParams = "ICP-OES" })">
-                            مشاهده جزئیات
-                            <i class="bi bi-arrow-left"></i>
-                        </a>
-                    </div>
-                </li>
-                <li class="nms-product">
-                    <div class="nms-product__img">
-                        <img src="../img/ICP-MS.jpg" alt="دستگاه ICP-MS" loading="lazy" width="900" height="600">
-                    </div>
-                    <div class="nms-product__body">
-                        <h3>آنالیز ICP-MS</h3>
-                        <p>آنالیز طیف سنجی جرمی پلاسما جفت شده القایی</p>
-                        <a class="nms-product__link stretched-link" href="@Url.Action("DeviceById", "Device", new { myParams = "ICP-MS" })">
-                            مشاهده جزئیات
-                            <i class="bi bi-arrow-left"></i>
-                        </a>
-                    </div>
-                </li>
-                <li class="nms-product">
-                    <div class="nms-product__img">
-                        <img src="../img/XRF.jpg" alt="دستگاه XRF" loading="lazy" width="900" height="600">
-                    </div>
-                    <div class="nms-product__body">
-                        <h3>آنالیز XRF</h3>
-                        <p>آنالیز فلورسانس اشعه ایکس</p>
-                        <a class="nms-product__link stretched-link" href="@Url.Action("DeviceById", "Device", new { myParams = "XRF" })">
-                            مشاهده جزئیات
-                            <i class="bi bi-arrow-left"></i>
-                        </a>
-                    </div>
-                </li>
+                    @foreach (var device in new[]
+                    {
+                        ("TEM", "TEM.png", "میکروسکوپ الکترونی عبوری"),
+                        ("XRD", "XRD.png", "آنالیز طیف سنجی پراش پرتو ایکس"),
+                        ("BET", "BET.png", "آنالیز سطح سنجی به روش ایزوترم جذب و واجذب گاز نیترون (N2)"),
+                        ("ICP-MS", "ICP-MS.png", "آنالیز طیف سنجی جرمی پلاسما جفت شده القایی"),
+                        ("XRF", "XRF.png", "آنالیز فلورسانس اشعه ایکس")
+                    })
+                    {
+                        <li class="nms-product">
+                            <div class="nms-product__img">
+                                <img src="../img/@device.Item2" alt="دستگاه @device.Item1" loading="lazy" width="585" height="470">
+                            </div>
+                            <div class="nms-product__body">
+                                <h3>
+                                    <a class="stretched-link" href="@Url.Action("DeviceById", "Device", new { myParams = device.Item1 })">آنالیز @device.Item1</a>
+                                    <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                                </h3>
+                                <p>@device.Item3</p>
+                            </div>
+                        </li>
+                    }
                 </ul>
             </div>
         </section>
         <!-- End Featured Products Section -->
+
+        <!-- ======= How To Order Section ======= -->
+        <section class="nms-steps">
+            <div class="container-xl">
+                <h2 class="nms-section-title">نحوه ی ثبت سفارش</h2>
+                <p class="nms-steps__intro">
+                    ثبت سفارش در سایت، فرایندی است که شامل انتخاب خدمات آنالیزی مورد نیاز، افزودن آن به سبد خرید و پرداخت مبلغ خرید با روش پرداخت انتخابی توسط کاربر می‌شود.
+                    پس از تکمیل این فرایند، سفارش کاربر برای پردازش به بخش آنالیز ارسال شده و پس از بررسی و تأیید، ارسال می‌شود.
+                    در صبا نانو باری ثبت سفارش باید عملیات ثبت نام تکمیل شود تا کاربران بتوانند به تاریخچه سفارشات خود دسترسی داشته باشند.
+                </p>
+                <ol class="nms-steps__list">
+                    <li class="nms-step">
+                        <span class="nms-step__icon"><i class="bi bi-person-check"></i></span>
+                        <h3>ثبت نام</h3>
+                        <p>
+                            در فرایند ثبت نام، کاربران اطلاعات شخصی خود را وارد می‌کنند. این اطلاعات شامل نام، نام خانوادگی، آدرس ایمیل، نام شرکت، شماره موبایل می‌شود.
+                            پس از وارد کردن این اطلاعات، بعد از ثبت نام ایمیل شما به عنوان نام کاربری در نظر گفته می شود. نام کاربری و رمز عبور باید حفاظت شده و به هیچ کسی اعلام نشود.
+                        </p>
+                    </li>
+                    <li class="nms-step">
+                        <span class="nms-step__icon"><i class="bi bi-ui-checks"></i></span>
+                        <h3>انتخاب آنالیز و تکمیل فرم آن</h3>
+                        <p>
+                            بعد از انتخاب آنالیزهای مورد نظر باید به ثبت اطلاعات شرایط نگه داری، شرایط پذیرش نمونه، ثبت ویژگی های آنالیز مورد نظر و توضیحات مربوطه توجه کرد.
+                            بعد پر کردن مموارد فنی شماره ملی های گرنت مورد نظر را وارد می کنید.
+                        </p>
+                    </li>
+                    <li class="nms-step">
+                        <span class="nms-step__icon"><i class="bi bi-graph-up-arrow"></i></span>
+                        <h3>امکان سنجی و محاسبات مالی</h3>
+                        <p>
+                            بعد از ثبت اطلاعات آنالیز کارشناسان ما امکان انجام عملیات و مدت زمان انجام آن را گزارش می دهند و درصورت استفاده از گرنت قیمت آن را از قیمت آنالیز کسر نوده و نتیجه رو به کاربر اعلام می نمایند.
+                        </p>
+                    </li>
+                    <li class="nms-step">
+                        <span class="nms-step__icon"><i class="bi bi-credit-card-2-front"></i></span>
+                        <h3>پرداخت</h3>
+                        <p>پرداخت به دو روش آنلاین و بارگزاری فیش پرداختی صورت می گیرد.</p>
+                    </li>
+                    <li class="nms-step">
+                        <span class="nms-step__icon"><i class="bi bi-cart-check"></i></span>
+                        <h3>تایید واحد مالی</h3>
+                        <p>
+                            در صورت واریز با استفاده از فیش پرداختی نیازمند تایید واحد مالی برای شروع آنالیز می باشد.
+                            مدت زمان آماده سازی جواب آنالیز از لحظه ی پرداخت آنالیز می باشد.
+                        </p>
+                    </li>
+                    <li class="nms-step">
+                        <span class="nms-step__icon"><i class="bi bi-patch-check"></i></span>
+                        <h3>دریافت نتایج</h3>
+                        <p>نتایج آنالیز در پنل سفارشات قابل دریافت است.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+        <!-- End How To Order Section -->
+
+        <!-- ======= Articles Section ======= -->
+        <section class="nms-articles">
+            <div class="nms-articles__banner">
+                <div class="container-xl">
+                    <h2 class="nms-section-title">مقالات</h2>
+                    <p>
+                        بخش مقالات، محلی است که مطالبی در زمینه شیمی و علوم مرتبط با آن به صورت مقاله منتشر می‌شود.
+                        این بخش می‌تواند برای افزایش دانش و آگاهی عمومی در زمینه شیمی، همچنین بهبود روند تحقیقات و توسعه در این حوزه مفید باشد
+                    </p>
+                </div>
+            </div>
+            <div class="container-xl">
+                <ul class="nms-articles__list">
+                    @foreach (var article in Model?.Articles ?? new())
+                    {
+                        var excerpt = article.ArticleDetails?.FirstOrDefault(d => !string.IsNullOrWhiteSpace(d.Paragraph))?.Paragraph ?? "";
+                        if (excerpt.Length > 220)
+                        {
+                            excerpt = excerpt.Substring(0, 220) + "…";
+                        }
+                        <li class="nms-article">
+                            <div class="nms-article__img">
+                                <img src="@article.ImageUrl" alt="@article.Name" loading="lazy">
+                            </div>
+                            <span class="nms-article__cat">@article.CategoryTitle</span>
+                            <h3>
+                                <a class="stretched-link" href="@Url.Action("ArticleById", "Article", new { myParams = article.Id })">@article.Name</a>
+                            </h3>
+                            <p>@excerpt</p>
+                            <span class="nms-article__author">@IdentityService.GetFullName(Convert.ToInt64(article.CreatedBy))</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </section>
+        <!-- End Articles Section -->
+
+        <!-- ======= About Section ======= -->
+        <section class="nms-about">
+            <div class="container-xl">
+                <div class="nms-products__head">
+                    <h2 class="nms-section-title">درباره ی ما</h2>
+                    <span class="nms-products__line"></span>
+                </div>
+                <div class="nms-about__grid">
+                    <div class="nms-about__media">
+                        <img src="../img/MainImage/home-pipette.jpg" alt="کارشناس آزمایشگاه در حال کار با پیپت" loading="lazy" width="494" height="328">
+                    </div>
+                    <div class="nms-about__card">
+                        <p>
+                            این آزمایشگاه با فعالیت برجسته در حوزه ساخت دستگاه BET و تعیین استاندارد این آنالیز، یکی از برترین آزمایشگاه ها در آنالیز BET است.
+                            با توجه به تجربه کاری در آنالیز مواد مجهول (ناشناخته) و در حال ساخت (مهندسی معکوس مواد پیشرفته و پلیمری ) با استفاده از دستگاه FTIR
+                            و جستجوی کتابخانه ای BIORAD و KNOWiTAll در شناخت اجزا و افزودنی ها (Additive) در ارائه خدمات آزمایشگاهی به جامعه علمی کشور اعلام آمادگی می نماییم.
+                            از طرفی با در نظر داشتن نیاز علمی کشور به شناسایی ترکیبات مشکوک در حوزه جرائم و پزشکی قانونی، همچنین صنعت بیمه، مفتخریم با ارائه کیت های تشخیص مواد انفجاری،
+                            مخدر و سموم غذایی به هر چه آسان تر شدن بخش تحقیقات این سازمان ها کمک شایانی نماییم.
+                        </p>
+                        <ul class="nms-about__stats">
+                            <li><strong>+550</strong><span>مشتریان راضی از آزمایشگاه صبا نانو</span></li>
+                            <li><strong>+20</strong><span>سال تجربه</span></li>
+                            <li><strong>15</strong><span>دستگاه های آماده برای آنالیز</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="nms-about__goal">
+                    هدف آزمایشگاه نانو مواد صبا بررسی و تحلیل داده های آنالیزی به صورت دقیق و علمی می باشد که با استفاده از کادری مجرب و با تجربه در زمینه آنالیز مواد،
+                    توانسته ایم رضایت متقاضیان را در حد بسیار قابل قبولی ایجاد نماییم. این آزمایشگاه در زمینه آنالیز مواد معدنی با آنالیز های XRD، XRF، AAS و ICP-MS و ICP-OES ،
+                    در زمینه آنالیز فلزات گرانبها به کمک روش Fire Assay و در زمینه مواد آلی با استفاده از دستگاه FTIR و GC-MS آماده خدمت رسانی می باشد.
+                </p>
+            </div>
+        </section>
+        <!-- End About Section -->
 
     </main><!-- End #main -->
 
