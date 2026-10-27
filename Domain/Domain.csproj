@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <RootNamespace>CleanArchitecture.Domain</RootNamespace>
         <AssemblyName>CleanArchitecture.Domain</AssemblyName>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -10,7 +10,7 @@
 
     <ItemGroup>
       <PackageReference Include="MediatR" Version="9.0.0" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.0-rc.2.22472.11" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="10.0.14" />
     </ItemGroup>
 
     <ItemGroup>

@@ -8,7 +8,6 @@ using Data.Contracts;
 using Data.Repositories;
 using DataTransferObjects.DataTransferObjects.UserDTOs;
 using DataTransferObjects.SharedModels;
-using Humanizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Services;

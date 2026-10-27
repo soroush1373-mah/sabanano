@@ -16,7 +16,6 @@ using Common.Utilities;
 using Data.Contracts;
 using DataTransferObjects.DataTransferObjects.UserDTOs;
 using DataTransferObjects.SharedModels;
-using Humanizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Services.IServices.V2;
