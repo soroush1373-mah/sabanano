@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NanoSaba.Models;
 using Services.IServices.V2;
+using CleanArchitecture.Application.ContactMessages.Commands.CreateContactUs;
 
 namespace NanoSaba.Controllers;
 
@@ -86,6 +87,23 @@ public class HomeController : Controller
     public IActionResult Contact()
     {
     return View();
+    }
+    [HttpPost]
+    [AllowAnonymous]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SendContactMessage(CreateContactUsCommand command)
+    {
+        try
+        {
+            await _mediator.Send(command);
+            TempData["ContactResult"] = "پیام شما با موفقیت ارسال شد.";
+        }
+        catch (CleanArchitecture.Application.Common.Exceptions.ValidationException ex)
+        {
+            TempData["ContactError"] = string.Join(" ", ex.Errors.SelectMany(e => e.Value));
+        }
+
+        return RedirectToAction("Contact");
     }
 
     [AllowAnonymous]
