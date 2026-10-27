@@ -225,42 +225,9 @@
         </section>
         <!-- End How To Order Section -->
 
-        <!-- ======= Articles Section ======= -->
-        <section class="nms-articles">
-            <div class="nms-articles__banner">
-                <div class="container-xl">
-                    <h2 class="nms-section-title">مقالات</h2>
-                    <p>
-                        بخش مقالات، محلی است که مطالبی در زمینه شیمی و علوم مرتبط با آن به صورت مقاله منتشر می‌شود.
-                        این بخش می‌تواند برای افزایش دانش و آگاهی عمومی در زمینه شیمی، همچنین بهبود روند تحقیقات و توسعه در این حوزه مفید باشد
-                    </p>
-                </div>
-            </div>
-            <div class="container-xl">
-                <ul class="nms-articles__list">
-                    @foreach (var article in Model?.Articles ?? new())
-                    {
-                        var excerpt = article.ArticleDetails?.FirstOrDefault(d => !string.IsNullOrWhiteSpace(d.Paragraph))?.Paragraph ?? "";
-                        if (excerpt.Length > 220)
-                        {
-                            excerpt = excerpt.Substring(0, 220) + "…";
-                        }
-                        <li class="nms-article">
-                            <div class="nms-article__img">
-                                <img src="@article.ImageUrl" alt="@article.Name" loading="lazy">
-                            </div>
-                            <span class="nms-article__cat">@article.CategoryTitle</span>
-                            <h3>
-                                <a class="stretched-link" href="@Url.Action("ArticleById", "Article", new { myParams = article.Id })">@article.Name</a>
-                            </h3>
-                            <p>@excerpt</p>
-                            <span class="nms-article__author">@IdentityService.GetFullName(Convert.ToInt64(article.CreatedBy))</span>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </section>
-        <!-- End Articles Section -->
+        <component type="typeof(NanoSaba.Components.ArticleList)"
+                   render-mode="Static"
+                   param-Articles="Model?.Articles" />
 
         <!-- ======= About Section ======= -->
         <section class="nms-about">

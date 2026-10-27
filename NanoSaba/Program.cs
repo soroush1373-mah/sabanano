@@ -19,6 +19,7 @@ configuration.GetSection(nameof(SiteSettings)).Get<SiteSettings>();
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
+builder.Services.AddServerSideBlazor();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices(Assembly.GetAssembly(typeof(ApplicationDbContext)));
 builder.Services.AddWebApiServices();
@@ -65,6 +66,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapBlazorHub();
 
 app.Run();
 
