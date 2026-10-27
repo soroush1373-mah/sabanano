@@ -1,0 +1,58 @@
+<section class="nms-steps">
+    <div class="container-xl">
+        <h2 class="nms-section-title">نحوه ی ثبت سفارش</h2>
+        <p class="nms-steps__intro">
+    ثبت سفارش در سایت، فرایندی است که شامل انتخاب خدمات آنالیزی مورد نیاز، افزودن آن به سبد خرید و پرداخت مبلغ خرید با روش پرداخت انتخابی توسط کاربر می‌شود.
+    پس از تکمیل این فرایند، سفارش کاربر برای پردازش به بخش آنالیز ارسال شده و پس از بررسی و تأیید، ارسال می‌شود.
+    در صبا نانو باری ثبت سفارش باید عملیات ثبت نام تکمیل شود تا کاربران بتوانند به تاریخچه سفارشات خود دسترسی داشته باشند.
+        </p> 
+
+        <ol class="nms-steps__list">
+            @for (var i = 0; i < steps.Count; i++)
+            {
+                var index = i;
+                var step = steps[i];
+
+                <li class="nms-step"
+                    style="cursor:pointer; opacity:@(index == selected ? "1" : "0.6")"
+                    @onclick="() => Select(index)">
+                    <span class="nms-step__icon"><i class="bi @step.Icon"></i></span>
+                    <h3>@step.Title</h3>
+
+                    @if (index == selected)
+                    {
+                        <p>@step.Text</p>
+                    }
+                </li>
+            }
+        </ol>
+    </div>
+</section>
+
+@code {
+    // Which step is open right now. 0 = the first step.
+    int selected = 0;
+
+    void Select(int index)
+    {
+        selected = index;
+    }
+
+    record Step(string Icon, string Title, string Text);
+
+    List<Step> steps = new()
+    {
+        new("bi-person-check", "ثبت نام",
+            "در فرایند ثبت نام، کاربران اطلاعات شخصی خود را وارد می‌کنند. این اطلاعات شامل نام، نام خانوادگی، آدرس ایمیل، نام شرکت، شماره موبایل می‌شود."),
+        new("bi-ui-checks", "انتخاب آنالیز و تکمیل فرم آن",
+            "بعد از انتخاب آنالیزهای مورد نظر باید به ثبت اطلاعات شرایط نگه داری، شرایط پذیرش نمونه، ثبت ویژگی های آنالیز مورد نظر و توضیحات مربوطه توجه کرد."),
+        new("bi-graph-up-arrow", "امکان سنجی و محاسبات مالی",
+            "بعد از ثبت اطلاعات آنالیز کارشناسان ما امکان انجام عملیات و مدت زمان انجام آن را گزارش می دهند."),
+        new("bi-credit-card-2-front", "پرداخت",
+            "پرداخت به دو روش آنلاین و بارگزاری فیش پرداختی صورت می گیرد."),
+        new("bi-cart-check", "تایید واحد مالی",
+            "در صورت واریز با استفاده از فیش پرداختی نیازمند تایید واحد مالی برای شروع آنالیز می باشد."),
+        new("bi-patch-check", "دریافت نتایج",
+            "نتایج آنالیز در پنل سفارشات قابل دریافت است.")
+    };
+}

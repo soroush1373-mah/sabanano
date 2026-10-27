@@ -169,65 +169,10 @@
         </section>
         <!-- End Featured Products Section -->
 
-        <!-- ======= How To Order Section ======= -->
-        <section class="nms-steps">
-            <div class="container-xl">
-                <h2 class="nms-section-title">نحوه ی ثبت سفارش</h2>
-                <p class="nms-steps__intro">
-                    ثبت سفارش در سایت، فرایندی است که شامل انتخاب خدمات آنالیزی مورد نیاز، افزودن آن به سبد خرید و پرداخت مبلغ خرید با روش پرداخت انتخابی توسط کاربر می‌شود.
-                    پس از تکمیل این فرایند، سفارش کاربر برای پردازش به بخش آنالیز ارسال شده و پس از بررسی و تأیید، ارسال می‌شود.
-                    در صبا نانو باری ثبت سفارش باید عملیات ثبت نام تکمیل شود تا کاربران بتوانند به تاریخچه سفارشات خود دسترسی داشته باشند.
-                </p>
-                <ol class="nms-steps__list">
-                    <li class="nms-step">
-                        <span class="nms-step__icon"><i class="bi bi-person-check"></i></span>
-                        <h3>ثبت نام</h3>
-                        <p>
-                            در فرایند ثبت نام، کاربران اطلاعات شخصی خود را وارد می‌کنند. این اطلاعات شامل نام، نام خانوادگی، آدرس ایمیل، نام شرکت، شماره موبایل می‌شود.
-                            پس از وارد کردن این اطلاعات، بعد از ثبت نام ایمیل شما به عنوان نام کاربری در نظر گفته می شود. نام کاربری و رمز عبور باید حفاظت شده و به هیچ کسی اعلام نشود.
-                        </p>
-                    </li>
-                    <li class="nms-step">
-                        <span class="nms-step__icon"><i class="bi bi-ui-checks"></i></span>
-                        <h3>انتخاب آنالیز و تکمیل فرم آن</h3>
-                        <p>
-                            بعد از انتخاب آنالیزهای مورد نظر باید به ثبت اطلاعات شرایط نگه داری، شرایط پذیرش نمونه، ثبت ویژگی های آنالیز مورد نظر و توضیحات مربوطه توجه کرد.
-                            بعد پر کردن مموارد فنی شماره ملی های گرنت مورد نظر را وارد می کنید.
-                        </p>
-                    </li>
-                    <li class="nms-step">
-                        <span class="nms-step__icon"><i class="bi bi-graph-up-arrow"></i></span>
-                        <h3>امکان سنجی و محاسبات مالی</h3>
-                        <p>
-                            بعد از ثبت اطلاعات آنالیز کارشناسان ما امکان انجام عملیات و مدت زمان انجام آن را گزارش می دهند و درصورت استفاده از گرنت قیمت آن را از قیمت آنالیز کسر نوده و نتیجه رو به کاربر اعلام می نمایند.
-                        </p>
-                    </li>
-                    <li class="nms-step">
-                        <span class="nms-step__icon"><i class="bi bi-credit-card-2-front"></i></span>
-                        <h3>پرداخت</h3>
-                        <p>پرداخت به دو روش آنلاین و بارگزاری فیش پرداختی صورت می گیرد.</p>
-                    </li>
-                    <li class="nms-step">
-                        <span class="nms-step__icon"><i class="bi bi-cart-check"></i></span>
-                        <h3>تایید واحد مالی</h3>
-                        <p>
-                            در صورت واریز با استفاده از فیش پرداختی نیازمند تایید واحد مالی برای شروع آنالیز می باشد.
-                            مدت زمان آماده سازی جواب آنالیز از لحظه ی پرداخت آنالیز می باشد.
-                        </p>
-                    </li>
-                    <li class="nms-step">
-                        <span class="nms-step__icon"><i class="bi bi-patch-check"></i></span>
-                        <h3>دریافت نتایج</h3>
-                        <p>نتایج آنالیز در پنل سفارشات قابل دریافت است.</p>
-                    </li>
-                </ol>
-            </div>
-        </section>
-        <!-- End How To Order Section -->
+        <!-- ======= Order Steps Section ======= -->
 
-        <component type="typeof(NanoSaba.Components.ArticleList)"
-                   render-mode="Static"
-                   param-Articles="Model?.Articles" />
+        <component type="typeof(NanoSaba.Components.OrderSteps)"
+           render-mode="ServerPrerendered" />
 
         <!-- ======= About Section ======= -->
         <section class="nms-about">
