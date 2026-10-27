@@ -1,0 +1,102 @@
+@* Login and sign-up boxes for /Home/SignIn (header button "ورود / ثبت نام").
+   The forms are sent with fetch by wwwroot/js/nms-auth.js, so the page never reloads. *@
+@{
+    var startPanel = ViewData["AuthStart"] as string ?? "login";
+}
+<div class="nms-auth" data-auth>
+
+    <!-- ======= Login ======= -->
+    <div class="nms-auth__card" data-auth-panel="login" @(startPanel == "login" ? "" : "hidden")>
+        <div class="nms-auth__switch" role="tablist">
+            <button type="button" class="nms-auth__tab" data-auth-tab="mobile" role="tab">ورود با شماره موبایل</button>
+            <span class="nms-auth__sep">/</span>
+            <button type="button" class="nms-auth__tab is-active" data-auth-tab="userpass" role="tab">ورود با نام کاربری</button>
+        </div>
+        <p class="nms-auth__ok" data-auth-ok hidden></p>
+
+        <!-- Username and password -->
+        <form class="nms-auth__form" data-auth-form="userpass" action="/Home/SignInWithUserPass" method="post" novalidate>
+            @Html.AntiForgeryToken()
+            <label class="nms-auth__field">
+                <span>نام کاربری</span>
+                <input type="text" name="Username" placeholder="نام کاربری خود را وارد کنید." autocomplete="username" required>
+            </label>
+            <label class="nms-auth__field">
+                <span>گذرواژه</span>
+                <input type="password" name="Password" placeholder="گذرواژه را وارد کنید." autocomplete="current-password" required>
+            </label>
+            <p class="nms-auth__error" data-auth-error></p>
+            <button type="submit" class="nms-auth__submit">ورود</button>
+        </form>
+
+        <!-- Mobile number, step 1: send the code -->
+        <form class="nms-auth__form" data-auth-form="mobile" action="/Home/MobileNumber" method="post" novalidate hidden>
+            @Html.AntiForgeryToken()
+            <label class="nms-auth__field">
+                <span>شماره موبایل</span>
+                <input type="tel" name="MobileNumber" inputmode="numeric" maxlength="11" dir="ltr" placeholder="09xxxxxxxxx" autocomplete="tel" required>
+            </label>
+            <p class="nms-auth__error" data-auth-error></p>
+            <button type="submit" class="nms-auth__submit">دریافت کد تایید</button>
+        </form>
+
+        <!-- Mobile number, step 2: type the code -->
+        <form class="nms-auth__form" data-auth-form="code" action="/Home/SignInWithCode" method="post" novalidate hidden>
+            @Html.AntiForgeryToken()
+            <p class="nms-auth__hint">کد تایید برای شماره <b data-auth-mobile dir="ltr"></b> پیامک شد.</p>
+            <label class="nms-auth__field">
+                <span>کد تایید</span>
+                <input type="tel" name="number1" inputmode="numeric" dir="ltr" placeholder="کد تایید را وارد کنید." autocomplete="one-time-code" required>
+            </label>
+            <p class="nms-auth__error" data-auth-error></p>
+            <button type="submit" class="nms-auth__submit">تایید</button>
+            <button type="button" class="nms-auth__link nms-auth__back" data-auth-tab="mobile">تغییر شماره موبایل</button>
+        </form>
+
+        <p class="nms-auth__foot">
+            آیا ثبت نام نکرده اید؟
+            <button type="button" class="nms-auth__link" data-auth-show="register">ثبت نام کنید</button>
+        </p>
+    </div>
+
+    <!-- ======= Sign up ======= -->
+    <div class="nms-auth__card nms-auth__card--wide" data-auth-panel="register" @(startPanel == "register" ? "" : "hidden")>
+        <h2 class="nms-auth__title">ثبت نام</h2>
+
+        <form class="nms-auth__form nms-auth__grid" data-auth-form="register" action="/Home/Register" method="post" novalidate>
+            @Html.AntiForgeryToken()
+            <label class="nms-auth__field">
+                <span>نام و نام خانوادگی</span>
+                <input type="text" name="FullName" placeholder="نام و نام خانوادگی خود را وارد کنید." autocomplete="name" required>
+            </label>
+            <label class="nms-auth__field">
+                <span>شرکت/دانشگاه/سازمان</span>
+                <input type="text" name="CompanyName" placeholder="نام شرکت/دانشگاه/سازمان" autocomplete="organization" required>
+            </label>
+            <label class="nms-auth__field">
+                <span>شماره موبایل</span>
+                <input type="tel" name="Mobile" inputmode="numeric" maxlength="11" dir="ltr" placeholder="شماره موبایل خود را وارد کنید." autocomplete="tel" required>
+            </label>
+            <label class="nms-auth__field">
+                <span>آدرس</span>
+                <input type="text" name="Address" placeholder="آدرس خود را وارد کنید." autocomplete="street-address" required>
+            </label>
+            <label class="nms-auth__field">
+                <span>ایمیل</span>
+                <input type="email" name="Email" dir="ltr" placeholder="ایمیل خود را وارد کنید." autocomplete="email" required>
+            </label>
+            <label class="nms-auth__field">
+                <span>رمز عبور</span>
+                <input type="password" name="Password" placeholder="رمز عبور خود را وارد کنید." autocomplete="new-password" required>
+            </label>
+            <p class="nms-auth__error nms-auth__full" data-auth-error></p>
+            <button type="submit" class="nms-auth__submit nms-auth__full">ثبت نام</button>
+        </form>
+
+        <p class="nms-auth__foot">
+            قبلا ثبت نام کرده اید؟
+            <button type="button" class="nms-auth__link" data-auth-show="login">وارد شوید</button>
+        </p>
+    </div>
+
+</div>

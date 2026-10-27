@@ -24,12 +24,13 @@
     <link href="../vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
     <link href="../css/main.css" rel="stylesheet">
     <link href="~/css/nms-home.css" rel="stylesheet" asp-append-version="true">
+    <link href="~/css/nms-auth.css" rel="stylesheet" asp-append-version="true">
 </head>
 
 <body>
 
 <!-- ======= Header ======= -->
-<header id="header" class="nms-header@(ViewData["HomeHero"] is true ? " nms-header--home" : "")@(ViewData["HeaderOverlay"] is true ? " nms-header--overlay" : "")">
+<header id="header" class="nms-header@(ViewData["HomeHero"] is true ? " nms-header--home" : "")@(ViewData["HeaderOverlay"] is true ? " nms-header--overlay" : "")@(ViewData["HeaderLight"] is true ? " nms-header--light" : "")">
     <div class="container-xl nms-header__inner">
         <div class="nms-header__actions">
             @if (ViewData["HomeHero"] is not true)
@@ -39,8 +40,8 @@
             @if (!SignInManager.IsSignedIn(User))
             {
                 <a class="btn nms-btn nms-btn--outline" href="@Url.Action("SignIn", "Home")">
-                    <i class="bi bi-box-arrow-in-left"></i>
                     ورود / ثبت نام
+                    <i class="bi bi-box-arrow-in-left"></i>
                 </a>
             }
             else
