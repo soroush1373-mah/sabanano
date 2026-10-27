@@ -1,5 +1,7 @@
 @using CleanArchitecture.Application.Common.Interfaces
+@using MediatR
 @inject IIdentityService IdentityService
+@inject IMediator Mediator
 
 <!-- ======= Articles Section ======= -->
 <section class="nms-articles">
@@ -39,5 +41,15 @@
 <!-- End Articles Section -->
 
 @code {
-    [Parameter] public List<ArticleDto>? Articles { get; set; }
+    List<ArticleDto>? Articles;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Mediator.Send(new GetArticleWithPaginationQuery()
+        {
+            RecordsPerPage = 3
+        });
+
+        Articles = result.Items;
+    }
 }

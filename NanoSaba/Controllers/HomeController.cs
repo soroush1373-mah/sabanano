@@ -57,18 +57,9 @@ public class HomeController : Controller
     }
 
     [AllowAnonymous]
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        var result = await _mediator.Send(new GetArticleWithPaginationQuery()
-        {
-            RecordsPerPage = 3
-        }, CancellationToken.None);
-
-        Request.HttpContext.User = User;
-        return View("Index", new IndexDto()
-        {
-            Articles = result.Items
-        });
+        return View("Index", new IndexDto());
     }
 
     [AllowAnonymous]
@@ -169,7 +160,7 @@ public class HomeController : Controller
         Response.Cookies.Delete("_token");
         // await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
-        return await Index();
+        return Index();
     }
 
     [HttpPost]
