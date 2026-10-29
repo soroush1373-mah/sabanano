@@ -183,6 +183,18 @@
     function handle(f, data) {
       if (!data.success) {
         setError(f, data.message || "خطایی رخ داد. دوباره تلاش کنید.");
+        // The server can also send one error per field: { errors: { Mobile: "..." } }
+        if (data.errors) {
+          Object.keys(data.errors).forEach(function (name) {
+            var input = f.querySelector('[name="' + name + '"]');
+            if (!input) return;
+            input
+              .closest("label")
+              .querySelector("[data-field-error]").textContent =
+              data.errors[name];
+            input.classList.add("is-invalid");
+          });
+        }
         return;
       }
 

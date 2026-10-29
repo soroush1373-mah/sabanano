@@ -112,7 +112,6 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register()
     {
-        // The form has one "نام و نام خانوادگی" field: the first word is the first name, the rest is the last name
         var fullName = Request.Form["FullName"].ToString().Trim();
         var companyName = Request.Form["CompanyName"].ToString().Trim();
         var mobilenumber = ToEnglishDigits(Request.Form["Mobile"].ToString().Trim());
@@ -310,7 +309,7 @@ public class HomeController : Controller
         return Json(new { success = true, step = "code", mobileNumber = mobilenumber });
     }
 
-        // Persian (۰-۹) and Arabic (٠-٩) digits become 0-9, like toEnglishDigits in nms-auth.js
+    // Persian (۰-۹) and Arabic (٠-٩) digits become 0-9, like toEnglishDigits in nms-auth.js
     private static string ToEnglishDigits(string value)
     {
         var chars = value.ToCharArray();
