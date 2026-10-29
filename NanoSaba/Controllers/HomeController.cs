@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Mvc;
 using NanoSaba.Models;
 using Services.IServices.V2;
 using CleanArchitecture.Application.ContactMessages.Commands.CreateContactUs;
+using System.Text.RegularExpressions;
 
 namespace NanoSaba.Controllers;
 
@@ -112,25 +113,39 @@ public class HomeController : Controller
     public async Task<IActionResult> Register()
     {
         // The form has one "نام و نام خانوادگی" field: the first word is the first name, the rest is the last name
-        var nameParts = Request.Form["FullName"].ToString()
-            .Split(' ', 2, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-        var firstName = nameParts.Length > 0 ? nameParts[0] : "";
-        var lastName = nameParts.Length > 1 ? nameParts[1] : "";
-        var companyName = Request.Form["CompanyName"].ToString();
-        var mobilenumber = Request.Form["Mobile"].ToString();
-        var email = Request.Form["Email"].ToString();
+        var fullName = Request.Form["FullName"].ToString().Trim();
+        var companyName = Request.Form["CompanyName"].ToString().Trim();
+        var mobilenumber = ToEnglishDigits(Request.Form["Mobile"].ToString().Trim());
+        var address = Request.Form["Address"].ToString().Trim();
+        var email = Request.Form["Email"].ToString().Trim();
         var password = Request.Form["Password"].ToString();
-        var address = Request.Form["Address"].ToString();
+        var confirmPassword = Request.Form["ConfirmPassword"].ToString();
 
-        if (string.IsNullOrEmpty(firstName) ||
-            string.IsNullOrEmpty(lastName) ||
-            string.IsNullOrEmpty(mobilenumber) ||
-            string.IsNullOrEmpty(email) ||
-            string.IsNullOrEmpty(address) ||
-            string.IsNullOrEmpty(password))
-        {
-            return AuthError("لطفا همه فیلدها را کامل وارد کنید");
-        }
+        // The same rules as registerRules in wwwroot/js/nms-auth.js.
+        // The browser checks first, but someone can skip the browser, so the server checks again.
+        var errors = new Dictionary<string, string>();
+        if (!Regex.IsMatch(fullName, @"^[؀-ۿ‌ a-zA-Z]+$") || !fullName.Contains(' '))
+            errors["FullName"] = "لطفا نام و نام خانوادگی را فقط با حروف و با فاصله وارد کنید";
+        if (companyName == "")
+            errors["CompanyName"] = "وارد کردن شرکت/دانشگاه/سازمان الزامی است";
+        if (!Regex.IsMatch(mobilenumber, @"^09\d{9}$"))
+            errors["Mobile"] = "شماره موبایل باید ۱۱ رقم و با ۰۹ شروع شود";
+        if (address.Length < 10)
+            errors["Address"] = "آدرس باید حداقل ۱۰ حرف باشد";
+        if (!Regex.IsMatch(email, @"^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$"))
+            errors["Email"] = "ایمیل درست نیست (مثال: name@site.com)";
+        if (password.Length < 8 || !Regex.IsMatch(password, "[a-zA-Z]") || !Regex.IsMatch(password, @"\d"))
+            errors["Password"] = "رمز عبور باید حداقل ۸ حرف و شامل حرف انگلیسی و عدد باشد";
+        if (confirmPassword != password)
+            errors["ConfirmPassword"] = "تکرار رمز عبور با رمز عبور یکسان نیست";
+
+        if (errors.Count > 0)
+            return Json(new { success = false, message = "لطفا خطاهای فرم را برطرف کنید", errors });
+
+        // The form has one "نام و نام خانوادگی" field: the first word is the first name, the rest is the last name
+        var nameParts = fullName.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var firstName = nameParts[0];
+        var lastName = nameParts[1];
 
         long result;
         try
@@ -294,6 +309,19 @@ public class HomeController : Controller
         TempData["MobileNumber"] = mobilenumber;
         return Json(new { success = true, step = "code", mobileNumber = mobilenumber });
     }
+
+        // Persian (۰-۹) and Arabic (٠-٩) digits become 0-9, like toEnglishDigits in nms-auth.js
+    private static string ToEnglishDigits(string value)
+    {
+        var chars = value.ToCharArray();
+        for (var i = 0; i < chars.Length; i++)
+        {
+            if (chars[i] >= '۰' && chars[i] <= '۹') chars[i] = (char)('0' + chars[i] - '۰');
+            else if (chars[i] >= '٠' && chars[i] <= '٩') chars[i] = (char)('0' + chars[i] - '٠');
+        }
+        return new string(chars);
+    }
+
 
     // Answer for the login and sign-up forms (sent with fetch from wwwroot/js/nms-auth.js)
     private JsonResult AuthError(string message)
