@@ -84,10 +84,16 @@
             <label class="nms-auth__field">
                 <span>ایمیل</span>
                 <input type="email" name="Email" dir="ltr" placeholder="ایمیل خود را وارد کنید." autocomplete="email" required>
+                <small class="nms-auth__field-error" data-field-error></small>
             </label>
             <label class="nms-auth__field">
                 <span>رمز عبور</span>
                 <input type="password" name="Password" placeholder="رمز عبور خود را وارد کنید." autocomplete="new-password" required>
+            </label>
+            <label class="nms-auth__field">
+                <span>تکرار رمز عبور</span>
+                <input type="password" name="ConfirmPassword" placeholder="رمز عبور را دوباره وارد کنید." autocomplete="new-password" required>
+                <small class="nms-auth__field-error" data-field-error></small>
             </label>
             <p class="nms-auth__error nms-auth__full" data-auth-error></p>
             <button type="submit" class="nms-auth__submit nms-auth__full">ثبت نام</button>
