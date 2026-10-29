@@ -143,11 +143,17 @@
     }
 
     async function send(f) {
-      var problem = validate(f);
-      if (problem) {
-        setError(f, problem.text);
-        problem.input.focus();
-        return;
+      if (f.dataset.authForm === "register") {
+        // Sign-up: each field shows its own error
+        if (!checkRegister(f)) return;
+      } else {
+        // Login forms: the old check, one error at the bottom
+        var problem = validate(f);
+        if (problem) {
+          setError(f, problem.text);
+          problem.input.focus();
+          return;
+        }
       }
       setError(f, "");
 
@@ -236,6 +242,23 @@
             '"] form:not([hidden]) input:not([type=hidden])',
         );
         if (first) first.focus();
+      }
+    });
+    // Sign-up: check a field when the user leaves it, and again while they fix it
+    var registerForm = form("register");
+    registerForm.addEventListener("focusout", function (e) {
+      if (e.target.matches("input[required]")) checkField(e.target);
+    });
+    registerForm.addEventListener("input", function (e) {
+      // Mobile: keep only digits (Persian digits become 0-9), so letters can't be typed
+      if (e.target.name === "Mobile") {
+        e.target.value = toEnglishDigits(e.target.value).replace(/\D/g, "");
+      }
+      if (e.target.classList.contains("is-invalid")) checkField(e.target);
+      // A new password must be checked against the repeat password again
+      if (e.target.name === "Password") {
+        var confirm = registerForm.querySelector("[name=ConfirmPassword]");
+        if (confirm.value) checkField(confirm);
       }
     });
 
