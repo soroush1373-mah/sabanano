@@ -1,0 +1,1289 @@
+/*--------------------------------------------------------------
+# NMS redesign: header, hero, feature strip, home sections and footer
+--------------------------------------------------------------*/
+:root {
+    --nms-navy: #030d1f;
+    --nms-navy-2: #0a2346;
+    --nms-cyan: #1255d5;
+    --nms-cyan-dark: #0d44b0;
+    --nms-ink: #0f172a;
+    --nms-muted: #5b6475;
+    --nms-page: #f6f9fc;
+    --nms-radius: 40px;
+    --nms-header-h: 62px;
+    --nms-stick-offset: 24px;
+}
+
+html body {
+    background: var(--nms-page);
+}
+
+.nms-header .container-xl,
+.nms-hero .container-xl {
+    max-width: 1360px;
+}
+
+/* Buttons */
+.btn.nms-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 38px;
+    padding: 0 20px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background-color .2s, color .2s, border-color .2s;
+}
+
+.btn.nms-btn--lg {
+    height: 44px;
+    padding: 0 24px;
+    font-size: 16px;
+}
+
+.btn.nms-btn--primary,
+.btn.nms-btn--primary:focus {
+    background: var(--nms-cyan);
+    border: 1px solid var(--nms-cyan);
+    color: #fff;
+}
+
+.btn.nms-btn--primary:hover {
+    background: var(--nms-cyan-dark);
+    border-color: var(--nms-cyan-dark);
+    color: #fff;
+}
+
+.btn.nms-btn--outline,
+.btn.nms-btn--outline:focus {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, .85);
+    color: #fff;
+}
+
+.btn.nms-btn--outline:hover,
+.btn.nms-btn--outline.show {
+    background: #fff;
+    border-color: #fff;
+    color: var(--nms-navy);
+}
+
+.btn.nms-btn .bi-arrow-left {
+    font-size: 18px;
+}
+
+/*--------------------------------------------------------------
+# Header
+--------------------------------------------------------------*/
+.nms-header {
+    position: sticky;
+    /* Stick with 24px of the top padding scrolled away, so the header never changes height */
+    top: calc(-1 * var(--nms-stick-offset));
+    z-index: 997;
+    padding-top: 32px;
+    background: var(--nms-page);
+    transition: box-shadow .3s;
+}
+
+.nms-header__inner {
+    display: flex;
+    align-items: center;
+    height: var(--nms-header-h);
+    gap: 24px;
+}
+
+/* main.js toggles .sticked on scroll; the header is already sticky, so skip its offset */
+.nms-header.sticked {
+    box-shadow: 0 2px 20px rgba(3, 13, 31, .08);
+}
+
+.nms-header.sticked + .sticked-header-offset {
+    margin-top: 0;
+}
+
+/* Dark tab holding the buttons (right side in RTL) */
+.nms-header__actions {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 100%;
+    padding: 0 28px 0 22px;
+    background: var(--nms-navy);
+    border-radius: 32px;
+    flex-shrink: 0;
+}
+
+/* On the home page the tab melts into the hero card below it */
+.nms-header--home:not(.sticked) .nms-header__actions {
+    border-radius: 32px 32px 0 0;
+}
+
+.nms-header--home:not(.sticked) .nms-header__actions::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: -32px;
+    width: 32px;
+    height: 32px;
+    background: radial-gradient(circle at 0 0, transparent 31.5px, var(--nms-navy) 32px);
+}
+
+/* Overlay header (contact page): see-through over a photo, white text.
+   Once the page scrolls (.sticked) it gets a dark background so it stays readable. */
+.nms-header--overlay {
+    background: transparent;
+    transition: background-color .3s, box-shadow .3s;
+}
+
+.nms-header--overlay.sticked {
+    background: var(--nms-navy);
+}
+
+.nms-header--overlay .nms-header__actions {
+    background: transparent;
+}
+
+.nms-header--overlay .btn.nms-btn--primary,
+.nms-header--overlay .btn.nms-btn--primary:focus {
+    background: transparent;
+    border-color: rgba(255, 255, 255, .85);
+}
+
+.nms-header--overlay .btn.nms-btn--primary:hover {
+    background: #fff;
+    border-color: #fff;
+    color: var(--nms-navy);
+}
+
+.nms-header--overlay .nms-brand,
+.nms-header--overlay .nms-brand:hover,
+.nms-header--overlay .mobile-nav-show {
+    color: #fff;
+}
+
+.nms-header__search {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    color: #fff;
+    font-size: 19px;
+}
+
+.nms-header__search:hover {
+    color: var(--nms-cyan);
+}
+
+.nms-header__actions .dropdown-toggle {
+    gap: 6px;
+}
+
+.nms-header__actions .dropdown-menu {
+    text-align: right;
+}
+
+/* Nav links */
+.nms-header .nms-nav {
+    flex: 1;
+    justify-content: center;
+}
+
+/* Brand (left side in RTL) */
+.nms-brand {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 10px;
+    margin-left: 22px;
+    color: var(--nms-ink);
+    flex-shrink: 0;
+}
+
+.nms-brand:hover {
+    color: var(--nms-ink);
+}
+
+.nms-brand__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.nms-brand__name {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: .5px;
+}
+
+.nms-brand__sub {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+@media (min-width: 1280px) {
+    .nms-header .nms-nav > ul {
+        gap: 30px;
+    }
+
+    .nms-header .nms-nav > ul > li {
+        padding: 10px 0;
+    }
+
+    .nms-header .nms-nav a,
+    .nms-header .nms-nav a:focus {
+        color: var(--nms-ink);
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .nms-header .nms-nav a:hover,
+    .nms-header .nms-nav .active,
+    .nms-header .nms-nav .active:focus,
+    .nms-header .nms-nav li:hover > a {
+        color: var(--nms-cyan-dark);
+    }
+
+    .nms-header .nms-nav > ul > li > a:before {
+        background-color: var(--nms-cyan);
+    }
+}
+
+@media (min-width: 1280px) {
+    .nms-header--overlay .nms-nav a,
+    .nms-header--overlay .nms-nav a:focus,
+    .nms-header--overlay .nms-nav a:hover,
+    .nms-header--overlay .nms-nav .active,
+    .nms-header--overlay .nms-nav li:hover > a {
+        color: #fff;
+    }
+
+    .nms-header--overlay .nms-nav > ul > li > a:before {
+        background-color: #fff;
+    }
+}
+
+@media (max-width: 1279px) {
+    .nms-header .mobile-nav-show {
+        order: 10;
+        color: var(--nms-ink);
+        margin: 0;
+    }
+
+    .nms-brand {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .nms-header .nms-nav ul {
+        background: rgba(3, 13, 31, .96);
+    }
+
+    .nms-header .nms-nav a,
+    .nms-header .nms-nav a:focus {
+        color: rgba(255, 255, 255, .8);
+    }
+}
+
+@media (max-width: 575px) {
+    :root {
+        --nms-header-h: 54px;
+        --nms-stick-offset: 4px;
+        --nms-radius: 24px;
+    }
+
+    .nms-header {
+        padding-top: 12px;
+    }
+
+    .nms-header__inner {
+        gap: 12px;
+    }
+
+    .nms-header__actions {
+        padding: 0 12px;
+        gap: 8px;
+    }
+
+    .nms-header__actions > .nms-btn--primary,
+    .nms-header__search {
+        display: none;
+    }
+
+    .nms-brand img {
+        width: 36px;
+        height: auto;
+    }
+
+    .nms-brand__name {
+        font-size: 20px;
+    }
+}
+
+/*--------------------------------------------------------------
+# Hero
+--------------------------------------------------------------*/
+.nms-hero {
+    padding: 0 0 40px;
+    scroll-margin-top: 200px; /* #hero links land at the very top of the page */
+}
+
+.nms-hero__card {
+    position: relative;
+    overflow: hidden;
+    min-height: 452px;
+    display: flex;
+    align-items: center;
+    background: var(--nms-navy);
+    border-radius: var(--nms-radius);
+    border-top-right-radius: 0;
+    isolation: isolate;
+}
+
+.nms-hero__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: right center;
+    z-index: -2;
+}
+
+/* Keep the text side dark enough to read */
+.nms-hero__card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to right, rgba(3, 13, 31, .92) 0%, rgba(3, 13, 31, .55) 30%, rgba(3, 13, 31, 0) 55%);
+}
+
+/* Text column sits on the left of the card, as in the design */
+.nms-hero__content {
+    width: min(100%, 470px);
+    margin-right: auto;
+    padding: 48px 30px 90px;
+    color: #fff;
+    text-align: left;
+}
+
+.nms-hero__eyebrow {
+    margin: 0 0 12px;
+    color: var(--nms-cyan);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: .6px;
+    text-align: left;
+}
+
+.nms-hero__title {
+    margin: 0 0 20px;
+    color: #fff;
+    font-family: iranyekan !important;
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.nms-hero__title span {
+    display: block;
+    color: var(--nms-cyan);
+}
+
+.nms-hero__lead {
+    margin: 0 0 32px;
+    color: rgba(255, 255, 255, .92);
+    font-size: 16px;
+    line-height: 1.85;
+}
+
+.nms-hero__buttons {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+/* Feature strip overlapping the bottom of the card */
+.nms-features {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    justify-content: space-between;
+    gap: 12px;
+    margin: -30px 34px 0;
+    padding: 40px 24px;
+    list-style: none;
+    /* frosted glass look over the bottom of the hero */
+    background: linear-gradient(180deg, rgba(255, 255, 255, .72) 0%, #fff 70%);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, .8);
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(3, 13, 31, .06);
+}
+
+.nms-feature {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nms-feature__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #e8f2fb;
+    color: var(--nms-ink);
+    font-size: 30px;
+}
+
+.nms-feature__text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nms-feature__text strong {
+    color: var(--nms-ink);
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.nms-feature__text small {
+    color: var(--nms-muted);
+    font-size: 13px;
+}
+
+@media (max-width: 1199px) {
+    .nms-features {
+        grid-template-columns: repeat(3, 1fr);
+        row-gap: 28px;
+    }
+}
+
+@media (max-width: 991px) {
+    .nms-hero__card {
+        min-height: 520px;
+        align-items: flex-end;
+    }
+
+    .nms-hero__bg {
+        object-position: 70% center;
+    }
+
+    .nms-hero__card::before {
+        background: linear-gradient(to top, rgba(3, 13, 31, .95) 0%, rgba(3, 13, 31, .7) 45%, rgba(3, 13, 31, .1) 100%);
+    }
+
+    .nms-hero__content {
+        width: 100%;
+        margin: 0;
+        padding: 160px 28px 70px;
+    }
+
+    .nms-hero__content,
+    .nms-hero__eyebrow {
+        text-align: right;
+    }
+
+    .nms-hero__buttons {
+        flex-direction: row;
+    }
+
+    .nms-features {
+        grid-template-columns: repeat(2, 1fr);
+        margin: -30px 16px 0;
+    }
+}
+
+@media (max-width: 575px) {
+    .nms-hero .container-xl {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .nms-hero__card {
+        min-height: 480px;
+    }
+
+    .nms-hero__content {
+        padding: 140px 20px 60px;
+    }
+
+    .nms-hero__eyebrow {
+        font-size: 11px;
+        letter-spacing: .3px;
+    }
+
+    .nms-hero__title {
+        font-size: 30px;
+    }
+
+    .nms-hero__lead {
+        font-size: 14px;
+    }
+
+    .nms-hero__buttons .nms-btn {
+        flex: 1;
+        padding: 0 12px;
+    }
+
+    .nms-features {
+        grid-template-columns: 1fr;
+        margin: -24px 8px 0;
+        padding: 28px 20px;
+        row-gap: 20px;
+    }
+
+    .nms-feature__icon {
+        width: 56px;
+        height: 56px;
+        font-size: 24px;
+    }
+}
+
+/*--------------------------------------------------------------
+# Shared section pieces
+--------------------------------------------------------------*/
+:root {
+    --nms-royal: #1739b0;
+    --nms-royal-2: #1e63d6;
+    --nms-footer: #00132d;
+}
+
+.nms-services .container-xl,
+.nms-products .container-xl,
+.nms-footer .container-xl {
+    max-width: 1360px;
+}
+
+.nms-section-title {
+    margin: 0;
+    color: var(--nms-royal);
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.btn.nms-btn--gradient,
+.btn.nms-btn--gradient:focus {
+    min-width: 200px;
+    border: 0;
+    border-radius: 24px;
+    background: linear-gradient(90deg, #0a1a5c 0%, var(--nms-royal-2) 100%);
+    box-shadow: 0 8px 20px rgba(23, 57, 176, .2);
+    color: #fff;
+}
+
+.btn.nms-btn--gradient:hover {
+    filter: brightness(1.12);
+    color: #fff;
+}
+
+/*--------------------------------------------------------------
+# Lab services
+--------------------------------------------------------------*/
+/* the design has one wide order button in the hero */
+.nms-hero__buttons .nms-btn--primary {
+    width: min(390px, 100%);
+}
+
+.nms-services {
+    padding: 90px 0 60px;
+    overflow-x: clip;
+}
+
+/* in RTL the text card is on the right and the photo on the left */
+.nms-services__grid {
+    display: grid;
+    grid-template-columns: 1fr 473px;
+    align-items: center;
+    gap: 58px;
+}
+
+.nms-services__text {
+    padding: 36px 32px 30px 28px;
+    border-radius: 32px 0 0 32px;
+    background: #fff;
+    /* the white card runs out to the right edge of the page */
+    margin-right: calc((100vw - min(100vw, 1360px)) / -2 - 12px);
+}
+
+.nms-services__body {
+    margin: 22px 0 0;
+    padding-right: 24px;
+    border-right: 4px solid var(--nms-royal);
+    color: var(--nms-muted);
+    font-size: 16px;
+    line-height: 1.7;
+    text-align: justify;
+}
+
+.nms-services__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 473 / 403;
+    object-fit: cover;
+    border-radius: 32px;
+}
+
+/*--------------------------------------------------------------
+# Featured products
+--------------------------------------------------------------*/
+.nms-products {
+    padding: 60px 0 120px;
+}
+
+.nms-products__head {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 44px;
+}
+
+.nms-products__line {
+    flex: 1;
+    height: 1px;
+    background: #cfd8e6;
+}
+
+.nms-products__all {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--nms-muted);
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.nms-products__all:hover {
+    color: var(--nms-royal);
+}
+
+.nms-products__list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.nms-product {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #e3e9f2;
+    border-radius: 14px;
+    background: #fff;
+    transition: box-shadow .2s, transform .2s;
+}
+
+.nms-product:hover {
+    box-shadow: 0 14px 34px rgba(23, 57, 176, .1);
+    transform: translateY(-3px);
+}
+
+.nms-product__img {
+    aspect-ratio: 5 / 4;
+    padding: 8px 8px 0;
+    background: #fff;
+}
+
+.nms-product__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.nms-product__body {
+    padding: 10px 18px 22px;
+}
+
+.nms-product__body h3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 0 0 8px;
+    color: var(--nms-ink);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.nms-product__body h3 a {
+    color: inherit;
+}
+
+.nms-product__body h3 .bi {
+    font-size: 22px;
+    transition: transform .2s;
+}
+
+.nms-product:hover h3 .bi {
+    color: var(--nms-royal);
+    transform: translateX(-4px);
+}
+
+.nms-product__body p {
+    margin: 0;
+    color: var(--nms-muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/*--------------------------------------------------------------
+# How to order
+--------------------------------------------------------------*/
+.nms-steps .container-xl,
+.nms-articles .container-xl,
+.nms-about .container-xl {
+    max-width: 1360px;
+}
+
+.nms-steps {
+    padding: 50px 0 60px;
+    background: #fff;
+}
+
+.nms-steps__intro {
+    margin: 18px 0 50px;
+    color: var(--nms-muted);
+    font-size: 15px;
+    line-height: 1.9;
+    text-align: justify;
+}
+
+.nms-steps__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px 40px;
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+}
+
+.nms-step__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 18px;
+    border-radius: 50%;
+    background: var(--nms-royal);
+    color: #fff;
+    font-size: 28px;
+}
+
+.nms-step h3 {
+    margin: 0 0 14px;
+    color: var(--nms-ink);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.nms-step p {
+    max-width: 360px;
+    margin: 0 auto;
+    color: var(--nms-muted);
+    font-size: 13px;
+    line-height: 1.85;
+    text-align: justify;
+    text-align-last: center;
+}
+
+/*--------------------------------------------------------------
+# Articles
+--------------------------------------------------------------*/
+.nms-articles {
+    position: relative;
+    padding-bottom: 50px;
+}
+
+/* blue "science" banner behind the title and the top half of the cards */
+.nms-articles__banner {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 460px;
+    /* light fade at the top keeps the dark title text readable on the DNA photo */
+    background:
+        linear-gradient(180deg, rgba(246, 249, 252, .95) 0%, rgba(246, 249, 252, .6) 22%, rgba(246, 249, 252, 0) 45%),
+        url("../img/MainImage/home-dna.jpg") center / cover no-repeat #0a2f86;
+}
+
+.nms-articles__banner + .container-xl {
+    position: relative;
+    padding-top: 195px;
+}
+
+.nms-articles__banner .container-xl {
+    padding-top: 30px;
+}
+
+.nms-articles__banner p {
+    margin: 14px 0 0;
+    color: var(--nms-ink);
+    font-size: 15px;
+    line-height: 1.9;
+}
+
+.nms-articles__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.nms-article {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 20px 26px;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(10, 47, 134, .08);
+    transition: box-shadow .2s, transform .2s;
+}
+
+.nms-article:hover {
+    box-shadow: 0 16px 36px rgba(10, 47, 134, .16);
+    transform: translateY(-3px);
+}
+
+.nms-article__img {
+    aspect-ratio: 16 / 8;
+    overflow: hidden;
+    margin-bottom: 14px;
+}
+
+.nms-article__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.nms-article__cat {
+    color: var(--nms-muted);
+    font-size: 12px;
+}
+
+.nms-article h3 {
+    margin: 6px 0 10px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.6;
+}
+
+.nms-article h3 a {
+    color: var(--nms-ink);
+}
+
+.nms-article p {
+    flex: 1;
+    margin: 0 0 12px;
+    color: var(--nms-muted);
+    font-size: 12px;
+    line-height: 1.7;
+    text-align: justify;
+}
+
+.nms-article__author {
+    color: var(--nms-ink);
+    font-size: 13px;
+}
+
+/*--------------------------------------------------------------
+# About
+--------------------------------------------------------------*/
+.nms-about {
+    padding: 40px 0 90px;
+}
+
+.nms-about .nms-products__head {
+    flex-direction: row;
+}
+
+.nms-about__grid {
+    display: grid;
+    grid-template-columns: 506px 1fr;
+    gap: 34px;
+    padding: 0 48px;
+}
+
+.nms-about__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    border-radius: 32px;
+}
+
+.nms-about__card {
+    position: relative;
+    z-index: 1;
+    padding: 30px 30px 46px;
+    border-radius: 32px;
+    background: #ececec;
+}
+
+.nms-about__card p {
+    margin: 0;
+    color: #4b5160;
+    font-size: 15px;
+    line-height: 1.8;
+    text-align: justify;
+}
+
+/* the stats strip sticks out over the photo, like in the design */
+.nms-about__stats {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin: 30px -175px 0 30px;
+    padding: 22px 30px;
+    border: 1px solid rgba(255, 255, 255, .8);
+    border-radius: 16px;
+    background: rgba(246, 246, 246, .72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    list-style: none;
+    text-align: center;
+}
+
+.nms-about__stats li {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nms-about__stats strong {
+    color: var(--nms-royal);
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.2;
+    direction: ltr;
+}
+
+.nms-about__stats span {
+    color: #4b5160;
+    font-size: 14px;
+}
+
+.nms-about__goal {
+    margin: 46px 48px 0;
+    color: #4b5160;
+    font-size: 16px;
+    line-height: 1.75;
+    text-align: justify;
+}
+
+/*--------------------------------------------------------------
+# Footer
+--------------------------------------------------------------*/
+.nms-footer {
+    padding: 40px 0 56px;
+    background: var(--nms-footer);
+    color: #fff;
+    font-size: 14px;
+}
+
+/* Top row: social icons on the right, brand on the left, line under it */
+.nms-footer__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, .6);
+}
+
+.nms-footer__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    direction: ltr;
+}
+
+.nms-footer__logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #fff;
+}
+
+.nms-footer__logo:hover {
+    color: #fff;
+}
+
+.nms-footer__name {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: .5px;
+}
+
+.nms-footer__sub {
+    font-size: 12px;
+    line-height: 1.8;
+    text-align: left;
+}
+
+.nms-footer__tagline {
+    margin: 0;
+    color: #cfd8e6;
+    font-size: 10px;
+    letter-spacing: .3px;
+    white-space: nowrap;
+}
+
+.nms-footer__social {
+    display: flex;
+    gap: 8px;
+}
+
+.nms-footer__social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--nms-cyan);
+    color: #fff;
+    font-size: 22px;
+    transition: background-color .2s;
+}
+
+.nms-footer__social a:hover {
+    background: var(--nms-cyan-dark);
+    color: #fff;
+}
+
+/* Three link columns, starting from the right */
+.nms-footer__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.6fr 1.4fr;
+    column-gap: 40px;
+}
+
+.nms-footer h4 {
+    margin: 0 0 18px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.nms-footer ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.nms-footer__col li {
+    margin-bottom: 6px;
+}
+
+.nms-footer__col a {
+    color: #fff;
+    font-size: 13px;
+    transition: color .2s;
+}
+
+.nms-footer__col a:hover {
+    color: #8fb2ff;
+}
+
+/* Small arrow in front of each quick link */
+.nms-footer__links a::before {
+    content: "\f284";
+    margin-left: 8px;
+    font-family: bootstrap-icons;
+    font-size: 9px;
+    vertical-align: middle;
+}
+
+.nms-footer__contact li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.nms-footer__contact i {
+    flex-shrink: 0;
+    font-size: 18px;
+    line-height: 1.3;
+}
+
+/*--------------------------------------------------------------
+# Sections: tablet and mobile
+--------------------------------------------------------------*/
+@media (max-width: 1199px) {
+    .nms-products__list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .nms-about__grid {
+        grid-template-columns: 400px 1fr;
+        padding: 0;
+    }
+
+    .nms-about__stats {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .nms-about__goal {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .nms-footer__grid {
+        grid-template-columns: 1fr 1fr;
+        row-gap: 32px;
+    }
+}
+
+@media (max-width: 991px) {
+    .nms-services {
+        padding: 70px 0 40px;
+    }
+
+    .nms-services__grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .nms-services__text {
+        margin-right: 0;
+        border-radius: 24px;
+    }
+
+    .nms-services__media {
+        max-width: 560px;
+        margin: 0 auto;
+    }
+
+    .nms-steps__list,
+    .nms-articles__list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .nms-about__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nms-about__media img {
+        aspect-ratio: 3 / 2;
+    }
+
+    .nms-section-title {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 767px) {
+    .nms-products__list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .nms-product:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+    }
+
+    .nms-footer__top {
+        flex-direction: column-reverse;
+    }
+
+    .nms-footer__grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .nms-footer__contact {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 575px) {
+    .nms-services__text {
+        padding: 26px 18px 22px;
+    }
+
+    .nms-services__body {
+        padding-right: 14px;
+        font-size: 14px;
+    }
+
+    .nms-steps__list,
+    .nms-articles__list {
+        grid-template-columns: 1fr;
+    }
+
+    .nms-steps__intro,
+    .nms-about__card p,
+    .nms-about__goal {
+        font-size: 14px;
+    }
+
+    .nms-about__card {
+        padding: 24px 18px 26px;
+    }
+
+    .nms-about__stats {
+        flex-wrap: wrap;
+        padding: 18px 12px;
+    }
+
+    .nms-about__stats li {
+        flex: 1 1 40%;
+    }
+
+    .nms-about__stats strong {
+        font-size: 24px;
+    }
+
+    .nms-about__stats span {
+        font-size: 12px;
+    }
+
+    .nms-products__head {
+        gap: 12px;
+    }
+
+    .nms-products__list {
+        gap: 10px;
+    }
+
+    .nms-product__body {
+        padding: 8px 12px 16px;
+    }
+
+    .nms-product__body h3 {
+        font-size: 15px;
+    }
+
+    .nms-product__body p {
+        font-size: 11px;
+    }
+}
