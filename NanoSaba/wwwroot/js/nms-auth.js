@@ -96,7 +96,9 @@
 
       var text = v
         ? registerRules[input.name](v, input.form)
-        : "وارد کردن " + label + " الزامی است";
+        : input.required
+          ? "وارد کردن " + label + " الزامی است"
+          : "";
       input.closest("label").querySelector("[data-field-error]").textContent =
         text;
       input.classList.toggle("is-invalid", text !== "");

@@ -125,12 +125,11 @@ public class HomeController : Controller
         var errors = new Dictionary<string, string>();
         if (!Regex.IsMatch(fullName, @"^[؀-ۿ‌ a-zA-Z]+$") || !fullName.Contains(' '))
             errors["FullName"] = "لطفا نام و نام خانوادگی را فقط با حروف و با فاصله وارد کنید";
-        if (companyName == "")
-            errors["CompanyName"] = "وارد کردن شرکت/دانشگاه/سازمان الزامی است";
+        
         if (!Regex.IsMatch(mobilenumber, @"^09\d{9}$"))
             errors["Mobile"] = "شماره موبایل باید ۱۱ رقم و با ۰۹ شروع شود";
-        if (address.Length < 10)
-            errors["Address"] = "آدرس باید حداقل ۱۰ حرف باشد";
+        if (address != "" && address.Length < 10)
+             errors["Address"] = "آدرس باید حداقل ۱۰ حرف باشد";
         if (!Regex.IsMatch(email, @"^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$"))
             errors["Email"] = "ایمیل درست نیست (مثال: name@site.com)";
         if (password.Length < 8 || !Regex.IsMatch(password, "[a-zA-Z]") || !Regex.IsMatch(password, @"\d"))
@@ -161,7 +160,7 @@ public class HomeController : Controller
                         MobileNumber = mobilenumber
                     }
                 },
-                Addresses = new List<CreatePeopleAddressCommand>()
+                Addresses = address == "" ? new List<CreatePeopleAddressCommand>() : new List<CreatePeopleAddressCommand>()
                 {
                     new CreatePeopleAddressCommand()
                     {
