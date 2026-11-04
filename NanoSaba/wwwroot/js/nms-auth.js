@@ -108,7 +108,7 @@
     // Checks all sign-up fields and puts the cursor in the first wrong one
     function checkRegister(f) {
       var first = null;
-      f.querySelectorAll("input[required]").forEach(function (input) {
+      f.querySelectorAll("input:not([type=hidden])").forEach(function (input) {
         if (input.inputMode === "numeric")
           input.value = toEnglishDigits(input.value.trim());
         if (!checkField(input) && !first) first = input;
@@ -261,7 +261,7 @@
     // Sign-up: check a field when the user leaves it, and again while they fix it
     var registerForm = form("register");
     registerForm.addEventListener("focusout", function (e) {
-      if (e.target.matches("input[required]")) checkField(e.target);
+      if (e.target.matches("input:not([type=hidden])")) checkField(e.target);
     });
     registerForm.addEventListener("input", function (e) {
       // Mobile: keep only digits (Persian digits become 0-9), so letters can't be typed
