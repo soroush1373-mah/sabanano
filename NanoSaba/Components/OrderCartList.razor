@@ -69,14 +69,12 @@
                             }
                             else
                             {
-                                <button class="btn btn-sm btn-danger" @onclick="() => confirmId = order.Id">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            }
+                               
                             <button class="btn btn-sm btn-danger" @onclick="() => confirmId = order.Id">
                             <i class="bi bi-trash"></i>
                             </button>
-}
+                            }
+
                         </div>
                     </div>
                 </div>
@@ -87,7 +85,7 @@
 
 @code {
     List<OrderBriefDto> Orders = new();
-            long? confirmId;   // the order that shows "حذف شود؟" right now
+    long? confirmId;   // the order that shows "حذف شود؟" right now
     string? error;
 
     async Task Delete(long id)
