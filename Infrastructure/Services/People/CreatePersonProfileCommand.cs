@@ -16,6 +16,7 @@ using DataTransferObjects.DataTransferObjects.UserDTOs;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Services.IServices.V2;
+using CleanArchitecture.Infrastructure.Persistence;
 
 public record CreatePersonProfileCommand : BaseRecordDto<CreatePersonProfileCommand, Person, long>, IRequest<long>
 {
@@ -48,13 +49,16 @@ public class CreatePersonProfileCommandHandler : IRequestHandler<CreatePersonPro
     private readonly IUsersService _usersService;
     private readonly ICurrentUserService _currentUserService;
     private readonly IMediator _mediator;
+    private readonly ApplicationDbContext _context;
 
     public CreatePersonProfileCommandHandler(IRepository<Person> repository,
         IMapper mapper,
         IUsersService usersService,
         ICurrentUserService currentUserService,
         IMediator mediator,
-        IRepository<PersonMobileNumber> personMobileRepository)
+        IRepository<PersonMobileNumber> personMobileRepository,
+        ApplicationDbContext context)
+
     {
         _repository = repository;
         _mapper = mapper;
@@ -62,10 +66,14 @@ public class CreatePersonProfileCommandHandler : IRequestHandler<CreatePersonPro
         _currentUserService = currentUserService;
         _mediator = mediator;
         _personMobileRepository = personMobileRepository;
+        _context = context;
     }
 
     public async Task<long> Handle(CreatePersonProfileCommand request, CancellationToken cancellationToken)
     {
+                // "All or nothing": the person, the login account and the customer are saved together.
+        // If any step fails, nothing is kept, so a mobile number is never left half-saved.
+        await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
         var entity = await _mediator.Send(new CreatePersonCommand()
         {
             FirstName = request.FirstName,
@@ -105,6 +113,7 @@ public class CreatePersonProfileCommandHandler : IRequestHandler<CreatePersonPro
         });
 
         await _usersService.AddRoleToUser(result.Data.Id, 3, cancellationToken); //cusotomer
+        await transaction.CommitAsync(cancellationToken);
         return entity;
         // entity.AddDomainEvent(new PersonProfileCreatedEvent(entity));
         //_context.TodoItems.Add(entity);
