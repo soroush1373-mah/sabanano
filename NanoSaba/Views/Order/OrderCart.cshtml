@@ -10,6 +10,7 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
+    <base href="~/" />
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -69,7 +70,7 @@
             <h5 class="mx-2 my-2"> سبد خرید شما</h5>
             <div class="card flex-column col-md-9">
                 <div class="mt-5">
-                    <component type="typeof(NanoSaba.Components.OrderCartList)" render-mode="Static" />
+                    <component type="typeof(NanoSaba.Components.OrderCartList)" render-mode="ServerPrerendered" />
                 </div>
             </div>
 
@@ -239,6 +240,7 @@
 
     </div>
 </section><!-- End Recent Blog Posts Section -->
+<script src="_framework/blazor.server.js"></script>
 </body>
 
 </html>
