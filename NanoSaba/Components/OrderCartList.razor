@@ -2,7 +2,14 @@
 @using CleanArchitecture.Application.TodoItems.Queries.GetPersonWithPagination
 @using CleanArchitecture.Domain.ValueObjects
 @using MediatR
+@using CleanArchitecture.Application.People.Commands.DeleteOrder
+@using Common.Exceptions
 @inject IMediator Mediator
+
+@if (error is not null)
+{
+    <div class="alert alert-danger">@error</div>
+}
 
 <ul class="list-group list-group-flush">
     @foreach (var order in Orders)
@@ -54,9 +61,22 @@
                             <a class="btn btn-sm btn-primary" href="/RegisterOrder/GetOrder?item=@order.Id&isEdit=true">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
-                            <button class="btn btn-sm btn-danger">
-                                <i class="bi bi-trash"></i>
+                            @if (confirmId == order.Id)
+                            {
+                                <span class="text-danger small">حذف شود؟</span>
+                                <button class="btn btn-sm btn-danger" @onclick="() => Delete(order.Id)">بله</button>
+                                <button class="btn btn-sm btn-secondary" @onclick="() => confirmId = null">خیر</button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-sm btn-danger" @onclick="() => confirmId = order.Id">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            }
+                            <button class="btn btn-sm btn-danger" @onclick="() => confirmId = order.Id">
+                            <i class="bi bi-trash"></i>
                             </button>
+}
                         </div>
                     </div>
                 </div>
@@ -67,6 +87,27 @@
 
 @code {
     List<OrderBriefDto> Orders = new();
+            long? confirmId;   // the order that shows "حذف شود؟" right now
+    string? error;
+
+    async Task Delete(long id)
+    {
+        try
+        {
+            await Mediator.Send(new DeleteOrderCommand { Id = id });
+            Orders.RemoveAll(o => o.Id == id);   // remove it from the list, no page reload
+            error = null;
+        }
+        catch (AppException ex)
+        {
+            error = ex.Message;   // e.g. "شما اجازه حذف این سفارش را ندارید"
+        }
+        catch (Exception)
+        {
+            error = "حذف انجام نشد. لطفا دوباره تلاش کنید";
+        }
+        confirmId = null;
+    }
 
     protected override async Task OnInitializedAsync()
     {
