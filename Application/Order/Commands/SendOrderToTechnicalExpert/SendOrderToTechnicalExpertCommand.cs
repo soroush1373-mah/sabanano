@@ -43,11 +43,12 @@ public class SendOrderToTechnicalExpertCommandHandler : IRequestHandler<SendOrde
     public async Task<long> Handle(SendOrderToTechnicalExpertCommand request, CancellationToken cancellationToken)
     {
         if (_currentUser.UserId is null or <= 0)
-        return 0;
+            return 0;
         var orders = await _repository.TableNoTracking
             .Include(x => x.OrderAnalyzes)
             .OrderByDescending(x => x.Created)
-            .Where(x => x.OrderStatus.Id == OrderStatus.Initial.Id && x.CreatedBy == _currentUser.UserId)            .ToListAsync();
+            .Where(x => x.OrderStatus.Id == OrderStatus.Initial.Id && x.CreatedBy == _currentUser.UserId)            
+            .ToListAsync();
         foreach (var order in orders)
         {
             order.OrderStatus = OrderStatus.SendToTechnicalExpert;
