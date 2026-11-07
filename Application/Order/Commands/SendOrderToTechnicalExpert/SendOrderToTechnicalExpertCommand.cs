@@ -29,21 +29,25 @@ public record SendOrderToTechnicalExpertCommand : BaseRecordDto<SendOrderToTechn
 public class SendOrderToTechnicalExpertCommandHandler : IRequestHandler<SendOrderToTechnicalExpertCommand, long>
 {
     private readonly IRepository<Order> _repository;
+    private readonly ICurrentUserService _currentUser;
 
     public SendOrderToTechnicalExpertCommandHandler(IRepository<Order> repository,
         IMapper mapper,
-        IRepository<AnalyzerDevice> analyzeDeviceRepository)
+        IRepository<AnalyzerDevice> analyzeDeviceRepository,
+        ICurrentUserService currentUser)
     {
         _repository = repository;
+        _currentUser = currentUser;
     }
 
     public async Task<long> Handle(SendOrderToTechnicalExpertCommand request, CancellationToken cancellationToken)
     {
+        if (_currentUser.UserId is null or <= 0)
+        return 0;
         var orders = await _repository.TableNoTracking
             .Include(x => x.OrderAnalyzes)
             .OrderByDescending(x => x.Created)
-            .Where(x => x.OrderStatus.Id == OrderStatus.Initial.Id)
-            .ToListAsync();
+            .Where(x => x.OrderStatus.Id == OrderStatus.Initial.Id && x.CreatedBy == _currentUser.UserId)            .ToListAsync();
         foreach (var order in orders)
         {
             order.OrderStatus = OrderStatus.SendToTechnicalExpert;
