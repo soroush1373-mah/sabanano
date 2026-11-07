@@ -77,29 +77,12 @@ public class HomeController : Controller
     {
        return View();
     }
-    
+
 
     [AllowAnonymous]
     public IActionResult Contact()
     {
     return View();
-    }
-    [HttpPost]
-    [AllowAnonymous]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SendContactMessage(CreateContactUsCommand command)
-    {
-        try
-        {
-            await _mediator.Send(command);
-            TempData["ContactResult"] = "پیام شما با موفقیت ارسال شد.";
-        }
-        catch (CleanArchitecture.Application.Common.Exceptions.ValidationException ex)
-        {
-            TempData["ContactError"] = string.Join(" ", ex.Errors.SelectMany(e => e.Value));
-        }
-
-        return RedirectToAction("Contact");
     }
 
     [HttpPost]
