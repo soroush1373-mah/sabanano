@@ -4,89 +4,198 @@
 @using MediatR
 @using CleanArchitecture.Application.People.Commands.DeleteOrder
 @using Common.Exceptions
+@using CleanArchitecture.Application.People.Commands.UpdateOrder
 @inject IMediator Mediator
 
-@if (error is not null)
-{
-    <div class="alert alert-danger">@error</div>
-}
+<div class="card flex-column col-md-9">
+    <div class="mt-5">
+        @if (error is not null)
+        {
+            <div class="alert alert-danger">@error</div>
+        }
 
-<ul class="list-group list-group-flush">
-    @foreach (var order in Orders)
-    {
-        <li class="list-group-item">
-            <div class="row g-3 align-items-center">
-                <!-- Image Section -->
-                <div class="col-md-3 text-center">
-                    <img src="@order.AnalyzerDevice.MainImage" class="img-fluid rounded" alt="@order.AnalyzerDevice.Name">
-                </div>
+        <ul class="list-group list-group-flush">
+            @foreach (var order in Orders)
+            {
+                <li class="list-group-item">
+                    <div class="row g-3 align-items-center">
+                        <!-- Image Section -->
+                        <div class="col-md-3 text-center">
+                            <img src="@order.AnalyzerDevice.MainImage" class="img-fluid rounded" alt="@order.AnalyzerDevice.Name">
+                        </div>
 
-                <!-- Order Details Section -->
-                <div class="col-md-9">
-                    <div class="card-body">
-                        <div class="row mb-2">
-                            <div class="col-auto text-secondary">نوع آنالیز:</div>
-                            <div class="col-auto">@order.AnalyzerDevice.Name</div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-auto text-secondary">وضعیت سفارش:</div>
-                            <div class="col-auto">@order.OrderStatus.Title</div>
-                        </div>
-                        <!-- Samples Table -->
-                        <div class="row mt-3">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-sm text-center">
-                                    <thead class="table-light">
-                                    <tr>
-                                        <th scope="col">کد نمونه</th>
-                                        <th scope="col">نام نمونه</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach (var analyze in order.Analyzes)
+                        <!-- Order Details Section -->
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-auto text-secondary">نوع آنالیز:</div>
+                                    <div class="col-auto">@order.AnalyzerDevice.Name</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-auto text-secondary">وضعیت سفارش:</div>
+                                    <div class="col-auto">@order.OrderStatus.Title</div>
+                                </div>
+                                <!-- Samples Table -->
+                                <div class="row mt-3">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-sm text-center">
+                                            <thead class="table-light">
+                                            <tr>
+                                                <th scope="col">کد نمونه</th>
+                                                <th scope="col">نام نمونه</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach (var analyze in order.Analyzes)
+                                            {
+                                                <tr>
+                                                    <td>@analyze.TrackingCode</td>
+                                                    <td>@analyze.Name</td>
+                                                </tr>
+                                            }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Action Buttons -->
+                            <div class="row mt-3">
+                                <div class="col-12 d-flex justify-content-start align-items-center gap-2">
+                                    <a class="btn btn-sm btn-primary" href="/RegisterOrder/GetOrder?item=@order.Id&isEdit=true">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    @if (confirmId == order.Id)
                                     {
-                                        <tr>
-                                            <td>@analyze.TrackingCode</td>
-                                            <td>@analyze.Name</td>
-                                        </tr>
+                                        <span class="text-danger small">حذف شود؟</span>
+                                        <button class="btn btn-sm btn-danger" @onclick="() => Delete(order.Id)">بله</button>
+                                        <button class="btn btn-sm btn-secondary" @onclick="() => confirmId = null">خیر</button>
                                     }
-                                    </tbody>
-                                </table>
+                                    else
+                                    {
+                                        <button class="btn btn-sm btn-danger" @onclick="() => confirmId = order.Id">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Action Buttons -->
-                    <div class="row mt-3">
-                        <div class="col-12 d-flex justify-content-start align-items-center gap-2">
-                            <a class="btn btn-sm btn-primary" href="/RegisterOrder/GetOrder?item=@order.Id&isEdit=true">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                            @if (confirmId == order.Id)
-                            {
-                                <span class="text-danger small">حذف شود؟</span>
-                                <button class="btn btn-sm btn-danger" @onclick="() => Delete(order.Id)">بله</button>
-                                <button class="btn btn-sm btn-secondary" @onclick="() => confirmId = null">خیر</button>
-                            }
-                            else
-                            {
-                               
-                            <button class="btn btn-sm btn-danger" @onclick="() => confirmId = order.Id">
-                            <i class="bi bi-trash"></i>
-                            </button>
-                            }
+                </li>
+            }
+        </ul>
 
+        @if (Orders.Count == 0 && !sent)
+        {
+            <p class="text-secondary text-center my-4">سبد خرید شما خالی است</p>
+        }
+    </div>
+</div>
+
+<div class="col-md-3">
+    <div class="card mx-2 d-flex align-items-start pull-right" style="width:100%">
+        <div class="card-body" style="width:100%">
+            <ul style="padding:0" class="d-flex pull-right list-group list-group-flush">
+                <li class="list-group-item"><i class="bi bi-bookmark-check-fill  mx-2"> </i> رعایت استاندارهای آنالیزی </li>
+                <li class="list-group-item"><i class="bi bi-calculator-fill  mx-2"></i> دقت در آنالیزگیری هر آنالیز</li>
+                <li class="list-group-item"><i class="bi-speedometer  mx-2"></i> سرعت در انجام هر آنالیز</li>
+                <li class="list-group-item"><i class="bi bi-file-person-fill  mx-2"></i> پشتیبانی در ساعات کاری</li>
+                <li class="list-group-item">
+                    @if (sent)
+                    {
+                        <div class="alert alert-success text-center mb-0">
+                            <i class="bi bi-check-circle display-6"></i>
+                            <p class="mt-2 mb-0">سفارش شما با موفقیت ثبت شد!</p>
+                            <p class="mb-0">کارشناسان ما در حال بررسی آن هستند.</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <button type="button" style="width:100%" class="btn btn-primary"
+                                disabled="@(Orders.Count == 0 || !accepted)" @onclick="Confirm">
+                            <i class="bi bi-cart-plus-fill d-flex align-items-center">
+                                <span style="text-align: center; width: 100%;" class="mx-3 align-items-center">تایید و تکمیل سفارش</span>
+                            </i>
+                        </button>
+                    }
+                </li>
+                <li class="list-group-item">
+                    <div class="col-12 mt-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="invalidCheck" @bind="accepted">
+                            <label class="form-check-label" for="invalidCheck">
+                                <button type="button" class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#exampleModal1" title="قوانین">
+                                    قوانین
+                                </button>
+                                آزمایشگاه را پذیرفته ام
+                            </label>
                         </div>
                     </div>
-                </div>
-            </div>
-        </li>
-    }
-</ul>
+                    <div class="modal fade" data-aos="none" id="exampleModal1" aria-labelledby="exampleModal1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">قوانین آزمایشگاه</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <ul>
+                                            <li>خدمات آنالیز برای نمونه‌ی دریافت شده انجام می‌گیرد و نمونه‌برداری باید توسط شخص متقاضی آنالیز انجام شود و در غیر این صورت آزمایشگاه هیچ گونه مسئولیتی در قبال تفکیک، نمونه‌برداری و نام نمونه‌ها بر عهده نمی‌گیرد.</li>
+                                            <li>متقاضی متعهد می‌گردد که نمونه رادیواکتیو و انفجاری نمی‌باشد، در غیر این صورت هر گونه خسارت مالی و جانی بر عهده متقاضی آنالیز می‌باشد.</li>
+                                            <li>در صورت بروز حوادث پیش‌بینی نشده، سرویس یا تعمیر دستگاه، زمان پاسخ‌گویی نتایج افزایش می‌یابد.</li>
+                                            <li>انجام آزمون منوط به پرداخت نهایی وجه آزمون می‌باشد.</li>
+                                            <li>نمونه‌ها تا دو ماه پس از انجام آنالیز در آزمایشگاه نگهداری می‌شوند و پس از این زمان، امحا می‌شوند.</li>
+                                            <li>در صورت درخواست عودت نمونه یا صدور فاکتور فیزیکی، هزینه ارسال بر عهده متقاضی می‌باشد.</li>
+                                            <li>عدم حصول نتیجه مورد نظر متقاضی، مسئولیتی را متوجه آزمایشگاه نمی‌سازد.</li>
+                                            <li>حداکثر مسئولیت مالی آزمایشگاه در قبال نگهداری از نمونه‌های تحویل گرفته شده به میزان هزینه آنالیز می‌باشد.</li>
+                                            <li>مدت زمان اعتراض به نتایج ارسال شده تنها یک ماه پس از دریافت نتایج بوده و پس از گذشت این بازه زمانی، آزمایشگاه مسئولیتی در قبال نتایج دریافتی متقاضی بر عهده ندارد.</li>
+                                            <li>متقاضی حداکثر تا 30 روز پس از دریافت نتایج می‌تواند تقاضای فاکتور رسمی به صورت فیزیکی و با مهر و امضا نماید و پس از گذشت بازه زمانی مذکور، آزمایشگاه مسئولیتی در قبال صدور فاکتور را عهده دار نمی‌باشد.</li>
+                                            <li>تمامی درخواست‌ها اعم از دریافت فاکتور، عودت نمونه، درخواست آنالیز مجدد، درخواست آنالیزهای تکمیلی دیگر، اعتراض به نتایج و ...، فقط در صورتی که به صورت کتبی در وب سایت شرکت با پیگیری متقاضی دریافت شود، قابل پیگیری بوده و آزمایشگاه هیچ گونه مسئولیتی در قبال درخواست‌های کلامی و تلفنی را بر عهده نمی‌گیرد.</li>
+                                            <li>آزمایشگاه پس از دریافت هر تعداد نمونه از یک آنالیز مشخص، هیچ گونه مسئولیتی در قبال اطلاع متقاضی از پروسه آنالیزها یا اطلاعات حاوی عدم حصول نتیجه پیش‌بینی شده متقاضی و متوقف کردن آنالیز را برعهده ندارد و این امکان تنها در صورت تقاضای کتبی متقاضی مبنی بر توقف فرآیند آنالیز ممکن خواهد بود.</li>
+                                            <li>آزمایشگاه هیچ گونه مسئولیتی در قبال نتایج دریافت شده متقاضی از یک نمونه یکسان از آزمایشگاه‌های دیگر و عدم تشابه نتایج بر عهده ندارد.</li>
+                                            <li>در صورت پذیرش اعتراض، تکرار آنالیز منوط به پرداخت مجدد هزینه آنالیز و وجود نمونه کافی دریافت شده آزمایشگاه در مرحله پذیرش اولیه است و در صورت تشابه نتایج، هیچ هزینه‌ای عودت نمی‌گردد.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">تایید</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 @code {
     List<OrderBriefDto> Orders = new();
     long? confirmId;   // the order that shows "حذف شود؟" right now
     string? error;
+    bool accepted;     // the "قوانین" checkbox is ticked
+    bool sent;         // the order was sent to the lab
+
+    async Task Confirm()
+    {
+        try
+        {
+            var result = await Mediator.Send(new SendOrderToTechnicalExpertCommand());
+            if (result > 0)
+            {
+                Orders.Clear();   // the orders left the cart
+                sent = true;
+                error = null;
+            }
+            else
+            {
+                error = "ارسال سفارش انجام نشد. لطفا دوباره وارد شوید";
+            }
+        }
+        catch (Exception)
+        {
+            error = "ارسال سفارش انجام نشد. لطفا دوباره تلاش کنید";
+        }
+    }
 
     async Task Delete(long id)
     {
