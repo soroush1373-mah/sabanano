@@ -1,81 +1,72 @@
 @page "/Home/About"
 
-<section id="about" class="about">
-    <div class="container" data-aos="fade-up">
-    <div class="section-header">
-        <h2>درباره ی ما</h2>
-    </div>
-    <div class="row gy-4">
-        <div class="col-lg-6">
-            <img src="/img/MainImage/main5.png"
-                 class="img-fluid"
-                 alt=""
-                 data-aos="zoom-out"
-                 data-aos-delay="100">
-            <p>
-                هدف آزمایشگاه نانو مواد صبا بررسی و تحلیل داده های آنالیزی به صورت دقیق و علمی می باشد که با
-                استفاده از کادری مجرب و با تجربه در زمینه آنالیز مواد، توانسته ایم رضایت متقاضیان را در حد بسیار
-                قابل قبولی ایجاد نماییم. این آزمایشگاه در زمینه آنالیز مواد معدنی با آنالیز های XRD، XRF، AAS و
-                ICP-MS و ICP-OES، در زمینه آنالیز فلزات گرانبها به کمک روش Fire Assay و در زمینه مواد آلی
-                با استفاده از دستگاه FTIR و GC-MS آماده خدمت رسانی می باشد.
-            </p>
-            <p>
-                همچنین با پیشرفت علم نانوتکنولوژی و توسعه و کاربرد آن در صنعت و زندگی روزمره، این آزمایشگاه قادر است
-                رسالت خود را در نانوتکنولوژی با استفاده از آنالیز SEM، TEM، EDX و Mapping به منصه ظهور برساند.
-                همچنین آنالیز های حرارتی TGA و DSC از جمله خدمات این آزمایشگاه می باشند.
-            </p>
-        </div>
-        <div class="col-lg-6">
-            <div class="content ps-0 ps-lg-5">
-                <p>
-                    این آزمایشگاه با فعالیت برجسته در حوزه ساخت دستگاه BET و تعیین استاندارد این آنالیز، یکی از برترین
-                    آزمایشگاه ها در آنالیز BET است. با توجه به تجربه کاری در آنالیز مواد مجهول (ناشناخته) و در حال ساخت
-                    (مهندسی معکوس مواد پیشرفته و پلیمری) با استفاده از دستگاه FTIR و جستجوی کتابخانه ای
-                    BIORAD و KNOWiTAll در شناخت اجزا و افزودنی ها (Additive) در ارائه خدمات آزمایشگاهی به
-                    جامعه علمی کشور اعلام آمادگی می نماییم.
-                    از طرفی با در نظر داشتن نیاز علمی کشور به شناسایی ترکیبات مشکوک در حوزه جرائم و پزشکی قانونی،
-                    همچنین صنعت بیمه، مفتخریم با ارائه کیت های تشخیص مواد انفجاری، مخدر و سموم غذایی به هر چه آسان تر
-                    شدن بخش تحقیقات این سازمان ها کمک شایانی نماییم.
+<link href="/css/nms-about.css" rel="stylesheet" />
+
+<section class="nms-about">
+    <div class="container-xl">
+
+        <!-- Top: photo (right) and the about card (left) -->
+        <div class="nms-about__hero">
+            <div class="nms-about__photo">
+                <img src="/img/MainImage/about-lab.jpg" alt="کارشناس آزمایشگاه در حال کار با پیپت">
+            </div>
+
+            <div class="nms-about__card">
+                <h1 class="nms-about__title">درباره ی ما</h1>
+                <p class="nms-about__text">
+                    این آزمایشگاه با فعالیت برجسته در حوزه ساخت دستگاه BET و تعیین استاندارد این آنالیز، یکی از برترین آزمایشگاه ها در آنالیز BET است. با توجه به تجربه کاری در آنالیز مواد مجهول (ناشناخته) و در حال ساخت (مهندسی معکوس مواد پیشرفته و پلیمری) با استفاده از دستگاه FTIR و جستجوی کتابخانه ای BIORAD و KNOWiTAll در شناخت اجزا و افزودنی ها (Additive) در ارائه خدمات آزمایشگاهی به جامعه علمی کشور اعلام آمادگی می نماییم. از طرفی با در نظر داشتن نیاز علمی کشور به شناسایی ترکیبات مشکوک در حوزه جرائم و پزشکی قانونی، همچنین صنعت بیمه، مفتخریم با ارائه کیت های تشخیص مواد انفجاری، مخدر و سموم غذایی به هر چه آسان تر شدن بخش تحقیقات این سازمان ها کمک شایانی نماییم.
                 </p>
-                <div class="position-relative mt-4">
-                    <img src="/img/MainImage/main8.png"
-                         class="img-fluid rounded-4"
-                         alt="">
+
+                <div class="nms-about__stats">
+                    @foreach (var stat in Stats)
+                    {
+                        <div class="nms-about__stat">
+                            <strong dir="ltr">@stat.Value</strong>
+                            <span>@stat.Title</span>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
-    </div>
-</div>
-</section>
-<section id="stats-counter" class="stats-counter">
-    <div class="container" data-aos="fade-up">
-    <div class="row gy-4 align-items-center">
-        <div class="col-lg-6">
-            <img src="/img/stats-img.svg" alt="" class="img-fluid">
+
+        <p class="nms-about__intro">
+            هدف آزمایشگاه نانو مواد صبا بررسی و تحلیل داده های آنالیزی به صورت دقیق و علمی می باشد که با استفاده از کادری مجرب و با تجربه در زمینه آنالیز مواد، توانسته ایم رضایت متقاضیان را در حد بسیار قابل قبولی ایجاد نماییم. این آزمایشگاه در زمینه آنالیز مواد معدنی با آنالیز های XRD، XRF، AAS و ICP-MS و ICP-OES، در زمینه آنالیز فلزات گرانبها به کمک روش Fire Assay و در زمینه مواد آلی با استفاده از دستگاه FTIR و GC-MS آماده خدمت رسانی می باشد.
+        </p>
+
+        <!-- Customer scores -->
+        <h2 class="nms-about__heading">نتایج ارزیابی مشتری مداری در مراکز عضو شبکه آزمایشگاهی کشور</h2>
+        <p class="nms-about__sub">شاخص های مشتری مداری (10 امتیاز)</p>
+
+        <div class="nms-about__scores">
+            @foreach (var score in Scores)
+            {
+                <div class="nms-about__score">
+                    <i class="bi @score.Icon"></i>
+                    <span>@score.Title</span>
+                    <strong>@score.Value</strong>
+                </div>
+            }
         </div>
-        <div class="col-lg-6">
-            <div class="stats-item d-flex align-items-center">
-                <span data-purecounter-start="0"
-                      data-purecounter-end="550"
-                      data-purecounter-duration="1"
-                      class="purecounter"></span>
-                <p><strong>مشتریان راضی</strong> از آزمایشگاه صبا نانو</p>
-            </div>
-            <div class="stats-item d-flex align-items-center">
-                <span data-purecounter-start="0"
-                      data-purecounter-end="15"
-                      data-purecounter-duration="1"
-                      class="purecounter"></span>
-                <p><strong>دستگاه های</strong> آماده برای آنالیز</p>
-            </div>
-            <div class="stats-item d-flex align-items-center">
-                <span data-purecounter-start="0"
-                      data-purecounter-end="1453"
-                      data-purecounter-duration="1"
-                      class="purecounter"></span>
-                <p><strong>ساعت های پشتیبانی</strong> در آنالیز و شناسایی مواد</p>
-            </div>
-        </div>
+
     </div>
-</div>
 </section>
+
+@code {
+    // One small "box" of data for each item. Change a number here and the page changes.
+    record Item(string Icon, string Title, string Value);
+
+    List<Item> Stats = new()
+    {
+        new("", "مشتریان راضی از آزمایشگاه صبا نانو", "+601"),
+        new("", "رضایت مشتریان", "90.32%"),
+        new("", "دستگاه های آماده برای آنالیز", "12"),
+    };
+
+    List<Item> Scores = new()
+    {
+        new("bi-calendar2-week", "تعهد زمانی", "8.97"),
+        new("bi-clipboard2-data", "کیفیت گزارش به مشتری", "9.05"),
+        new("bi-person-hearts", "شیوه برخورد با مشتری", "9.09"),
+        new("bi-cash-coin", "تناسب تعرفه خدمات", "9.00"),
+    };
+}
