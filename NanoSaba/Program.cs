@@ -67,6 +67,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapBlazorHub();
+app.MapFallbackToController("Host", "Blazor");
 
 app.Run();
 

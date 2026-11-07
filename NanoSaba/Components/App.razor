@@ -1,0 +1,28 @@
+@using Microsoft.AspNetCore.Components.Routing
+@inject NavigationManager Nav
+
+<Router AppAssembly="typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="routeData" />
+    </Found>
+    <NotFound>
+        @if (Nav.Uri == firstUri)
+        {
+            <p class="text-center my-5">صفحه مورد نظر پیدا نشد</p>
+        }
+        else
+        {
+            @* The link goes to an old MVC page, so load it from the server *@
+            <GoToMvc />
+        }
+    </NotFound>
+</Router>
+
+@code {
+    string firstUri = "";   // the address the page was opened with
+
+    protected override void OnInitialized()
+    {
+        firstUri = Nav.Uri;
+    }
+}

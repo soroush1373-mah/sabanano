@@ -77,12 +77,8 @@ public class HomeController : Controller
     {
        return View();
     }
+    
 
-    [AllowAnonymous]
-    public IActionResult About()
-    {
-    return View();
-    }
     [AllowAnonymous]
     public IActionResult Contact()
     {

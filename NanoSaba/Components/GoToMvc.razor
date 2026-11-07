@@ -1,0 +1,10 @@
+@inject NavigationManager Nav
+
+@code {
+    // Blazor doesn't know this page, so ask the server (MVC) for it with a full page load.
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+            Nav.NavigateTo(Nav.Uri, forceLoad: true);
+    }
+}
