@@ -36,7 +36,7 @@
         <div class="nms-header__actions">
             @if (ViewData["HomeHero"] is not true)
             {
-                <a class="btn nms-btn nms-btn--primary" asp-controller="Analysis" asp-action="Index">ثبت سفارش</a>
+                <a class="btn nms-btn nms-btn--primary" href="/Analysis">ثبت سفارش</a>
             }
             @if (!SignInManager.IsSignedIn(User))
             {
@@ -100,7 +100,7 @@
                 </ul>
                 </div>
             }
-            <a class="nms-header__search" asp-controller="Analysis" asp-action="Index" aria-label="جستجوی خدمات آنالیز">
+            <a class="nms-header__search" href="/Analysis" aria-label="جستجوی خدمات آنالیز">
                 <i class="bi bi-search"></i>
             </a>
         </div>
@@ -108,7 +108,7 @@
         <nav id="navbar" class="navbar nms-nav">
             <ul>
                 <li><a asp-controller="Home" asp-action="Index">صفحه اصلی</a></li>
-                <li><a asp-controller="Analysis" asp-action="Index">خدمات آنالیز</a></li>
+                <li><a href="/Analysis">خدمات آنالیز</a></li>
                 <li><a asp-controller="Articles" asp-action="Index">مقالات</a></li>
                 <li><a href="/Home/About">درباره ما</a></li>
                 <li><a asp-controller="Home" asp-action="Contact" class="@(ViewData["ActiveNav"] as string == "Contact" ? "active" : null)">تماس با ما</a></li>
@@ -173,7 +173,7 @@
                     <li><a asp-controller="Articles" asp-action="Index">مقالات آنالیز</a></li>
                     <li><a href="/Home/About">درباره ی ما</a></li>                    
                     <li><a asp-controller="Home" asp-action="Contact" class="@(ViewData["ActiveNav"] as string == "Contact" ? "active" : null)">تماس با ما</a></li>                    
-                    <li><a asp-controller="Analysis" asp-action="Index">خدمات آنالیز</a></li>
+                    <li><a href="/Analysis">خدمات آنالیز</a></li>
                 </ul>
             </div>
 
@@ -181,13 +181,13 @@
             <div class="nms-footer__col nms-footer__links">
                 <h4>خدمات آنالیز</h4>
                 <ul>
-                    <li><a asp-controller="Analysis" asp-action="Index">آنالیز عنصری</a></li>
-                    <li><a asp-controller="Analysis" asp-action="Index">آنالیز تصویر برداری</a></li>
-                    <li><a asp-controller="Analysis" asp-action="Index">آنالیز حرارتی</a></li>
-                    <li><a asp-controller="Analysis" asp-action="Index">کروماتوگرافی</a></li>
-                    <li><a asp-controller="Analysis" asp-action="Index">آنالیز اسپکتروسکوپی</a></li>
-                    <li><a asp-controller="Analysis" asp-action="Index">آنالیز سطح ویژه</a></li>
-                    <li><a asp-controller="Analysis" asp-action="Index">آنالیز سطح سنج</a></li>
+                    <li><a href="/Analysis">آنالیز عنصری</a></li>
+                    <li><a href="/Analysis">آنالیز تصویر برداری</a></li>
+                    <li><a href="/Analysis">آنالیز حرارتی</a></li>
+                    <li><a href="/Analysis">کروماتوگرافی</a></li>
+                    <li><a href="/Analysis">آنالیز اسپکتروسکوپی</a></li>
+                    <li><a href="/Analysis">آنالیز سطح ویژه</a></li>
+                    <li><a href="/Analysis">آنالیز سطح سنج</a></li>
                 </ul>
             </div>
 

@@ -1,0 +1,229 @@
+/*--------------------------------------------------------------
+# Analysis services page (خدمات آنالیز)
+--------------------------------------------------------------*/
+
+/* Dark photo band with the title */
+.nms-analysis-hero {
+  height: 370px;
+  padding: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 10, 25, 0.25) 0%,
+      rgba(0, 10, 25, 0.45) 100%
+    ),
+    url("../img/MainImage/auth-molecule.jpg") center / cover no-repeat;
+}
+
+.nms-analysis-hero__title {
+  margin: 0;
+  padding-top: 80px;
+  color: #fff;
+  font-size: 44px;
+  font-weight: 700;
+}
+
+.nms-analysis {
+  /* main.css gives every section overflow: hidden, which would cut the panel that goes over the photo */
+  overflow: visible;
+  padding: 0 0 100px;
+}
+
+/* The big rounded panel. Its top part sits on the photo */
+.nms-analysis__panel {
+  margin-top: -105px;
+  position: relative;
+  /* see-through on top (over the photo), light grey under it */
+  background: linear-gradient(transparent 105px, #f4f4f4 105px);
+  border-radius: 28px;
+  box-shadow: 0 6px 24px rgba(3, 13, 31, 0.08);
+  overflow: hidden;
+}
+
+.nms-analysis__toolbar {
+  height: 105px;
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  background: rgba(35, 35, 35, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.nms-analysis__search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 340px;
+  max-width: 100%;
+  height: 40px;
+  margin: 0;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: #ececec;
+  border: 1px solid #d9d9d9;
+  color: #777;
+}
+
+.nms-analysis__search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 14px;
+  color: #222;
+}
+
+/* Cards: 4 in a row */
+.nms-analysis__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px 28px;
+  padding: 48px 40px 56px;
+}
+
+.nms-device {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 4px;
+  padding: 14px 24px 22px;
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+
+.nms-device:hover {
+  box-shadow: 0 8px 24px rgba(3, 13, 31, 0.1);
+  transform: translateY(-2px);
+}
+
+.nms-device__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 180px;
+  margin-bottom: 18px;
+}
+
+.nms-device__media img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.nms-device__title {
+  margin: 0 0 6px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #111;
+}
+
+.nms-device__subtitle {
+  flex: 1;
+  margin: 0 0 16px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #555;
+}
+
+.nms-device__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.nms-device__price {
+  font-size: 14px;
+  color: #222;
+}
+
+.nms-device__price bdi {
+  /* English digits, like the Figma design */
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif !important;
+}
+
+.nms-device__price small {
+  display: block;
+  font-size: 12px;
+  color: #555;
+}
+
+.nms-device__more {
+  flex: 0 0 auto;
+  font-size: 22px;
+  line-height: 1;
+  color: #222;
+  transition:
+    color 0.2s,
+    transform 0.2s;
+}
+
+.nms-device__more:hover {
+  color: var(--nms-cyan);
+  transform: translateX(-3px);
+}
+
+.nms-analysis__empty {
+  margin: 0;
+  padding: 0 40px 56px;
+  text-align: center;
+  color: #555;
+}
+
+/* Smaller screens */
+@media (max-width: 1199px) {
+  .nms-analysis__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 991px) {
+  .nms-analysis-hero {
+    height: 280px;
+  }
+
+  .nms-analysis-hero__title {
+    padding-top: 60px;
+    font-size: 34px;
+  }
+
+  .nms-analysis__panel {
+    margin-top: -90px;
+    background: linear-gradient(transparent 90px, #f4f4f4 90px);
+  }
+
+  .nms-analysis__toolbar {
+    height: 90px;
+    padding: 0 24px;
+  }
+
+  .nms-analysis__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 28px 24px 40px;
+  }
+}
+
+@media (max-width: 575px) {
+  .nms-analysis__grid {
+    grid-template-columns: 1fr;
+    padding: 20px 16px 32px;
+  }
+
+  .nms-analysis__toolbar {
+    padding: 0 16px;
+  }
+
+  .nms-analysis__search {
+    width: 100%;
+  }
+}
