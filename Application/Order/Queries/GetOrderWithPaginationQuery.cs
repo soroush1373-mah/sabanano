@@ -67,8 +67,12 @@ public class
     public async Task<PaginatedList<OrderBriefDto>> Handle(GetOrderWithPaginationQuery request,
         CancellationToken cancellationToken)
     {
-        if (!_currentUser.IsInRole("Admin"))
+         if (!_currentUser.IsInRole("Admin"))
         {
+            // Not logged in: show nothing. Before, UserId 0 meant "no filter", so everyone's orders were shown.
+            if (_currentUser.UserId is null or <= 0)
+                return new PaginatedList<OrderBriefDto>(new List<OrderBriefDto>(), 0, (int)request.PageNumber, (int)request.RecordsPerPage);
+
             request.CreatorId = _currentUser.UserId;
         }
 
