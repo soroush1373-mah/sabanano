@@ -5,7 +5,9 @@
     ViewData["ActiveNav"] = "Contact";
 }
 
-<link href="~/css/nms-contact.css" rel="stylesheet" asp-append-version="true">
+@section Styles {
+    <link href="~/css/nms-contact.css" rel="stylesheet" asp-append-version="true">
+}
 
 <!-- Photo band behind the header and the top of the cards -->
 <section class="nms-contact-hero" aria-hidden="true"></section>
