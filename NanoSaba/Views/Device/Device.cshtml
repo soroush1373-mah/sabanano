@@ -1,417 +1,175 @@
-﻿@using CleanArchitecture.Application.Common.Interfaces;
-@using CleanArchitecture.Infrastructure.Identity
-@using CleanArchitecture.Application.PagesDto
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+﻿@using CleanArchitecture.Application.PagesDto
 @model DevicePageDto
-@inject IIdentityService IdentityService
-<div class="breadcrumbs">
-    <nav>
-        <div class="container">
-            <ol>
-                <li>
-                    <a href="../Home/#hero">صفحه ی اصلی</a>
-                </li>
-                <li>خدمات آنالیز</li>
-                <li>@Model.AnalyzerDevice.Name</li>
-            </ol>
-        </div>
-    </nav>
-</div><!-- End Breadcrumbs -->
-<!-- ======= Blog Details Section ======= -->
-<section id="contact" class="contact">
-<div class="container d-flex flex-column align-items-center justify-content-center" data-aos="fade-up">
+@{
+    // "d" is just a short name, so we don't write Model.AnalyzerDevice every time
+    var d = Model.AnalyzerDevice;
 
-<div class="row gx-lg-0 gy-2 col-md-12">
+    // The rows of the معرفی tab: label + value. The loop below draws them.
+    var info = new (string Label, string? Value)[]
+    {
+        ("اسم", d.Name),
+        ("اسم کامل", d.FullName),
+        ("اسم فارسی", d.PersianName),
+        ("کشور سازنده", d.Country),
+        ("شرکت سازنده", d.CompanyName),
+        ("مدل", d.Model),
+        ("مقدار مورد نیاز از نمونه", d.RequirementSample),
+        ("نوع پذیرش نمونه", d.Sample),
+    };
 
-<div class="flex-column col-md-4">
+    var hasResponses = d.Responses is { Count: > 0 };
+    var hasDiscount = d.DiscountPercent is not null && d.DiscountPercent != 0;
+}
 
-    <div id="carouselExampleCaptions" class="carousel slide">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="@Model.AnalyzerDevice?.MainImage" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="@Model.AnalyzerDevice?.MainImage" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="@Model.AnalyzerDevice?.MainImage" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                </div>
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
+<section class="nms-device">
+    <div class="container">
+        <div class="nms-device__grid">
 
-</div>
-
-<div class="flex-column  col-md-5">
-
-    <div class="container" style="height:100%">
-        <!-- Stack the columns on mobile by making one full-width and the other half-width -->
-        <nav>
-            <div class="row red">
-                <h4 class="fw-semibold mx-2 mt-2">آنالیز @Model.AnalyzerDevice.Name</h4>
+            <!-- Right: device photo -->
+            <div class="nms-device__photo">
+                <img src="@d.MainImage" alt="دستگاه @d.Name">
             </div>
 
-            <div class="nav nav-tabs mt-2" id="nav-tab" role="tablist">
-                <a class="nav-link active" id="nav-info-tab" data-bs-toggle="tab" href="#nav-info" role="tab" aria-controls="nav-info" aria-selected="true">معرفی</a>
-                <a class="nav-link" id="nav-attribute-tab" data-bs-toggle="tab" href="#nav-attribute" role="tab" aria-controls="nav-attribute" aria-selected="false">مشخصات</a>
-                <a class="nav-link" id="nav-service-tab" data-bs-toggle="tab" href="#nav-service" role="tab" aria-controls="nav-service" aria-selected="false">خدمات</a>
-                @if (Model.AnalyzerDevice.Attributes is { Count: > 0 })
-                {
-                    <a class="nav-link" id="nav-attributes-tab" data-bs-toggle="tab" href="#nav-attributes" role="tab" aria-controls="nav-attributes" aria-selected="false">ویژگی ها</a>
-                }
+            <!-- Middle: title, tabs and the details -->
+            <div class="nms-device__main">
+                <h1 class="nms-device__title">آنالیز @d.Name</h1>
 
+                <div class="nms-device__tabs" role="tablist">
+                    <button class="nms-device__tab active" type="button" data-bs-toggle="tab" data-bs-target="#tab-info" role="tab">معرفی</button>
+                    <button class="nms-device__tab" type="button" data-bs-toggle="tab" data-bs-target="#tab-attribute" role="tab">مشخصات</button>
+                    <button class="nms-device__tab" type="button" data-bs-toggle="tab" data-bs-target="#tab-service" role="tab">خدمات</button>
+                    @if (d.Attributes is { Count: > 0 })
+                    {
+                        <button class="nms-device__tab" type="button" data-bs-toggle="tab" data-bs-target="#tab-attributes" role="tab">ویژگی ها</button>
+                    }
+                </div>
 
-            </div>
-        </nav>
-
-        <div class="tab-content mt-4" id="nav-tabContent">
-            <div class="tab-pane fade show active mt-2" id="nav-info" role="tabpanel" aria-labelledby="nav-info-tab">
-
-
-                <div class="row mt-2">
-                    <div class="col-auto">
-                        <label class="form-check-label text-secondary">اسم:</label>
-                    </div>
-                    <div class="col-auto">
-                        @Model.AnalyzerDevice.Name
-                    </div>
-                </div>
-                <div class="row  mt-2">
-                    <div class="col-auto">
-                        <label class="form-check-label text-secondary">اسم کامل:</label>
-                    </div>
-                    <div class="col-auto">
-                        @Model.AnalyzerDevice.FullName
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-auto">
-                        <label class="form-check-label text-secondary">اسم فارسی:</label>
-                    </div>
-                    <div class="col-auto">
-                        @Model.AnalyzerDevice.PersianName
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-auto">
-                        <label class="form-check-label text-secondary">کشور سازنده:</label>
-                    </div>
-                    <div class="col-auto">
-                        @Model.AnalyzerDevice.Country
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-auto">
-                        <label class="form-check-label text-secondary">شرکت سازنده:</label>
-                    </div>
-                    <div class="col-auto">
-                        @Model.AnalyzerDevice.CompanyName
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-auto ">
-                        <label class="form-check-label text-secondary">مدل:</label>
-                    </div>
-                    <div class="col-auto">
-                        @Model.AnalyzerDevice.Model
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-auto">
-                        <label class="form-check-label text-secondary">مقدار مورد نیاز از نمونه:</label>
-                    </div>
-                    <div class="col-auto">
-                        @Model.AnalyzerDevice.RequirementSample
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-auto">
-                        <label class="form-check-label text-secondary">نوع پذیرش نمونه:</label>
-                    </div>
-                    <div class="col-auto">
-                        @Model.AnalyzerDevice.Sample
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="nav-attribute" role="tabpanel" aria-labelledby="nav-attribute-tab">
-                @* <div class="row mt-2">
-                                <div class="col-auto">
-                                <label class="form-check-label text-secondary">شرایط نگه داری:</label>
-                                </div>
-                                <div class="col-auto">
-                                @Model.AnalyzerDevice.MaintenanceCondition
-                                </div>
-                                </div>*@
-                <div class="row mt-2">
-                    <div class="col-auto">
-                        <label class="form-check-label text-secondary">توضیحات آماده سازی:</label>
-                    </div>
-                    <div class="col-auto">
-                        @Model.AnalyzerDevice.DescriptionForReadyAnalyze
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-auto">
-                        <label class="form-check-label text-secondary">کاربرد:</label>
-                    </div>
-                    <div class="col-auto">
-                        @Model.AnalyzerDevice.Usage
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="nav-service" role="tabpanel" aria-labelledby="nav-service-tab">
-                @foreach (var item in Model.AnalyzerDevice.Services)
-                {
-                    <div class="row mt-2">
-
-                        <div class="col-auto">
-                            <label class="form-check-label text-secondary">@item.Title</label>
-                        </div>
-                        <div class="col-auto">
-                            @item.Description
-                        </div>
-                        @if (item.Price is not null)
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="tab-info" role="tabpanel">
+                        @foreach (var row in info)
                         {
-                            <div class="col-auto">
-                                <label class="form-check-label text-secondary">قیمت: </label>
-                                @String.Format("{0:N0}", item.Price) ریال
+                            <div class="nms-device__row">
+                                <span class="nms-device__label">@row.Label:</span>
+                                <span>@row.Value</span>
                             </div>
                         }
                     </div>
+
+                    <div class="tab-pane fade" id="tab-attribute" role="tabpanel">
+                        <div class="nms-device__row">
+                            <span class="nms-device__label">توضیحات آماده سازی:</span>
+                            <span>@d.DescriptionForReadyAnalyze</span>
+                        </div>
+                        <div class="nms-device__row">
+                            <span class="nms-device__label">کاربرد:</span>
+                            <span>@d.Usage</span>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="tab-service" role="tabpanel">
+                        @foreach (var item in d.Services)
+                        {
+                            <div class="nms-device__row">
+                                <span class="nms-device__label">@item.Title</span>
+                                <span>@item.Description</span>
+                                @if (item.Price is not null)
+                                {
+                                    <span class="nms-device__label">قیمت:</span>
+                                    <span>@String.Format("{0:N0}", item.Price) ریال</span>
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    @if (d.Attributes is { Count: > 0 })
+                    {
+                        <div class="tab-pane fade" id="tab-attributes" role="tabpanel">
+                            @foreach (var item in d.Attributes)
+                            {
+                                <div class="nms-device__row">
+                                    <span class="nms-device__label">@item.Title</span>
+                                    <span>@item.Description</span>
+                                </div>
+                                foreach (var detail in item.Details)
+                                {
+                                    <p class="nms-device__detail"><b>&#9642; @detail.Title</b><br>@detail.Description</p>
+                                }
+                            }
+                        </div>
+                    }
+                </div>
+
+                @if (hasResponses)
+                {
+                    <!-- Bootstrap "collapse": clicking opens/closes #nms-responses. No extra JavaScript needed. -->
+                    <button class="nms-device__more collapsed" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#nms-responses"
+                            aria-expanded="false" aria-controls="nms-responses">
+                        مشاهده فرمت پاسخگویی
+                        <i class="bi bi-arrow-left"></i>
+                    </button>
                 }
             </div>
-            @if (Model.AnalyzerDevice.Attributes is { Count: > 0 })
-            {
-                <div class="tab-pane fade" id="nav-attributes" role="tabpanel" aria-labelledby="nav-attributes-tab">
-                    @foreach (var item in Model.AnalyzerDevice.Attributes)
+
+            <!-- Left: features, price, order button -->
+            <aside class="nms-device__card">
+                <ul class="nms-device__features">
+                    <li><i class="bi bi-journal-check"></i> رعایت استانداردهای آنالیزی</li>
+                    <li><i class="bi bi-bullseye"></i> دقت در آنالیزگیری هر آنالیز</li>
+                    <li><i class="bi bi-speedometer2"></i> سرعت در انجام هر آنالیز</li>
+                    <li><i class="bi bi-headset"></i> پشتیبانی در ساعات کاری</li>
+                </ul>
+
+                <div class="nms-device__price">
+                    <span class="nms-device__price-label">قیمت:</span>
+                    <bdi>@String.Format("{0:N0}", d.PriceWithDiscount)</bdi> ریال
+                    @if (hasDiscount)
                     {
-                        <div class="col-auto">
-                            <label class="form-check-label text-secondary">@item.Title</label>
+                        <div class="nms-device__discount">
+                            <span class="badge bg-danger rounded-pill">@d.DiscountPercent٪</span>
+                            <del><bdi>@String.Format("{0:N0}", d.Price)</bdi></del>
                         </div>
-                        <div class="col-auto">
-                            @item.Description
-                        </div>
-                        foreach (var detail in item.Details)
+                    }
+                </div>
+
+                <a class="nms-device__order" href="@Url.Action("Index", "RegisterOrder", new { myParams = d.Name })">
+                    <i class="bi bi-cart-plus"></i>
+                    <span>ثبت سفارش</span>
+                </a>
+
+                @if (!string.IsNullOrEmpty(d.RegisterForm))
+                {
+                    <a class="nms-device__download" href="@d.RegisterForm" target="_blank">دانلود فرم آنالیز</a>
+                }
+            </aside>
+        </div>
+
+        @if (hasResponses)
+        {
+            <!-- فرمت پاسخگویی: hidden until the button above is clicked -->
+            <div class="collapse" id="nms-responses">
+                <div class="nms-device__responses">
+                    <h2 class="nms-device__responses-title">فرمت پاسخگویی</h2>
+
+                    @foreach (var item in d.Responses.Where(x => x.ImageId is null))
+                    {
+                        <p><b>&#9642; @item.Description</b></p>
+                    }
+
+                    @foreach (var item in d.Responses.Where(x => x.ImageId is not null))
+                    {
+                        if (!string.IsNullOrEmpty(item.Title))
                         {
-                            <div class="contrainer mt-2 ml-4">
-                                <div class="col-auto">
-                                    <p>
-                                        <b> &#9642; @detail.Title</b>
-                                    </p>
-                                    <p> @detail.Description</p>
-                                </div>
-                            </div>
+                            <h3>@item.Title</h3>
+                        }
+                        <img src="@item.ImageUrl" class="img-fluid" alt="@item.Title" loading="lazy">
+                        if (!string.IsNullOrEmpty(item.Description))
+                        {
+                            <p>&#9642; @item.Description</p>
                         }
                     }
                 </div>
-            }
-
-        </div>
+            </div>
+        }
     </div>
-</div>
-
-<div class=" col-md-3">
-    <div class="card d-flex align-items-start pull-right " style="width:100%">
-        <div class="card-body" style="width:100%">
-            <ul style="padding:0" class="d-flex pull-right list-group list-group-flush">
-                <li class="list-group-item"><i class="bi bi-bookmark-check-fill  mx-2"> </i> رعایت استاندارهای آنالیزی </li>
-                <li class="list-group-item"><i class="bi bi-calculator-fill  mx-2"></i> دقت در آنالیزگیری هر آنالیز</li>
-                <li class="list-group-item"><i class="bi-speedometer  mx-2"></i> سرعت در انجام هر آنالیز</li>
-                <li class="list-group-item"><i class="bi bi-file-person-fill  mx-2"></i> پشتیبانی در ساعات کاری</li>
-                <li class="list-group-item">
-                    <div class="row mt-2">
-                        <div class="col-md-8">
-                            <div class="col-auto">
-                                <label class="form-check-label text-secondary">قیمت: </label>
-                                @String.Format("{0:N0}", @Model?.AnalyzerDevice?.PriceWithDiscount) ریال
-                            </div>
-                        </div>
-                        @if (Model?.AnalyzerDevice?.DiscountPercent is not null && Model?.AnalyzerDevice?.DiscountPercent != 0)
-                        {
-                            <div class="col-md-4">
-                                <span class="badge bg-danger rounded-pill">@Model?.AnalyzerDevice?.DiscountPercent ٪</span>
-                                <div class="col-auto">
-                                    <label class="form-check-label text-secondary">قیمت: </label>
-                                    @String.Format("{0:N0}", @Model?.AnalyzerDevice?.PriceWithDiscount) ریال
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </li>
-                <li class="list-group-item">
-                   <button  onclick="window.location.href='@Url.ActionLink("Index", "RegisterOrder", new { myParams = Model.AnalyzerDevice.Name })'"
-                           type="button" style="width:100%" class="btn btn-primary">
-                       <i class="bi bi-cart-plus-fill d-flex align-items-center">
-                           <span style="text-align: center; width: 100%;" class="mx-3 align-items-center">ثبت سفارش</span>
-                       </i>
-                   </button>
-                </li>   
-                <li class="list-group-item">
-                    @*          <button type="button" style="width:100%" class="btn btn-primary">
-                                    <i class="bi bi-cloud-download-fill d-flex align-items-center "><span style="text-align: center; width: 100%; " class="mx-3 align-items-center">دانلود فرم آنالیز</span></i>
-                                    @*<a href="@Model?.AnalyzerDevice?.RegisterForm" target="_blank" class="stretched-link" />*@
-                    @*<a href="@Model.AnalyzerDevice.RegisterForm" class="stretched-link" />
-                                    </button>
-                                    *@
-                    <a style="width:100%" class="mx-5" href="@Model.AnalyzerDevice.RegisterForm" target="_blank" class="stretched-link">دانلود فرم آنالیز</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-</div>
-
-
-</div>
 </section>
-
-@if (Model.AnalyzerDevice.Responses is { Count: > 0 })
-{
-    <section id="recent-posts" class="recent-posts sections-bg mt-5">
-        <div class="container" data-aos="fade-up">
-
-            <div class="section-header">
-                <h2>فرمت پاسخگویی</h2>
-            </div>
-            @foreach (var item in Model.AnalyzerDevice.Responses.Where(x => x.ImageId is null))
-            {
-                <p>
-                    <b> &#9642; @item.Description</b>
-                </p>
-            }
-
-            @{
-                var FirstresponseWithImage = Model.AnalyzerDevice.Responses.Where(x => x.ImageId is not null).FirstOrDefault();
-                if (!string.IsNullOrEmpty(FirstresponseWithImage?.Title))
-                {
-                    <h3 class="mt-4">@FirstresponseWithImage?.Title</h3>
-                }
-
-                <img src="@FirstresponseWithImage?.ImageUrl" class="img-fluid mt-4" alt=""/>
-                if (!string.IsNullOrEmpty(FirstresponseWithImage?.Description))
-                {
-                    <p>
-                        <b> &#9642; @FirstresponseWithImage?.Description</b>
-                    </p>
-                }
-            }
-
-            <div class="row">
-                <a href="#collapse" class="nav-toggle mt-4">بیشتر</a>
-            </div>
-
-
-            <div id="collapse" style="display:none">
-                @{
-                    var listOfItems = Model.AnalyzerDevice.Responses.Where(x => x.ImageId is not null).ToList();
-                    @for (int i = 1; i < listOfItems.Count(); i++)
-                    {
-                        if (!string.IsNullOrEmpty(listOfItems[i].Title))
-                        {
-                            <h3 class="mt-4">@listOfItems[i].Title</h3>
-                        }
-
-                        <img src="@listOfItems[i].ImageUrl" class="img-fluid mt-4" alt=""/>
-
-                        if (!string.IsNullOrEmpty(listOfItems[i].Description))
-                        {
-                            <p> &#9642; @listOfItems[i].Description</p>
-                        }
-                    }
-                }
-            </div>
-        </div>
-
-    </section>
-
-    <!-- End Recent Blog Posts Section -->
-}
-
-
-<section id="recent-posts" class="recent-posts sections-bg">
-    <div class="container" data-aos="fade-up">
-
-        <div class="section-header">
-            <h2>مقالات پیشنهادی</h2>
-            <p>بخش مقالات، محلی است که مطالبی در زمینه شیمی و علوم مرتبط با آن به صورت مقاله منتشر می‌شود. این بخش می‌تواند برای افزایش دانش و آگاهی عمومی در زمینه شیمی، همچنین بهبود روند تحقیقات و توسعه در این حوزه مفید باشد.</p>
-        </div>
-
-        <div class="row gy-4">
-
-            @if (Model?.Articles is { Count: > 0 })
-            {
-                @foreach (var item in Model?.Articles)
-                {
-                    <div class="col-xl-4 col-md-6">
-                        <article>
-
-                            <div class="post-img d-flex justify-content-center">
-                                <img src="@item.ImageUrl" class=" img-fluid rounded-4" alt=""/>
-                            </div>
-
-                            <p class="post-category">@item.CategoryTitle</p>
-
-                            <h2 class="title">
-                                <a href="blog-details.html">
-                                    @Html.ActionLink(@item.Name, "ArticleById", "Article", new { myParams = item.Id }, null)
-                                </a>
-                            </h2>
-
-                            <div class="d-flex align-items-center">
-                                <div class="post-meta">
-                                    <p class="post-author"> @IdentityService.GetUserName(Convert.ToInt64(item.CreatedBy))</p>
-                                    <p class="post-date">
-                                        <time>@item.Created</time>
-                                    </p>
-                                </div>
-                            </div>
-
-                        </article>
-                    </div>
-                }
-            }
-        </div><!-- End recent posts list -->
-
-    </div>
-</section><!-- End Recent Blog Posts Section -->
-
-@section Scripts {
-    <script>
-        // "بیشتر / کمتر" button: shows or hides the long text
-        $(document).ready(function () {
-            $('.nav-toggle').click(function (e) {
-                e.preventDefault();
-                var collapse_content_selector = $(this).attr('href');
-                var toggle_switch = $(this);
-                $(collapse_content_selector).toggle(function () {
-                    if ($(this).css('display') == 'none') {
-                        toggle_switch.html('بیشتر');
-                    } else {
-                        toggle_switch.html('کمتر');
-                    }
-                });
-            });
-        });
-    </script>
-}

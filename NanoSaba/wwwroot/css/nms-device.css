@@ -1,0 +1,231 @@
+/*--------------------------------------------------------------
+# Device page (one analysis device, for example آنالیز TEM)
+--------------------------------------------------------------*/
+.nms-device {
+  --nms-device-blue: #1d4ed8;
+  padding: 40px 0 70px;
+  background: #fff;
+  color: #0f172a;
+}
+
+/* 3 columns. The page is RTL, so the first column (photo) is on the right */
+.nms-device__grid {
+  display: grid;
+  grid-template-columns: 330px 1fr 290px;
+  gap: 40px;
+  align-items: start;
+}
+
+/* Photo and card start at the tabs line, under the title */
+.nms-device__photo,
+.nms-device__card {
+  margin-top: 85px;
+}
+
+.nms-device__photo img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.nms-device__title {
+  margin: 0 0 22px;
+  color: var(--nms-device-blue);
+  font-size: 28px;
+  font-weight: 700;
+}
+
+/* Tabs: plain words with a grey line under them */
+.nms-device__tabs {
+  display: flex;
+  gap: 32px;
+  border-bottom: 2px solid #d9d9d9;
+  margin-bottom: 26px;
+}
+
+.nms-device__tab {
+  background: none;
+  border: 0;
+  padding: 0 0 10px;
+  margin-bottom: -2px;
+  border-bottom: 2px solid transparent;
+  color: #9aa1ad;
+  font-size: 16px;
+}
+
+.nms-device__tab.active {
+  color: #0f172a;
+  font-weight: 600;
+  border-bottom-color: #0f172a;
+}
+
+/* One "label: value" row */
+.nms-device__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin-bottom: 16px;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.nms-device__label {
+  color: #5b6475;
+}
+
+.nms-device__detail {
+  margin: 0 16px 12px 0;
+}
+
+/* "مشاهده فرمت پاسخگویی" button with the arrow */
+.nms-device__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 30px;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--nms-device-blue);
+  font-size: 18px;
+}
+
+.nms-device__more i {
+  font-size: 22px;
+  transition: transform 0.25s;
+}
+
+/* When the box is open, the arrow points down */
+.nms-device__more:not(.collapsed) i {
+  transform: rotate(-90deg);
+}
+
+/* Left card */
+.nms-device__card {
+  border: 1px solid #cfd8e6;
+  border-radius: 16px;
+  padding: 24px 20px 20px;
+}
+
+.nms-device__features {
+  list-style: none;
+  margin: 0 0 28px;
+  padding: 0;
+}
+
+.nms-device__features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 15px;
+}
+
+.nms-device__features i {
+  font-size: 20px;
+}
+
+.nms-device__price {
+  margin-bottom: 18px;
+  font-size: 20px;
+}
+
+.nms-device__price bdi {
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+}
+
+.nms-device__discount {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #9aa1ad;
+}
+
+.nms-device__order {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--nms-device-blue);
+  color: #fff;
+  font-size: 17px;
+}
+
+.nms-device__order:hover {
+  color: #fff;
+  filter: brightness(1.1);
+}
+
+.nms-device__order i {
+  font-size: 22px;
+}
+
+.nms-device__download {
+  display: block;
+  margin-top: 14px;
+  text-align: center;
+  color: var(--nms-device-blue);
+  font-size: 17px;
+}
+
+/* فرمت پاسخگویی box under the page */
+.nms-device__responses {
+  margin-top: 50px;
+  padding: 32px;
+  border-radius: 16px;
+  background: #f6f9fc;
+}
+
+.nms-device__responses-title {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.nms-device__responses h3 {
+  margin-top: 24px;
+  font-size: 18px;
+}
+
+.nms-device__responses img {
+  margin: 12px 0;
+  border-radius: 8px;
+}
+
+/* Tablet: card goes under the details */
+@media (max-width: 1199px) {
+  .nms-device__grid {
+    grid-template-columns: 280px 1fr;
+  }
+  .nms-device__card {
+    grid-column: 1 / -1;
+    margin-top: 0;
+    max-width: 420px;
+  }
+}
+
+/* Phone: one column */
+@media (max-width: 767px) {
+  .nms-device__grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .nms-device__photo {
+    margin-top: 0;
+    max-width: 320px;
+    margin-inline: auto;
+  }
+  .nms-device__tabs {
+    gap: 20px;
+  }
+  .nms-device__responses {
+    padding: 20px;
+  }
+}
