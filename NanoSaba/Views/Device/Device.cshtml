@@ -400,7 +400,8 @@
     <script>
         // "بیشتر / کمتر" button: shows or hides the long text
         $(document).ready(function () {
-            $('.nav-toggle').click(function () {
+            e.preventDefault();
+            $('.nav-toggle').click(function (e) {
                 var collapse_content_selector = $(this).attr('href');
                 var toggle_switch = $(this);
                 $(collapse_content_selector).toggle(function () {
