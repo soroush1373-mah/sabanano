@@ -16,9 +16,9 @@
         <ul class="nms-articles__list">
             @foreach (var article in Articles ?? new())
             {
-                var excerpt = article.ArticleDetails?.FirstOrDefault(d => !string.IsNullOrWhiteSpace(d.Paragraph))?.Paragraph ?? "";
-                if (excerpt.Length > 220)
-                {
+               var excerpt = article.Excerpt ?? "";                
+               if (excerpt.Length > 220)
+              {
                     excerpt = excerpt.Substring(0, 220) + "…";
                 }
                 <li class="nms-article">

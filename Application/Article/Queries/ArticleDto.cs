@@ -16,13 +16,18 @@ public class ArticleDto : BaseAuditableDto<ArticleDto, Article, int>
     public string ImageUrl { get; set; }
     public string HeaderName { get; set; }
     public string CategoryTitle { get; set; }
+    public string? Excerpt { get; set; }   // only the first paragraph, for the small cards
     public List<ArticleDetailDto> ArticleDetails { get; set; }
     public List<ArticleCommentListDto> ArticleComments { get; set; }
     public override void CustomMappings(IMappingExpression<Article, ArticleDto> mapping)
     {
         mapping.ForMember(dest => dest.ImageUrl, conf => conf.MapFrom(src => "../img/article/" + src.Image.FileName));
         mapping.ForMember(dest => dest.CategoryTitle, conf => conf.MapFrom(src =>  src.Category.Title));
-        mapping.ForMember(dest => dest.ArticleDetails, conf => conf.MapFrom(src =>  src.ArticleDetails.OrderBy(x=>x.OrderBy)));
+        // ExplicitExpansion = don't load these lists unless the query asks for them (only the single article page does)
+        mapping.ForMember(dest => dest.ArticleDetails, conf => { conf.MapFrom(src => src.ArticleDetails.OrderBy(x => x.OrderBy)); conf.ExplicitExpansion(); });
+        mapping.ForMember(dest => dest.ArticleComments, conf => conf.ExplicitExpansion());
+        // The database sends only the first paragraph that is not empty
+        mapping.ForMember(dest => dest.Excerpt, conf => conf.MapFrom(src => src.ArticleDetails.OrderBy(x => x.OrderBy).Select(x => x.Paragraph).Where(p => p != null && p != "").FirstOrDefault()));
     }
 }
 
