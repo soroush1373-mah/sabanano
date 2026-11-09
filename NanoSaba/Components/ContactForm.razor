@@ -1,0 +1,91 @@
+@using MediatR
+@using CleanArchitecture.Application.ContactMessages.Commands.CreateContactUs
+@using CleanArchitecture.Application.Common.Exceptions
+@inject IMediator Mediator
+
+@if (sent)
+{
+    <div class="alert alert-success">پیام شما با موفقیت ارسال شد.</div>
+}
+@if (error is not null)
+{
+    <div class="alert alert-danger">@error</div>
+}
+
+<form @onsubmit="Send">
+    <div class="nms-contact-form__row">
+        <div class="nms-field">
+            <label for="contactName">نام و نام خانوادگی</label>
+            <input id="contactName" type="text" placeholder="نام و نام خانوادگی خود را وارد کنید."
+                   class="@(ErrorFor("Name") is null ? "" : "is-invalid")"
+                   @bind="form.Name">
+            <small class="nms-field__error">@ErrorFor("Name")</small>
+        </div>
+        <div class="nms-field">
+            <label for="contactMobile">شماره موبایل</label>
+            <input id="contactMobile" type="tel" inputmode="numeric" maxlength="11"
+                   placeholder="شماره موبایل خود را وارد کنید."
+                   class="@(ErrorFor("Mobile") is null ? "" : "is-invalid")"
+                   @bind="form.Mobile" @bind:event="oninput" @bind:after="CleanMobile">
+            <small class="nms-field__error">@ErrorFor("Mobile")</small>
+        </div>
+    </div>
+    <div class="nms-field">
+        <label for="contactMessage">پیام خود را بنویسید</label>
+        <textarea id="contactMessage" rows="5" placeholder="پیام خود را بنویسید" @bind="form.Note"></textarea>
+    </div>
+    <button type="submit" class="nms-contact-form__submit" disabled="@busy">
+        @(busy ? "در حال ارسال..." : "ارسال پیام")
+    </button>
+</form>
+
+@code {
+    // What the user types goes straight into the command (thanks to @bind).
+    CreateContactUsCommand form = new();
+
+    // Errors from the validator, by field name: "Name" -> "لطفا نام خود را وارد کنید."
+    Dictionary<string, string[]> errors = new();
+
+    bool sent;      // show the green message
+    bool busy;      // the button is waiting for the server
+    string? error;  // a problem that is not about one field
+
+    string? ErrorFor(string field) =>
+        errors.TryGetValue(field, out var messages) ? messages.FirstOrDefault() : null;
+
+    // Runs after each key in the mobile box: Persian digits -> English, only numbers, max 11.
+    void CleanMobile()
+    {
+        form.Mobile = new string(form.Mobile
+            .Select(c => c >= '۰' && c <= '۹' ? (char)('0' + (c - '۰')) : c)
+            .Where(char.IsAsciiDigit)
+            .Take(11)
+            .ToArray());
+    }
+
+    async Task Send()
+    {
+        busy = true;
+        sent = false;
+        error = null;
+        errors = new();
+
+        try
+        {
+            // The same rules as before (CreateContactUsCommandValidator) check the form here.
+            await Mediator.Send(form);
+            sent = true;
+            form = new();   // empty the form
+        }
+        catch (ValidationException ex)
+        {
+            errors = new Dictionary<string, string[]>(ex.Errors);
+        }
+        catch (Exception)
+        {
+            error = "ارسال پیام انجام نشد. لطفا دوباره تلاش کنید";
+        }
+
+        busy = false;
+    }
+}

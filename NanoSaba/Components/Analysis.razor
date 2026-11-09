@@ -1,0 +1,99 @@
+@page "/Analysis"
+@page "/Analysis/Index"
+
+<!-- Dark photo band with the page title -->
+<section class="nms-analysis-hero">
+    <div class="container-xl">
+        <h1 class="nms-analysis-hero__title">خدمات آنالیز</h1>
+    </div>
+</section>
+
+<section class="nms-analysis">
+    <div class="container-xl">
+        <div class="nms-analysis__panel">
+
+            <!-- Search: filters the cards while you type -->
+            <div class="nms-analysis__toolbar">
+                <label class="nms-analysis__search">
+                    <i class="bi bi-search"></i>
+                    <input type="search" placeholder="جستجو" aria-label="جستجوی آنالیز"
+                           @bind="search" @bind:event="oninput">
+                </label>
+            </div>
+
+            <div class="nms-analysis__grid">
+                @foreach (var device in Filtered)
+                {
+                    var detailsUrl = $"/Device/DeviceById?myParams={Uri.EscapeDataString(device.Code)}";
+
+                    <article class="nms-device">
+                        <a class="nms-device__media" href="@detailsUrl">
+                            <img src="@device.Image" alt="دستگاه @device.Code" loading="lazy">
+                        </a>
+                        <h2 class="nms-device__title">آنالیز <span dir="ltr">@device.Code</span></h2>
+                        <p class="nms-device__subtitle">@device.Subtitle</p>
+                        <div class="nms-device__footer">
+                            <div class="nms-device__price">
+                                قیمت: <bdi dir="ltr">@device.Price</bdi> ریال
+                                @if (device.Note is not null)
+                                {
+                                    <small>@device.Note</small>
+                                }
+                            </div>
+                            <a class="nms-device__more" href="@detailsUrl" aria-label="جزئیات آنالیز @device.Code">
+                                <i class="bi bi-arrow-left"></i>
+                            </a>
+                        </div>
+                    </article>
+                }
+            </div>
+
+            @if (!Filtered.Any())
+            {
+                <p class="nms-analysis__empty">آنالیزی با این نام پیدا نشد.</p>
+            }
+
+        </div>
+    </div>
+</section>
+
+@code {
+    // What is typed in the search box (@bind keeps it up to date on every key).
+    string search = "";
+
+    // Each card: code (also used in the details link), subtitle, picture, price, and an optional small note.
+    record Device(string Code, string Subtitle, string Image, string Price, string? Note = null);
+
+    const string PerMinute = "بر اساس دقیقه محاسبه میشود.";
+
+    // Same order as the Figma design (right to left, row by row).
+    List<Device> Devices = new()
+    {
+        new("TEM", "میکروسکوپ الکترونی عبوری", "/img/TEM.png", "65,000,000"),
+        new("BET", "آنالیز سطح سنجی به روش ایزوترم جذب و واجذب گاز نیتروژن (N2)", "/img/BET.png", "13,000,000"),
+        new("ICP-MS", "آنالیز طیف سنجی جرمی پلاسمای جفت شده القایی", "/img/ICP-MS.jpg", "10,000,000"),
+        new("XRD", "آنالیز طیف سنجی پراش پرتو ایکس", "/img/XRD.png", "1,200,000"),
+
+        new("XRF", "آنالیز فلورسانس اشعه ایکس", "/img/XRF.png", "1,600,000"),
+        new("SEM", "آنالیز میکروسکوپ الکترونی روبشی", "/img/SEM.png", "20,000,000"),
+        new("ICP-OES", "آنالیز طیف سنجی نشری پلاسمای جفت شده القایی", "/img/ICP-OES.png", "5,500,000"),
+        new("FTIR", "آنالیز طیف سنجی تبدیل فوریه مادون قرمز", "/img/FTIR.png", "8,500,000"),
+
+        new("EDX", "آنالیز طیف سنجی پراکندگی انرژی اشعه ایکس", "/img/EDX.png", "10,000,000"),
+        new("ContactAngle", "آنالیز سنجش زاویه تماس", "/img/ContactAngle.png", "8,000,000"),
+        new("UV-Vis", "آنالیز طیف‌سنجی مرئی-فرابنفش", "/img/UV-VIS.png", "8,000,000"),
+        new("TGA", "آنالیز گرماوزن‌سنجی", "/img/TGA.png", "10,000,000"),
+
+        new("AFM", "آنالیز میکروسکوپ نیروی اتمی", "/img/AFM.png", "13,000,000"),
+        new("Mapping", "", "/img/Mapping.png", "12,000,000"),
+        new("TGA", "آنالیز توزین حرارتی", "/img/TGA.png", "220,000-300,000", PerMinute),
+        new("DSC", "آنالیز گرماسنجی روبشی تفاضلی", "/img/DSC.png", "220,000-300,000", PerMinute),
+    };
+
+    // The cards to show: all of them, or only the ones that match the search.
+    IEnumerable<Device> Filtered =>
+        string.IsNullOrWhiteSpace(search)
+            ? Devices
+            : Devices.Where(d => d.Code.Contains(search.Trim(), StringComparison.OrdinalIgnoreCase)
+                              || d.Subtitle.Contains(search.Trim()));
+}

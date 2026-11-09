@@ -1,0 +1,222 @@
+/*--------------------------------------------------------------
+# About page (درباره ما)
+--------------------------------------------------------------*/
+.nms-aboutus {
+  --about-blue: #1d3fae;
+  --about-navy: #071e4f;
+  --about-card: #efefef;
+  --about-text: #3a3f4a;
+  padding: 64px 0 56px;
+}
+
+/* Top: photo + card side by side (RTL: photo on the right) */
+.nms-aboutus__hero {
+  display: grid;
+  grid-template-columns: 506px 1fr;
+  gap: 32px;
+  align-items: stretch;
+}
+
+.nms-aboutus__photo img {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  object-fit: cover;
+  border-radius: 30px;
+  display: block;
+}
+
+.nms-aboutus__card {
+  position: relative;
+  z-index: 1;
+  background: var(--about-card);
+  border-radius: 30px;
+  padding: 40px 30px 44px 30px;
+}
+
+.nms-aboutus__title {
+  color: var(--about-blue);
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 20px;
+}
+
+.nms-aboutus__text {
+  color: var(--about-text);
+  font-size: 16px;
+  line-height: 1.75;
+  text-align: justify;
+  margin: 0 0 28px;
+}
+
+/* The glass strip that goes over the photo */
+.nms-aboutus__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-inline-start: -205px; /* pulls the strip over the photo */
+  margin-inline-end: 27px;
+  padding: 24px 16px;
+  border-radius: 14px;
+  /* solid grey like the card, then see-through only where it sits on the photo */
+  background: linear-gradient(
+    to left,
+    rgba(239, 239, 239, 0.2) 0%,
+    rgba(239, 239, 239, 0.2) 10%,
+    #efefef 26%,
+    #efefef 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(24px) saturate(1.2);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  box-shadow: 0 2px 12px rgba(3, 13, 31, 0.06);
+}
+
+.nms-aboutus__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.nms-aboutus__stat strong {
+  color: var(--about-blue);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.nms-aboutus__stat span {
+  color: var(--about-text);
+  font-size: 14px;
+}
+
+/* Numbers use English digits, like the Figma design */
+.nms-aboutus__stat strong,
+.nms-aboutus__score strong {
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif !important;
+}
+
+/* Text under the top part */
+.nms-aboutus__intro {
+  color: var(--about-text);
+  font-size: 16px;
+  line-height: 1.75;
+  text-align: justify;
+  margin: 32px 0 40px;
+}
+
+/* "نتایج ارزیابی ..." title with a line next to it */
+.nms-aboutus__heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--about-blue);
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.nms-aboutus__heading::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #d5d8de;
+}
+
+.nms-aboutus__sub {
+  color: var(--about-text);
+  font-size: 15px;
+  margin: 0 0 24px;
+}
+
+/* The 4 dark score cards */
+.nms-aboutus__scores {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+}
+
+.nms-aboutus__score {
+  width: 180px;
+  min-height: 148px;
+  padding: 20px 12px;
+  border-radius: 12px;
+  background: var(--about-navy);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.nms-aboutus__score i {
+  font-size: 38px;
+  line-height: 1;
+}
+
+.nms-aboutus__score span {
+  font-size: 15px;
+}
+
+.nms-aboutus__score strong {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* Tablet and phone: photo on top, card under it */
+@media (max-width: 991px) {
+  .nms-aboutus {
+    padding: 32px 0 40px;
+  }
+
+  .nms-aboutus__hero {
+    grid-template-columns: 1fr;
+  }
+
+  .nms-aboutus__photo img {
+    min-height: 0;
+    height: 280px;
+  }
+
+  .nms-aboutus__stats {
+    margin: 0;
+    background: #f6f6f6;
+  }
+}
+
+@media (max-width: 575px) {
+  .nms-aboutus__card {
+    padding: 28px 18px;
+  }
+
+  .nms-aboutus__stats {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .nms-aboutus__heading {
+    font-size: 17px;
+  }
+
+  .nms-aboutus__heading::after {
+    display: none;
+  }
+
+  .nms-aboutus__scores {
+    gap: 14px;
+  }
+
+  .nms-aboutus__score {
+    width: calc(50% - 7px);
+  }
+}

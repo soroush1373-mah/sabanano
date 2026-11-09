@@ -8,6 +8,7 @@ using Common.Exceptions;
 using Data.Contracts;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using CleanArchitecture.Domain.ValueObjects;
 
 namespace CleanArchitecture.Application.People.Commands.DeleteOrder;
 
@@ -19,11 +20,13 @@ public record DeleteOrderCommand : IRequest<long>
 public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, long>
 {
     private readonly IRepository<Order> _OrderRepository;
+    private readonly ICurrentUserService _currentUser;
 
-    public DeleteOrderCommandHandler(IApplicationDbContext context,
-        IRepository<Order> OrderRepository)
+    public DeleteOrderCommandHandler(IRepository<Order> OrderRepository,
+        ICurrentUserService currentUser)
     {
         _OrderRepository = OrderRepository;
+        _currentUser = currentUser;
     }
 
     public async Task<long> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
@@ -35,9 +38,15 @@ public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, lon
             throw new NotFoundException(nameof(Order), request.Id);
         }
 
+        // Only the person who made the order (or an admin) may delete it
+        if (entity.CreatedBy != _currentUser.UserId && !_currentUser.IsInRole("Admin"))
+            throw new AppException("شما اجازه حذف این سفارش را ندارید");
+
+        // Only orders still in the cart can be deleted, not ones already sent to the expert
+        if (entity.OrderStatus.Id != OrderStatus.Initial.Id)
+            throw new AppException("این سفارش ارسال شده است و قابل حذف نیست");
+
         await _OrderRepository.DeleteAsync(entity, cancellationToken);
-        //entity.AddDomainEvent(new TodoItemDeletedEvent(entity));
-        //await _context.SaveChangesAsync(cancellationToken);
 
         return request.Id;
     }

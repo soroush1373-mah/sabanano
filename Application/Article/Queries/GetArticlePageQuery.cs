@@ -56,8 +56,8 @@ public class GetArticleListQueryHandler : IRequestHandler<GetArticlePageQuery, A
     {
         var expresion = request.GenerateExpression(request);
         var resultArticle = await _repository.TableNoTracking.Where(expresion)
-            .ProjectTo<ArticleDto>(_mapper.ConfigurationProvider)
-            .FirstOrDefaultAsync();
+        .ProjectTo<ArticleDto>(_mapper.ConfigurationProvider, null, x => x.ArticleDetails, x => x.ArticleComments)            
+        .FirstOrDefaultAsync();
 
         request.ExeptId = request.Id;
         request.RecordsPerPage = 4;
