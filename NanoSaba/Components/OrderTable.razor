@@ -1,0 +1,284 @@
+@using System.Globalization
+@using CleanArchitecture.Application.Common.Interfaces
+@using CleanArchitecture.Application.People.Queries.GetPeopleWithPagination
+@using CleanArchitecture.Application.TodoItems.Queries.GetPersonWithPagination
+@using CleanArchitecture.Domain.ValueObjects
+@using MediatR
+@implements IDisposable
+@inject IMediator Mediator
+@inject ICurrentUserService CurrentUser
+
+<!-- Filter by status + last update time -->
+<div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+    <label for="statusFilter" class="mb-0">وضعیت سفارش:</label>
+    <select id="statusFilter" class="form-select form-select-sm w-auto"
+            @bind="statusId" @bind:after="FilterChanged">
+        <option value="0">همه</option>
+        @foreach (var status in filterStatuses)
+        {
+            <option value="@status.Id">@status.Title</option>
+        }
+    </select>
+    <span class="text-secondary small me-auto">آخرین بروزرسانی: @lastUpdate.ToString("HH:mm")</span>
+</div>
+
+<table class="table table-bordered text-center">
+    <caption class="mx-2">سفارشات</caption>
+    <thead>
+    <tr>
+        <th scope="col">تاریخ ثبت</th>
+        <th scope="col">نام مشتری</th>
+        <th scope="col">شماره سفارش</th>
+        <th scope="col">مبلغ سفارش</th>
+        <th scope="col">تعداد آنالیز</th>
+        <th scope="col">زمان دریافت نتایج</th>
+        <th scope="col">وضعیت سفارش</th>
+        <th scope="col">نظر کارشناس</th>
+        <th scope="col">نوع آنالیز</th>
+        <th scope="col">عملیات</th>
+    </tr>
+    </thead>
+    <tbody>
+    @if (orders.Count == 0)
+    {
+        <tr>
+            <td colspan="10" class="text-secondary py-4">سفارشی پیدا نشد.</td>
+        </tr>
+    }
+
+    @foreach (var order in orders)
+    {
+        var status = order.OrderStatus.Id;
+        <tr>
+            <td>@order.Created</td>
+            <td>@order.CreatedBy</td>
+            <td>@order.TrackingCode</td>
+            <td>@order.TotalPrice</td>
+            <td>@order.Analyzes.Count</td>
+            <td>@order.ProcessingTime</td>
+            <td>@order.OrderStatus.Title</td>
+            <td class="text-wrap">@order.LastHistory?.TechnicalComment</td>
+            <td>@order.AnalyzerDevice?.Name</td>
+            <td>
+                <a class="btn btn-outline-secondary btn-sm mx-1 mt-1" title="مشاهده جزيیات"
+                   href="/RegisterOrder/OrderView?item=@order.Id">
+                    <i class="bi bi-eye"></i>
+                </a>
+
+                @if (status == OrderStatus.Initial.Id || status == OrderStatus.SendToTechnicalExpert.Id)
+                {
+                    <a class="btn btn-outline-dark btn-sm mx-1 mt-1" title="ویرایش سفارش"
+                       href="/RegisterOrder/GetOrder?item=@order.Id&isEdit=true">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                }
+
+                @if (isAdmin)
+                {
+                    @if (status == OrderStatus.SendToTechnicalExpert.Id)
+                    {
+                        <button type="button" class="btn btn-outline-success btn-sm mx-1 mt-1" title="تایید کارشناسی"
+                                data-bs-toggle="modal" data-bs-target="#TechnicalExpertConfirmModal"
+                                onclick="setOrderId(this)" @attributes="OrderData(order)">
+                            <i class="bi bi-check-square-fill"></i>
+                        </button>
+                    }
+                    @if (status == OrderStatus.TechnicalConfirm.Id)
+                    {
+                        <button type="button" class="btn btn-outline-warning btn-sm mx-1 mt-1" title="صدور فاکتور"
+                                data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                onclick="setOrderId(this)" @attributes="OrderData(order)">
+                            <i class="bi bi-calculator"></i>
+                        </button>
+                    }
+                    @if (status == OrderStatus.SendToFinancial.Id)
+                    {
+                        <button type="button" class="btn btn-outline-warning btn-sm mx-1 mt-1" title="ویرایش فاکتور"
+                                data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                onclick="setOrderId(this)" @attributes="OrderData(order)">
+                            <i class="bi bi-calculator"></i>
+                        </button>
+                    }
+                    @if (status == OrderStatus.FinancialConfirmed.Id)
+                    {
+                        <button type="button" class="btn btn-outline-info btn-sm mx-1 mt-1" title="تایید دریافت نمونه"
+                                data-bs-toggle="modal" data-bs-target="#GetAnalyze"
+                                onclick="setOrderId(this)" @attributes="OrderData(order)">
+                            <i class="bi bi-check-square-fill"></i>
+                        </button>
+                    }
+                    @if (status == OrderStatus.WaitingForFinancial.Id)
+                    {
+                        <button type="button" class="btn btn-outline-info btn-sm mx-1 mt-1" title="تایید مالی"
+                                data-bs-toggle="modal" data-bs-target="#ConfirmFinancial"
+                                onclick="setOrderId(this)" @attributes="OrderData(order)">
+                            <i class="bi bi-check-square-fill"></i>
+                        </button>
+                    }
+                    @if (status == OrderStatus.Proccessing.Id)
+                    {
+                        <button type="button" class="btn btn-outline-danger btn-sm mx-1 mt-1" title="بارگزاری نتایج"
+                                data-bs-toggle="modal" data-bs-target="#uploadResult"
+                                onclick="setOrderId(this)" @attributes="OrderData(order)">
+                            <i class="bi bi-upload"></i>
+                        </button>
+                    }
+                }
+
+                @if (isCustomer)
+                {
+                    @if (status == OrderStatus.SendToFinancial.Id)
+                    {
+                        <button type="button" class="btn btn-outline-secondary btn-sm mx-1 mt-1" title="بارگزاری فیش"
+                                data-bs-toggle="modal" data-bs-target="#exampleModal1"
+                                onclick="setOrderId(this)" @attributes="OrderData(order)">
+                            <i class="bi bi-cloud-upload-fill"></i>
+                        </button>
+                    }
+                    @if (order.FinancialStatusId == FinancialStatus.Payed.Id)
+                    {
+                        <a class="btn btn-outline-primary btn-sm mx-1 mt-1" title="دریافت فاکتور" target="_blank"
+                           href="/FormCreator/GeneratePdf?orderId=@order.Id">
+                            <i class="bi bi-clipboard-check-fill"></i>
+                        </a>
+                    }
+                }
+
+                @if (status == OrderStatus.Completed.Id)
+                {
+                    <button type="button" class="btn btn-outline-success btn-sm mx-1 mt-1" title="دریافت نتایج"
+                            data-bs-toggle="modal" data-bs-target="#GetResult"
+                            onclick="setOrderId(this)" @attributes="OrderData(order)">
+                        <i class="bi bi-check-square-fill"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-success btn-sm mx-1 mt-1" title="نظرسنجی"
+                            data-bs-toggle="modal" data-bs-target="#GetSurvey"
+                            onclick="setOrderId(this)" @attributes="OrderData(order)">
+                        <i class="bi bi-chat-left-text"></i>
+                    </button>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<!-- Pages: no page reload, Blazor just loads the other page -->
+@if (totalPages > 1)
+{
+    <nav aria-label="صفحه ها">
+        <ul class="pagination">
+            <li class="page-item @(page == 1 ? "disabled" : "")">
+                <button class="page-link" @onclick="() => GoTo(page - 1)">&laquo;</button>
+            </li>
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                var number = i;   // copy i, so each button keeps its own number
+                <li class="page-item @(number == page ? "active" : "")">
+                    <button class="page-link" @onclick="() => GoTo(number)">@number</button>
+                </li>
+            }
+            <li class="page-item @(page == totalPages ? "disabled" : "")">
+                <button class="page-link" @onclick="() => GoTo(page + 1)">&raquo;</button>
+            </li>
+        </ul>
+    </nav>
+}
+
+@code {
+    const int pageSize = 10;
+
+    // All statuses, in the order the work happens.
+    // (OrderStatus.Items in the Domain project misses some of them, so we list them here.)
+    readonly OrderStatus[] filterStatuses =
+    {
+        OrderStatus.Initial,
+        OrderStatus.SendToTechnicalExpert,
+        OrderStatus.TechnicalConfirm,
+        OrderStatus.SendToFinancial,
+        OrderStatus.WaitingForFinancial,
+        OrderStatus.FinancialConfirmed,
+        OrderStatus.Proccessing,
+        OrderStatus.Completed,
+        OrderStatus.Canceled
+    };
+
+    List<OrderBriefDto> orders = new();
+    int page = 1;
+    int totalPages;
+    int statusId;            // 0 = all statuses
+    bool isAdmin;
+    bool isCustomer;
+    DateTime lastUpdate;
+    System.Threading.Timer? timer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isAdmin = CurrentUser.IsInRole("Admin");
+        isCustomer = CurrentUser.IsInRole("Customer");
+
+        await Load();
+
+        // Every 60 seconds, load the same page again (new orders and new statuses show up)
+        timer = new System.Threading.Timer(async _ =>
+        {
+            await InvokeAsync(async () =>
+            {
+                await Load();
+                StateHasChanged();
+            });
+        }, null, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60));
+    }
+
+    async Task Load()
+    {
+        try
+        {
+            var result = await Mediator.Send(new GetOrderWithPaginationQuery()
+            {
+                PageNumber = page,
+                RecordsPerPage = pageSize,
+                OrderStatus = statusId > 0 ? filterStatuses.First(s => s.Id == statusId) : null
+            });
+
+            orders = result.Items;
+            totalPages = result.TotalPages;
+            lastUpdate = DateTime.Now;
+        }
+        catch (Exception)
+        {
+            // If the database is slow, keep the old list and try again next time.
+        }
+    }
+
+    async Task GoTo(int number)
+    {
+        if (number < 1 || number > totalPages)
+            return;
+        page = number;
+        await Load();
+    }
+
+    // A new status was picked: start again from page 1
+    async Task FilterChanged()
+    {
+        page = 1;
+        await Load();
+    }
+
+    // The data-... attributes that setOrderId(this) reads in Order.cshtml
+    Dictionary<string, object> OrderData(OrderBriefDto order) => new()
+    {
+        ["data-id"] = order.Id,
+        ["data-payment"] = order.PaymentImageFileName ?? "",
+        ["data-result"] = order.ResultImageFileName ?? "",
+        ["data-price"] = Number(order.Financial?.AnalyzePrice),
+        ["data-grant"] = Number(order.Financial?.GrantPrice),
+        ["data-additional"] = Number(order.Financial?.AdditionalPrice)
+    };
+
+    // 1500.5 always with a dot (Persian culture would write 1500/5, and JavaScript can't read that)
+    static string Number(decimal? value) => (value ?? 0).ToString(CultureInfo.InvariantCulture);
+
+    public void Dispose() => timer?.Dispose();
+}
