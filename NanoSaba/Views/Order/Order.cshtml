@@ -100,6 +100,10 @@
 
 <section id="contact" class="contact">
     <div class="container mt-1 pt-3">
+        @if (CurrentUser.IsInRole("Customer"))
+        {
+            <component type="typeof(NanoSaba.Components.OrderTracking)" render-mode="ServerPrerendered" />
+        }
         <div class="card mt-3">
             <div class="card-header">
                 <h5 class="card-title">مدیریت سفارشات</h5>

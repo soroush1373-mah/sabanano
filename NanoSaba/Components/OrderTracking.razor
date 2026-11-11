@@ -1,0 +1,116 @@
+@using CleanArchitecture.Application.People.Queries.GetPeopleWithPagination
+@using CleanArchitecture.Application.TodoItems.Queries.GetPersonWithPagination
+@using CleanArchitecture.Domain.ValueObjects
+@using MediatR
+@implements IDisposable
+@inject IMediator Mediator
+
+<div class="nms-track">
+    <h5 class="nms-track__title">پیگیری سفارش‌ها</h5>
+
+    @if (orders.Count == 0)
+    {
+        <p class="text-secondary mb-0">هنوز سفارشی ثبت نکرده‌اید.</p>
+    }
+
+    @foreach (var order in orders)
+    {
+        var current = StepIndex(order.OrderStatus);
+        <div class="nms-track__order">
+            <div class="nms-track__head">
+                <span>کد پیگیری: <strong>@order.TrackingCode</strong></span>
+                <span>@order.AnalyzerDevice?.Name</span>
+                <span class="text-secondary">@order.Created</span>
+            </div>
+
+            @if (order.OrderStatus.Id == OrderStatus.Canceled.Id)
+            {
+                <div class="alert alert-danger mb-0">این سفارش لغو شده است.</div>
+            }
+            else
+            {
+                <ol class="nms-track__steps">
+                    @for (int i = 0; i < steps.Length; i++)
+                    {
+                        <li class="@(i < current ? "done" : i == current ? "now" : "")">@steps[i]</li>
+                    }
+                </ol>
+            }
+        </div>
+    }
+
+    <p class="nms-track__updated">آخرین بروزرسانی: @lastUpdate.ToString("HH:mm")</p>
+</div>
+
+@code {
+    // The steps the customer sees, from right to left.
+    readonly string[] steps =
+    {
+        "ثبت سفارش",
+        "تایید کارشناس",
+        "پرداخت",
+        "تایید پرداخت",
+        "دریافت نمونه",
+        "انجام آنالیز",
+        "نتیجه آماده است"
+    };
+
+    List<OrderBriefDto> orders = new();
+    DateTime lastUpdate;
+    System.Threading.Timer? timer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Load();
+
+        // Every 60 seconds, ask the database again.
+        // So the customer sees a new step without reloading the page.
+        timer = new System.Threading.Timer(async _ =>
+        {
+            await InvokeAsync(async () =>
+            {
+                await Load();
+                StateHasChanged();
+            });
+        }, null, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60));
+    }
+
+    async Task Load()
+    {
+        try
+        {
+            var result = await Mediator.Send(new GetOrderWithPaginationQuery()
+            {
+                PageNumber = 1,
+                RecordsPerPage = 5
+            });
+
+            // "Initial" orders are still in the cart, so we don't show them here.
+            orders = result.Items
+                .Where(o => o.OrderStatus.Id != OrderStatus.Initial.Id)
+                .ToList();
+            lastUpdate = DateTime.Now;
+        }
+        catch (Exception)
+        {
+            // If the database is slow, keep the old list and try again next time.
+        }
+    }
+
+    // Which step is the order on now? (0 = first step)
+    int StepIndex(OrderStatus status)
+    {
+        var id = status.Id;
+        if (id == OrderStatus.SendToTechnicalExpert.Id) return 1;   // waiting for the expert
+        if (id == OrderStatus.TechnicalConfirm.Id) return 2;        // expert said OK, invoice is coming
+        if (id == OrderStatus.SendToFinancial.Id) return 2;         // waiting for payment
+        if (id == OrderStatus.WaitingForFinancial.Id) return 3;     // receipt sent, lab checks it
+        if (id == OrderStatus.FinancialConfirmed.Id) return 4;      // paid, waiting for the sample
+        if (id == OrderStatus.Proccessing.Id) return 5;             // analysis is running
+        if (id == OrderStatus.Completed.Id) return steps.Length;    // all steps done
+        return 0;
+    }
+
+    // When the customer leaves the page, stop the timer.
+    public void Dispose() => timer?.Dispose();
+}
