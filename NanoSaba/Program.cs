@@ -35,6 +35,7 @@ AssemblyScanner
            .ForEach(result => builder.Services.AddScoped(result.InterfaceType, result.ValidatorType));
 var _siteSetting = configuration.GetSection(nameof(SiteSettings)).Get<SiteSettings>();
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+builder.Services.AddScoped<NanoSaba.DbLock>();
 
 var app = builder.Build();
 

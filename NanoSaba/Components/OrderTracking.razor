@@ -4,6 +4,8 @@
 @using MediatR
 @implements IDisposable
 @inject IMediator Mediator
+@inject NanoSaba.DbLock DbLock
+@inject Microsoft.Extensions.Logging.ILogger<OrderTracking> Logger
 
 <div class="nms-track">
     <h5 class="nms-track__title">پیگیری سفارش‌ها</h5>
@@ -77,6 +79,9 @@
 
     async Task Load()
     {
+        // Wait until no other component on this page is using the database
+        await DbLock.Semaphore.WaitAsync();
+        
         try
         {
             var result = await Mediator.Send(new GetOrderWithPaginationQuery()
@@ -91,9 +96,16 @@
                 .ToList();
             lastUpdate = DateTime.Now;
         }
-        catch (Exception)
+        
+        catch (Exception ex)
         {
-            // If the database is slow, keep the old list and try again next time.
+            // Keep the old list and try again next time, but write the problem in the terminal
+            Logger.LogWarning(ex, "Orders could not be loaded");
+        }
+        finally
+        {
+            // Always give the database back, also after an error
+            DbLock.Semaphore.Release();
         }
     }
 
