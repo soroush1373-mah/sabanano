@@ -26,6 +26,8 @@ using Microsoft.AspNetCore.Mvc;
 using NanoSaba.Models;
 using Services.IServices.V2;
 using CleanArchitecture.Application.ContactMessages.Commands.CreateContactUs;
+using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Infrastructure.Services.SMSProvider;
 
 namespace NanoSaba.Controllers;
 
@@ -38,6 +40,9 @@ public class HomeController : Controller
     private readonly IMediator _mediator;
     private readonly SignInManager<ApplicationUser> signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IFarazSMSProvider _sms;
+    private readonly IEmailService _emailService;
+    private readonly IConfiguration _config;
     private readonly IRepository<ApplicationUser> _repository;
 
     public HomeController(ILogger<HomeController> logger,
@@ -46,7 +51,10 @@ public class HomeController : Controller
         IUsersService userService,
         SignInManager<ApplicationUser> signInManager,
         IRepository<ApplicationUser> repository,
-        UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUser> userManager,
+        IFarazSMSProvider sms,
+        IEmailService emailService,
+        IConfiguration config)
     {
         _logger = logger;
         _userCodeService = userCodeService;
@@ -55,6 +63,9 @@ public class HomeController : Controller
         this.signInManager = signInManager;
         _repository = repository;
         _userManager = userManager;
+        _sms = sms;
+        _emailService = emailService;
+        _config = config;
     }
 
     [AllowAnonymous]
@@ -150,6 +161,8 @@ public class HomeController : Controller
 
         if (result <= 0)
             return AuthError("ثبت نام انجام نشد. لطفا دوباره تلاش کنید");
+            await SendWelcome(firstName, mobilenumber, email);
+
 
         return Json(new
         {
@@ -158,6 +171,52 @@ public class HomeController : Controller
             mobileNumber = mobilenumber,
             message = "ثبت نام انجام شد. برای ورود، کد تایید را دریافت کنید"
         });
+    }
+            // Sends "you are registered" by SMS and email.
+    // If sending fails, the registration is still OK, so we only write it in the log.
+    private async Task SendWelcome(string firstName, string mobile, string email)
+    {
+        var smsPattern = _config["Notifications:WelcomeSmsPattern"];
+        if (!string.IsNullOrEmpty(smsPattern))
+        {
+            try
+            {
+                await _sms.SendPatternSms(new SendSMS
+                {
+                    ToMobileNumber = mobile,
+                    PatternCode = smsPattern,
+                    Attributes = new Dictionary<string, string> { ["name"] = firstName }
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Welcome SMS was not sent to {Mobile}", mobile);
+            }
+        }
+
+        var emailFrom = _config["Notifications:EmailFrom"];
+        var emailPassword = _config["Notifications:EmailPassword"];
+        if (!string.IsNullOrEmpty(emailFrom) && !string.IsNullOrEmpty(emailPassword))
+        {
+            var name = System.Net.WebUtility.HtmlEncode(firstName);
+            var result = await _emailService.SendEmail(new Email
+            {
+                From = emailFrom,
+                Password = emailPassword,
+                To = email,
+                Subject = "ثبت نام شما در آزمایشگاه نانو مواد صبا انجام شد",
+                Body = $@"<div dir=""rtl"" style=""font-family:Tahoma,sans-serif;line-height:2"">
+                    <p>{name} عزیز، سلام</p>
+                    <p>ثبت نام شما در سایت آزمایشگاه نانو مواد صبا با موفقیت انجام شد.</p>
+                    <p>اکنون می‌توانید وارد سایت شوید و سفارش آنالیز ثبت کنید.</p>
+                    <p>تلفن: ۰۲۱-۶۶۵۱۹۶۶۶</p>
+                </div>"
+            });
+
+            if (!result.IsSuccess)
+                _logger.LogWarning("Welcome email was not sent to {Email}", email);
+        }
+      
     }
 
     [AllowAnonymous]

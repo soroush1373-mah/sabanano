@@ -28,10 +28,10 @@ namespace CleanArchitecture.Infrastructure.Services.SMSProvider.Faraz
 
             var request = new SendPatternRequest
             {
-                Code = "LzFNb9Z4LS",
+                Code = sendSMS.PatternCode ?? "LzFNb9Z4LS",
                 LineNumber = "50002178584000",
                 Recipient = recipient,
-                Attributes = new Dictionary<string, string>
+                Attributes = sendSMS.Attributes ?? new Dictionary<string, string>
                 {
                     ["code"] = sendSMS.Code
                 }

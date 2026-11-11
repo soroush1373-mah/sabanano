@@ -11,10 +11,18 @@ using Common;
 using CleanArchitecture.Application.Common.Interfaces;
 using System.Net.Http;
 using CleanArchitecture.Application.Common;
+using Microsoft.Extensions.Configuration;
 
 namespace CleanArchitecture.Infrastructure.Services;
 public class EmailService : IEmailService
 {
+    private readonly IConfiguration _config;
+
+    public EmailService(IConfiguration config)
+    {
+        _config = config;
+    }
+
     public async Task<ApiResult> SendEmail(Email email)
     {
         try
@@ -31,12 +39,13 @@ public class EmailService : IEmailService
             message.Subject = "Test";
             message.Body = "Content";*/
 
-            using (SmtpClient smtp = new SmtpClient("webmail.iranfoodguide.com", 587))
+                        using (SmtpClient smtp = new SmtpClient(_config["Notifications:SmtpHost"], 
+                        int.Parse(_config["Notifications:SmtpPort"] ?? "587")))
             //using (SmtpClient smtp = new SmtpClient("webmail.iranfoodguide.com", 110))
             {
                 smtp.UseDefaultCredentials = false;
                 smtp.Credentials = new NetworkCredential(email.From, email.Password);
-                smtp.EnableSsl = false;
+                smtp.EnableSsl = _config["Notifications:SmtpEnableSsl"] == "true";
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtp.Send(message);
             }

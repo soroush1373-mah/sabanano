@@ -7,6 +7,7 @@
     <OutputType>WinExe</OutputType>
     <UseWindowsForms>False</UseWindowsForms>
     <UseWPF>False</UseWPF>
+    <UserSecretsId>ace8d7e2-1640-4436-89f8-a06e42395b27</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
