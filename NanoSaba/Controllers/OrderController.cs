@@ -39,7 +39,7 @@ namespace NanoSaba.Controllers
             return View("~/Views/Order/Order.cshtml", pagedto);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ConfirmFinancialCommand()
         {
             var orderId = FormAttributesUtility.GetLongByKey("id", Request);
@@ -72,7 +72,7 @@ namespace NanoSaba.Controllers
                 });
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ConfirmTechnicalExpertCommand(string button)
         {
             var orderId = FormAttributesUtility.GetLongByKey("id", Request);
@@ -114,7 +114,7 @@ namespace NanoSaba.Controllers
                 });
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ConfirmGettingAnalyze(string button)
         {
             var orderId = FormAttributesUtility.GetLongByKey("id", Request);
@@ -183,6 +183,7 @@ namespace NanoSaba.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UploadResultFile(IFormFile UploadedFile)
         {
             if (UploadedFile == null || UploadedFile.Length == 0)
@@ -275,7 +276,7 @@ namespace NanoSaba.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ConfirmFinancial()
         {
             var orderId = FormAttributesUtility.GetLongByKey("id", Request);
