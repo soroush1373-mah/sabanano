@@ -161,8 +161,8 @@ public class HomeController : Controller
 
         if (result <= 0)
             return AuthError("ثبت نام انجام نشد. لطفا دوباره تلاش کنید");
+        
         await SendWelcome(firstName, mobilenumber, email);
-
 
         return Json(new
         {
