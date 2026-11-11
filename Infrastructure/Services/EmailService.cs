@@ -51,7 +51,6 @@ public class EmailService : IEmailService
             }
 
 
-
             return new ApiResult(true, ApiResultStatusCode.Success, null);
         }
         catch (Exception ex)

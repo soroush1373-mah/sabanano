@@ -86,14 +86,14 @@ public class HomeController : Controller
     [AllowAnonymous]
     public IActionResult SignIn()
     {
-       return View();
+        return View();
     }
 
 
     [AllowAnonymous]
     public IActionResult Contact()
     {
-    return View();
+        return View();
     }
 
     [HttpPost]
@@ -161,7 +161,7 @@ public class HomeController : Controller
 
         if (result <= 0)
             return AuthError("ثبت نام انجام نشد. لطفا دوباره تلاش کنید");
-            await SendWelcome(firstName, mobilenumber, email);
+        await SendWelcome(firstName, mobilenumber, email);
 
 
         return Json(new
@@ -172,7 +172,7 @@ public class HomeController : Controller
             message = "ثبت نام انجام شد. برای ورود، کد تایید را دریافت کنید"
         });
     }
-            // Sends "you are registered" by SMS and email.
+    // Sends "you are registered" by SMS and email.
     // If sending fails, the registration is still OK, so we only write it in the log.
     private async Task SendWelcome(string firstName, string mobile, string email)
     {
@@ -216,7 +216,7 @@ public class HomeController : Controller
             if (!result.IsSuccess)
                 _logger.LogWarning("Welcome email was not sent to {Email}", email);
         }
-      
+
     }
 
     [AllowAnonymous]
